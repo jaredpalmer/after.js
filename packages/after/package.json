@@ -1,0 +1,54 @@
+{
+  "name": "@jaredpalmer/after",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Jared Palmer",
+  "files": ["dist"],
+  "private": false,
+  "bin": {
+    "after": "./dist/bin/after"
+  },
+  "scripts": {
+    "start": "gulp watch",
+    "build": "gulp"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-generator": "6.17.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-module-alias": "1.6.0",
+    "babel-plugin-transform-async-to-generator": "6.16.0",
+    "babel-plugin-transform-class-properties": "6.16.0",
+    "babel-plugin-transform-object-rest-spread": "6.16.0",
+    "babel-plugin-transform-runtime": "6.15.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "6.16.0",
+    "babel-preset-react": "6.16.0",
+    "babel-runtime": "6.11.6",
+    "cross-spawn": "^5.1.0",
+    "del": "^3.0.0",
+    "glob-promise": "1.0.6",
+    "htmlescape": "1.1.1",
+    "memory-fs": "0.3.0",
+    "minimist": "1.2.0",
+    "mkdirp-then": "1.2.0",
+    "mz": "2.4.0",
+    "path-match": "1.2.4",
+    "react": "^16.1.0",
+    "react-dev-utils": "^4.2.1",
+    "react-dom": "^16.1.0",
+    "react-router-dom": "^4.2.2",
+    "send": "0.14.1",
+    "url": "0.11.0",
+    "webpack": "^3.8.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "gulp": "3.9.1",
+    "gulp-babel": "6.1.2",
+    "gulp-cached": "1.1.0",
+    "gulp-notify": "2.2.0",
+    "gulp-uglify": "2.0.0",
+    "webpack-stream": "3.2.0"
+  }
+}
