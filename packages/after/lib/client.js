@@ -6,9 +6,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 import routes from './_routes';
 
+const data = window.__AFTER__;
+
 ReactDOM.hydrate(
   <BrowserRouter>
-    <App routes={routes} />
+    <App routes={routes} data={data} />
   </BrowserRouter>,
   document.getElementById('root')
 );

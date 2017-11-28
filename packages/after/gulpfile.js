@@ -3,6 +3,7 @@ const babel = require('gulp-babel');
 const cache = require('gulp-cached');
 const notify_ = require('gulp-notify');
 const uglify = require('gulp-uglify');
+const chmod = require('gulp-chmod');
 const webpack = require('webpack-stream');
 const del = require('del');
 
@@ -28,6 +29,21 @@ gulp.task('compile-bin', () => {
     .src('bin/*')
     .pipe(cache('bin'))
     .pipe(babel(babelOptions))
+    .pipe(
+      chmod({
+        owner: {
+          read: true,
+          write: true,
+          execute: true,
+        },
+        group: {
+          execute: true,
+        },
+        others: {
+          execute: true,
+        },
+      })
+    )
     .pipe(gulp.dest('dist/bin'))
     .pipe(notify('Compiled binaries'));
 });

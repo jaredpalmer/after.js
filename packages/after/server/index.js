@@ -4,9 +4,9 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import App from '../lib/App';
 import send from 'send';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouter, matchPath } from 'react-router-dom';
 import Router from './router';
-
+import url from 'url';
 export default class Server {
   constructor(dir) {
     this.routes = require(path.resolve('.after/pages/_routes.js')).default;
@@ -31,7 +31,8 @@ export default class Server {
 
     this.router.get('/:path*', async (req, res, params) => {
       const path = (params.path || []).join('/');
-      await this.render(req, res, path);
+
+      await this.render(req, res, path, port);
     });
 
     await new Promise((resolve, reject) => {
@@ -51,12 +52,32 @@ export default class Server {
     }
   }
 
-  async render(req, res) {
+  async render(req, res, path, port) {
+    const turl = url.parse(req.url);
+
     const context = {};
+    let data, promise;
+    this.routes.some(route => {
+      const { pathname } = turl;
+      const match = matchPath(pathname, route);
+      if (match && route.component.getInitialProps) {
+        promise = route.component.getInitialProps;
+      }
+      return !!match;
+    });
+
+    if (promise) {
+      try {
+        data = await promise({ req, res });
+      } catch (error) {
+        data = error;
+      }
+    }
+
     try {
       const html = ReactDOMServer.renderToString(
         <StaticRouter location={req.url} context={context}>
-          <App routes={this.routes} />
+          <App routes={this.routes} data={data} />
         </StaticRouter>
       );
       res.end(`<!DOCTYPE html><html lang="en">
@@ -68,6 +89,7 @@ export default class Server {
       </head>
       <body>
         <div id="root">${html}</div>
+        <script>window.__AFTER__ = ${JSON.stringify(data)};</script>
         <script type='text/javascript' src="/_after/_client.js"></script>
       </body>
       </html>`);
@@ -88,9 +110,7 @@ export default class Server {
   }
 
   serveStatic(req, res, pathname) {
-    console.log(pathname);
     const p = path.resolve('.after/.after/pages', pathname);
-    console.log(p);
     return new Promise((resolve, reject) => {
       send(req, p)
         .on('error', err => {
