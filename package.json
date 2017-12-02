@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Jared Palmer <jared@palmer.net>",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "lerna bootstrap"
+  },
   "devDependencies": {
     "lerna": "^2.1.2"
   }
