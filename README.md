@@ -18,7 +18,7 @@ cd examples/basic
 yarn start
 ```
 
-Checkout `src/About.js` and notice that it SSR's with data.
+Open localhost:3000 and look at the `pages` directiory
 
 
 ### Todo
