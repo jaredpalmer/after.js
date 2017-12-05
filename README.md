@@ -6,7 +6,7 @@ If next.js and react-router had a baby, it'd be this.
 
 ## Project Goals / Philosophy / Requirements
 
-Next.js is awesome. However, it's routing system isn't. React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here: 
+Next.js is awesome. However, its routing system isn't. React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here: 
 
 - Routes are just component and don't / should not have literally anything to do with folder structure. Static route configs are fine.
 - Next.js's `getInitialProps` was a good idea. However, blocking route transitions and render isn't for me. Loading states should be available on every client transition after the first render.
