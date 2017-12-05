@@ -4,6 +4,17 @@ If next.js and react-router had a baby, it'd be this.
 
 > This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming. Still need to add HMR and overridable documents.
 
+## Project Goals / Philosophy / Requirements
+
+Next.js is awesome. However, it's routing system isn't. React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here: 
+
+- Routes are just component and don't / should not have literally anything to do with folder structure. Static route configs are fine.
+- Next.js's `getInitialProps` was a good idea. However, blocking route transitions and render isn't for me. Loading states should be available on every client transition after the first render.
+- Plugins and middleware. Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
+- Must work well with TypeScript 
+- Generally, everything should come with the battery pack included, but be overridable.
+
+
 ## Getting Started
 
 ```bash
