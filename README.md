@@ -2,6 +2,8 @@
 
 If next.js and react-router had a baby, it'd be this.
 
+> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming. Still need to add HMR and overridable documents.
+
 ## Getting Started
 
 ```bash
@@ -88,7 +90,7 @@ Router 4 application.
 
 ## Data Fetching
 
-For page components, you can add an `static async getInitialProps` function.
+For page components, you can add a`static async getInitialProps` function.
 This will be called on both initial server render, and then client mounts.
 Results are made available on `this.props.data`.
 
@@ -120,7 +122,7 @@ export default About;
 
 ### `getInitialProps: (ctx) => Data`
 
-Withing `getInitialProps`, you have access to all you need to fetch data on both
+Within `getInitialProps`, you have access to all you need to fetch data on both
 the client and the server:
 
 * `req?: Request`: (server-only) A Express.js request object
@@ -131,8 +133,8 @@ the client and the server:
 
 ### Injected Page Props
 
-* `data` - Whatever you have returned from `getInitialProps`
-* `reload(nextCtx?: any) => void` - Imperatively call `getInitialProps` again
+* `data: Data` - Whatever you have returned from `getInitialProps`
+* `reload: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
 
 ## Routing
 
@@ -230,7 +232,4 @@ yarn start
 
 Open localhost:3000 and look at the `pages` directiory
 
-### Todo
 
-* HMR duh (need to pull it out of razzle)
-* Code splitting
