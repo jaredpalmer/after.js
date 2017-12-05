@@ -12,7 +12,6 @@ export function After(Component) {
       super(props);
       this.state = {
         data: props.data,
-        error: props.error,
         isLoading: false,
       };
       this.ignoreLast = false;
@@ -46,7 +45,7 @@ export function After(Component) {
         this.constructor
           .getInitialProps(ctx)
           .then(
-            data => this.setState({ data, isLoading: false }),
+            data => this.props.updateData(data),
             error => this.setState({ error, isLoading: false })
           );
       }

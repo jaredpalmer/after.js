@@ -67,11 +67,7 @@ export default class Server {
     });
 
     if (promise) {
-      try {
-        data = await promise({ req, res });
-      } catch (error) {
-        data = error;
-      }
+      data = await promise({ req, res }).catch(() => {});
     }
 
     try {

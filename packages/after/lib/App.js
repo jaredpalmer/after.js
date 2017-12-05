@@ -1,19 +1,38 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { After } from './After';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: props.data,
+    };
+  }
+
+  // only runs clizzient
+  componentWillReceiveProps(nextProps, nextState) {
+    console.log('cwrp');
+    this.setState({ data: undefined });
+  }
+
+  updateData = data => {
+    this.setState({ data });
+  };
+
   render() {
+    const { data } = this.state;
     return (
       <Switch>
         {this.props.routes.map((r, i) => (
           <Route
             key={`route--${i}`}
+            path={r.path}
+            exact={r.exact}
             render={props => {
-              const el = After(r.component);
-              return React.createElement(el, {
-                data: this.props.data,
-                error: this.props.error,
+              return React.createElement(After(r.component), {
+                data,
+                updateData: this.updateData,
                 ...props,
               });
             }}
@@ -24,4 +43,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);
