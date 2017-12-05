@@ -12,7 +12,6 @@ class App extends React.Component {
 
   // only runs clizzient
   componentWillReceiveProps(nextProps, nextState) {
-    console.log('cwrp');
     this.setState({ data: undefined });
   }
 

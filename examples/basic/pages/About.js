@@ -8,6 +8,9 @@ class About extends React.Component {
   }
 
   render() {
+    if (!this.props.data) {
+      return 'loading........';
+    }
     return (
       <div>
         <Nav />About
