@@ -2,10 +2,8 @@
   "name": "@jaredpalmer/after",
   "version": "1.0.0",
   "license": "MIT",
-  "author": "Jared Palmer",
-  "files": [
-    "dist"
-  ],
+  "author": "Jared Palmer <jared@palmer.net>",
+  "files": ["dist"],
   "private": false,
   "bin": {
     "after": "./dist/bin/after"
