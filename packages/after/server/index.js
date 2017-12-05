@@ -67,7 +67,7 @@ export default class Server {
     });
 
     if (promise) {
-      data = await promise({ req, res }).catch(() => {});
+      data = await promise({ req, res, match }).catch(() => {});
     }
 
     try {
