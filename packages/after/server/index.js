@@ -56,24 +56,24 @@ export default class Server {
     const turl = url.parse(req.url);
 
     const context = {};
-    let data, promise;
+    const promises = [];
     this.routes.some(route => {
       const { pathname } = turl;
       const match = matchPath(pathname, route);
       if (match && route.component.getInitialProps) {
-        promise = route.component.getInitialProps;
+        promises.push(
+          route.component.getInitialProps({ req, res, match }).catch(() => {})
+        );
       }
       return !!match;
     });
 
-    if (promise) {
-      data = await promise({ req, res, match }).catch(() => {});
-    }
+    const data = await Promise.all(promises);
 
     try {
       const html = ReactDOMServer.renderToString(
         <StaticRouter location={req.url} context={context}>
-          <App routes={this.routes} data={data} />
+          <App routes={this.routes} data={data[0]} />
         </StaticRouter>
       );
       res.end(`<!DOCTYPE html><html lang="en">
@@ -85,7 +85,7 @@ export default class Server {
       </head>
       <body>
         <div id="root">${html}</div>
-        <script>window.__AFTER__ = ${JSON.stringify(data)};</script>
+        <script>window.__AFTER__ = ${JSON.stringify(data[0])};</script>
         <script type='text/javascript' src="/_after/_client.js"></script>
       </body>
       </html>`);

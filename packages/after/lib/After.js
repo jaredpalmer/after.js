@@ -11,7 +11,8 @@ export function After(Component) {
     ignoreLast = false;
 
     componentDidMount() {
-      if (!this.props.data) {
+      // not initial render
+      if (!this.props.initialRender) {
         this.reload({
           match: this.props.match,
           location: this.props.location,
@@ -36,7 +37,10 @@ export function After(Component) {
     };
 
     render() {
-      return <Component {...this.state} {...this.props} reload={this.reload} />;
+      const { data, ...props } = this.props;
+      return (
+        <Component {...this.state} {...data} {...props} reload={this.reload} />
+      );
     }
   }
   return AFTR;

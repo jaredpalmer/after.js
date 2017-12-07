@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Jared Palmer <jared@palmer.net>",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "private": false,
   "bin": {
     "after": "./dist/bin/after"

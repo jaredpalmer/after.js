@@ -8,6 +8,15 @@ class App extends React.Component {
     this.state = {
       data: props.data,
     };
+    this.previousLocation = props.location;
+  }
+
+  componentWillUpdate(nextProps) {
+    const { location } = this.props;
+    // set previousLocation if props.location is not modal
+    if (nextProps.history.action !== 'POP') {
+      this.previousLocation = this.props.location;
+    }
   }
 
   // only runs clizzient
@@ -21,6 +30,7 @@ class App extends React.Component {
 
   render() {
     const { data } = this.state;
+    const initialRender = !!(this.previousLocation === this.props.location);
     return (
       <Switch>
         {this.props.routes.map((r, i) => (
@@ -32,6 +42,7 @@ class App extends React.Component {
               return React.createElement(After(r.component), {
                 data,
                 updateData: this.updateData,
+                initialRender,
                 ...props,
               });
             }}

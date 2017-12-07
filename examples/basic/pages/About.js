@@ -8,14 +8,14 @@ class About extends React.Component {
   }
 
   render() {
-    if (!this.props.data) {
+    if (!this.props.about) {
       return 'loading........';
     }
     return (
       <div>
         <Nav />About
         <Link to="/about/thing">Thing</Link>
-        {JSON.stringify(this.props.data, null, 2)}
+        {JSON.stringify(this.props.about, null, 2)}
         <Route path="/about/thing" exact render={() => <div>Things</div>} />
       </div>
     );

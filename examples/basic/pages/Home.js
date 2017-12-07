@@ -9,7 +9,7 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <Nav />Home {JSON.stringify(this.props.data, null, 2)}
+        <Nav />Home {JSON.stringify(this.props.thing, null, 2)}
       </div>
     );
   }
