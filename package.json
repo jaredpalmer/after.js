@@ -16,10 +16,7 @@
     "prettier": "^1.9.0"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma es5 --single-quote --write 'examples/*/!(node_modules|.after)/**/*.js'  'packages/*/!(node_modules|dist)/**/*.js'",
-      "git add"
-    ]
+    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
   },
   "jest": {
     "testPathIgnorePatterns": [
