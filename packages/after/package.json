@@ -11,8 +11,8 @@
     "after": "./dist/bin/after"
   },
   "scripts": {
-    "start": "gulp watch",
-    "build": "gulp"
+    "start": "taskr",
+    "build": "taskr build"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -45,13 +45,13 @@
     "webpack": "^3.8.1"
   },
   "devDependencies": {
+    "@taskr/babel": "^1.1.0",
+    "@taskr/clear": "^1.1.0",
+    "@taskr/esnext": "^1.1.0",
+    "@taskr/shell": "^1.1.0",
+    "@taskr/uglify": "^1.1.0",
+    "@taskr/watch": "^1.1.0",
     "babel-cli": "^6.26.0",
-    "gulp": "3.9.1",
-    "gulp-babel": "6.1.2",
-    "gulp-cached": "1.1.0",
-    "gulp-chmod": "^2.0.0",
-    "gulp-notify": "2.2.0",
-    "gulp-uglify": "2.0.0",
-    "webpack-stream": "3.2.0"
+    "taskr": "^1.1.0"
   }
 }
