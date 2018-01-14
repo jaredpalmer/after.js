@@ -45,7 +45,8 @@ In your `package.json`, add the following script:
 ```json
 {
   "scripts": {
-    "start": "after build && after start"
+    "start": "after start",
+    "build": "after build"
   }
 }
 ```
