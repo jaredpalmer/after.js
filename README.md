@@ -29,8 +29,8 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 * Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
 * Next.js's `getInitialProps` was/is a brilliant idea.
-* Route-level Code-splitting should come for free or be trivial to do.
-* Plugins and middleware. Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
+* Route-based code-splitting should come for free or be easy to opt into.
+* Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
 * Must work well with TypeScript (i.e. without Babel)
 * Generally, everything should come with the battery pack included, but be overridable.
 
