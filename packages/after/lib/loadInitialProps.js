@@ -6,7 +6,15 @@ export default function loadInitialProps(routes, pathname, ctx) {
     const match = matchPath(pathname, route);
     if (match && route.component.getInitialProps) {
       promises.push(
-        route.component.getInitialProps({ match, ...ctx }).catch(() => {})
+        route.component.load
+          ? route.component
+              .load() // load it as well
+              .then(() =>
+                route.component
+                  .getInitialProps({ match, ...ctx })
+                  .catch(() => {})
+              )
+          : route.component.getInitialProps({ match, ...ctx }).catch(() => {})
       );
     }
     return !!match;
