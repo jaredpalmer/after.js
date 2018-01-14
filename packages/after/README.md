@@ -1,12 +1,8 @@
-# After.js
-
-If Next.js and React Router 4 had a baby...
-
-> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents**
 
 * [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
 * [Getting Started](#getting-started)
@@ -23,15 +19,22 @@ If Next.js and React Router 4 had a baby...
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+# After.js
+
+If Next.js and React Router 4 had a baby...
+
+> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
+
 ## Project Goals / Philosophy / Requirements
 
-Next.js is awesome. However, its routing system just isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
+Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
 
 * Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
-* Next.js's `getInitialProps` was a brilliant idea.
-* Route-based code-splitting / transitions / analytics / data loading / preloading etc., should either come for free or be trivial to implement on your own.
+* Next.js's `getInitialProps` was/is a brilliant idea.
+* Route-based code-splitting should come for free or be easy to opt into.
+* Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
 * Must work well with TypeScript (i.e. without Babel)
-* Should be zero-config and come with the battery pack included to start, but ultimately be customizable.
+* Generally, everything should come with the battery pack included, but be overridable.
 
 ## Getting Started
 
@@ -288,5 +291,5 @@ After.js is actually just a slightly modified version of my other project [Razzl
 * [Razzle](https://github.com/jaredpalmer/razzle)
 * [Next.js](https://github.com/zeit/next.js)
 
---
+--  
 MIT License

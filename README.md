@@ -1,27 +1,29 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents**
+
+* [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+* [Getting Started](#getting-started)
+* [Data Fetching](#data-fetching)
+  * [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+  * [Injected Page Props](#injected-page-props)
+* [Routing](#routing)
+  * [Parameterized Routing](#parameterized-routing)
+  * [Client Only Data and Routing](#client-only-data-and-routing)
+* [Code Splitting](#code-splitting)
+* [Customization](#customization)
+* [Author](#author)
+* [Inspiration](#inspiration)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # After.js
 
 If Next.js and React Router 4 had a baby...
 
 > This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
-- [Getting Started](#getting-started)
-- [Data Fetching](#data-fetching)
-  - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-  - [Injected Page Props](#injected-page-props)
-- [Routing](#routing)
-  - [Parameterized Routing](#parameterized-routing)
-  - [Client Only Data and Routing](#client-only-data-and-routing)
-- [Code Splitting](#code-splitting)
-- [Customization](#customization)
-- [Author](#author)
-- [Inspiration](#inspiration)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Project Goals / Philosophy / Requirements
 
@@ -289,5 +291,5 @@ After.js is actually just a slightly modified version of my other project [Razzl
 * [Razzle](https://github.com/jaredpalmer/razzle)
 * [Next.js](https://github.com/zeit/next.js)
 
---
+--  
 MIT License
