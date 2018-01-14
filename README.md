@@ -1,8 +1,8 @@
 # After.js
 
-If next.js and react-router had a baby, it'd be this.
+If Next.js and React Router had a baby...it'd be this.
 
-> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming. Still need to add HMR and overridable documents.
+> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -25,11 +25,11 @@ If next.js and react-router had a baby, it'd be this.
 
 ## Project Goals / Philosophy / Requirements
 
-Next.js is awesome. However, its routing system isn't. React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
+Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
 
 * Routes are just component and don't / should not have literally anything to do with folder structure. Static route configs are fine.
-* Next.js's `getInitialProps` was a good idea. However, blocking route transitions and render isn't for me. Loading states should be available on every client transition after the first render.
-* Code-splitting should come for free or be trivial.
+* Next.js's `getInitialProps` was/is a good idea.
+* Route-level Code-splitting should come for free or be trivial to do.
 * Plugins and middleware. Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
 * Must work well with TypeScript (i.e. without Babel)
 * Generally, everything should come with the battery pack included, but be overridable.
@@ -50,8 +50,8 @@ In your `package.json`, add the following script:
 }
 ```
 
-Create a folder called `pages` in your project's root. For demo purposes, create
-two React components in `pages/Home.js` and `pages/About.js`
+Create a folder called `src` in your project's root. For demo purposes, create
+two React components in `src/Home.js` and `src/About.js`
 
 ```js
 // pages/Home.js
@@ -93,7 +93,7 @@ class About extends React.Component {
 export default About;
 ```
 
-Now create a file `pages/_routes.js` and export an array of React Router 4
+Now create a file `src/_routes.js` and export an array of React Router 4
 compatible `<Route component>` _objects_ that export the 2 pages we just made.
 
 ```js
@@ -274,6 +274,10 @@ export default [
 ];
 ```
 
+## Customization
+
+After.js is a slightly modified version of my other project [Razzle](https://github.com/jaredpalmer/razzle). To customize your After.js project, with custom Babel transforms, webpack plugins, environment variables, please refer to the Razzle documentation. From a config perspective, the 2 projects are identical (even down to the `razzle.config.js`).
+
 ## Example
 
 ```
@@ -289,4 +293,4 @@ cd examples/basic
 yarn start
 ```
 
-Open localhost:3000 and look at the `pages` directiory
+Open localhost:3000 and look at the `src` directiory
