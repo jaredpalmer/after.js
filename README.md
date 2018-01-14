@@ -40,7 +40,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 npm i @jaredpalmer/after react-router-dom react react-dom --save
 ```
 
-In your `package.json`, add the following script:
+In your `package.json`, add the following:
 
 ```json
 {
