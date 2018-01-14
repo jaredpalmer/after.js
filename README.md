@@ -4,16 +4,35 @@ If next.js and react-router had a baby, it'd be this.
 
 > This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming. Still need to add HMR and overridable documents.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+**Table of Contents**
+
+* [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+* [Getting Started](#getting-started)
+* [Data Fetching](#data-fetching)
+  * [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+  * [Injected Page Props](#injected-page-props)
+* [Routing](#routing)
+  * [Parameterized Routing](#parameterized-routing)
+  * [Client Only Data and Routing](#client-only-data-and-routing)
+* [Codesplitting](#codesplitting)
+* [Example](#example)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Project Goals / Philosophy / Requirements
 
-Next.js is awesome. However, its routing system isn't. React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here: 
+Next.js is awesome. However, its routing system isn't. React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
 
-- Routes are just component and don't / should not have literally anything to do with folder structure. Static route configs are fine.
-- Next.js's `getInitialProps` was a good idea. However, blocking route transitions and render isn't for me. Loading states should be available on every client transition after the first render.
-- Plugins and middleware. Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
-- Must work well with TypeScript 
-- Generally, everything should come with the battery pack included, but be overridable.
-
+* Routes are just component and don't / should not have literally anything to do with folder structure. Static route configs are fine.
+* Next.js's `getInitialProps` was a good idea. However, blocking route transitions and render isn't for me. Loading states should be available on every client transition after the first render.
+* Code-splitting should come for free or be trivial.
+* Plugins and middleware. Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
+* Must work well with TypeScript (i.e. without Babel)
+* Generally, everything should come with the battery pack included, but be overridable.
 
 ## Getting Started
 
@@ -101,9 +120,9 @@ Router 4 application.
 
 ## Data Fetching
 
-For page components, you can add a`static async getInitialProps` function.
+For page components, you can add a `static async getInitialProps` function.
 This will be called on both initial server render, and then client mounts.
-Results are made available on `this.props.data`.
+Results are made available on `this.props`.
 
 ```js
 // pages/About.js
@@ -122,7 +141,7 @@ class About extends React.Component {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>About</h1>
-        {this.props.data ? this.props.data.stuff : 'Loading...'}
+        {this.props.stuff ? this.props.stuff : 'Loading...'}
       </div>
     );
   }
@@ -144,8 +163,8 @@ the client and the server:
 
 ### Injected Page Props
 
-* `data: Data` - Whatever you have returned from `getInitialProps`
-* `reload: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
+* Whatever you have returned in `getInitialProps`
+* `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
 
 ## Routing
 
@@ -226,6 +245,35 @@ In some parts of your application, you may not need server data fetching at all
 would in client land: You can fetch data (in componentDidMount) and do routing
 the same exact way.
 
+## Codesplitting
+
+After lets you easily define lazy-loaded or code-split routes in your `_routes.js` file. The only change you need to make is to modify your route's `component` definition like so:
+
+```js
+// src/_routes.js
+import React from 'react';
+import Home from './Home';
+import asyncComponent from '@jaredpalmer/after/asyncComponent';
+
+export default [
+  // normal route
+  {
+    path: '/',
+    exact: true,
+    component: Home
+  },
+  // codesplit route
+  {
+    path: '/about',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import('./About'), // required
+      Placeholder: () => <div>...LOADING...</div> // this is optional, just returns null by default
+    })
+  }
+];
+```
+
 ## Example
 
 ```
@@ -242,5 +290,3 @@ yarn start
 ```
 
 Open localhost:3000 and look at the `pages` directiory
-
-
