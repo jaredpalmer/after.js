@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from '@jaredpalmer/after/dist/lib/App';
-import path from 'path';
+import App from './_app';
+
 import { BrowserRouter } from 'react-router-dom';
 
 import routes from './_routes';

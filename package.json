@@ -1,30 +1,44 @@
 {
   "private": true,
+  "bugs": "https://github.com/jaredpalmer/razzle/issues",
+  "homepage": "https://github.com/jaredpalmer/razzle#readme",
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "husky": "^0.14.3",
+    "jest": "21.2.1",
+    "lerna": "^2.0.0-rc.5",
+    "lerna-changelog": "^0.7.0",
+    "lint-staged": "^4.0.0",
+    "prettier": "^1.4.4",
+    "ps-tree": "1.1.0",
+    "semver": "5.4.1",
+    "shelljs": "^0.7.8"
+  },
   "scripts": {
-    "postinstall": "lerna bootstrap",
-    "clean": "lerna clean",
-    "format":
-      "prettier --trailing-comma es5 --single-quote --write 'examples/*/!(node_modules|.after)/**/*.js'  'packages/*/!(node_modules|dist)/**/*.js'",
+    "e2e": "jest --config ./test/jest.config.json --verbose --no-cache ",
+    "clean": "lerna clean --yes && node ./scripts/clean.js",
+    "bootstrap": "lerna bootstrap && node ./scripts/bootstrap.js",
+    "postinstall": "npm run clean && npm run bootstrap",
+    "changelog": "lerna-changelog",
+    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
     "precommit": "lint-staged"
   },
-  "devDependencies": {
-    "eslint": "^4.12.1",
-    "husky": "^0.14.3",
-    "jest": "^21.2.1",
-    "lerna": "^2.1.2",
-    "lint-staged": "^6.0.0",
-    "prettier": "^1.9.0"
-  },
   "lint-staged": {
-    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
+    "*.js": [
+      "prettier --trailing-comma es5 --single-quote --write",
+      "git add"
+    ]
   },
+  "dependencies": {},
   "jest": {
     "testPathIgnorePatterns": [
       "<rootDir>/coverage/",
       "<rootDir>/node_modules/",
       "<rootDir>/examples/"
     ],
-    "collectCoverageFrom": ["**/*.js"],
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/packages/*/node_modules/",
