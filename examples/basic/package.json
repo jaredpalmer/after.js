@@ -1,6 +1,6 @@
 {
   "name": "@jaredpalmer/after-example",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
     "start": "after start",
@@ -9,10 +9,10 @@
     "start:prod": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
+    "@jaredpalmer/after": "^0.1.1",
     "express": "^4.16.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2",
-    "@jaredpalmer/after": "^0.1.1"
+    "react-router-dom": "^4.2.2"
   }
 }

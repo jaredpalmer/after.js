@@ -1,7 +1,7 @@
 {
   "name": "@jaredpalmer/after",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "git@github.com:jaredpalmer/after.git",
   "author": "Jared Palmer <jared@palmer.net>",
@@ -9,7 +9,14 @@
   "bin": {
     "after": "./bin/after.js"
   },
-  "files": ["bin", "config", "scripts", "template", "babel.js", "polyfills.js"],
+  "files": [
+    "bin",
+    "config",
+    "scripts",
+    "template",
+    "babel.js",
+    "polyfills.js"
+  ],
   "keywords": [
     "razzle",
     "react",

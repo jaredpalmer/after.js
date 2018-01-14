@@ -6,7 +6,7 @@
   ],
   "npmClient": "yarn",
   "changelog": {
-    "repo": "jaredpalmer/razzle",
+    "repo": "jaredpalmer/after.js",
     "labels": {
       "tag: new feature": ":rocket: New Feature",
       "tag: breaking change": ":boom: Breaking Change",
@@ -17,5 +17,5 @@
     },
     "cacheDir": ".changelog"
   },
-  "version": "0.8.7"
+  "version": "0.2.0"
 }
