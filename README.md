@@ -5,21 +5,21 @@ If Next.js and React Router 4 had a baby...
 > This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-**Table of Contents**
-
-* [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
-* [Getting Started](#getting-started)
-* [Data Fetching](#data-fetching)
-  * [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-  * [Injected Page Props](#injected-page-props)
-* [Routing](#routing)
-  * [Parameterized Routing](#parameterized-routing)
-  * [Client Only Data and Routing](#client-only-data-and-routing)
-* [Codesplitting](#codesplitting)
-* [Example](#example)
+- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+- [Getting Started](#getting-started)
+- [Data Fetching](#data-fetching)
+  - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+  - [Injected Page Props](#injected-page-props)
+- [Routing](#routing)
+  - [Parameterized Routing](#parameterized-routing)
+  - [Client Only Data and Routing](#client-only-data-and-routing)
+- [Code Splitting](#code-splitting)
+- [Customization](#customization)
+- [Author](#author)
+- [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -247,7 +247,7 @@ In some parts of your application, you may not need server data fetching at all
 would in client land: You can fetch data (in componentDidMount) and do routing
 the same exact way.
 
-## Codesplitting
+## Code Splitting
 
 After,js lets you easily define lazy-loaded or code-split routes in your `_routes.js` file. To do this, you'll need to modify the relevant route's `component` definition like so:
 
@@ -280,31 +280,14 @@ export default [
 
 After.js is actually just a slightly modified version of my other project [Razzle](https://github.com/jaredpalmer/razzle). To customize your After.js project (e.g. custom Babel transforms, webpack plugins, environment variables, etc.) please refer to the Razzle documentation. From a config perspective, the 2 projects are identical (even down to the `razzle.config.js` file).
 
-## Example
-
-```
-git clone git@github.com:jaredpalmer/after.js.git
-cd after.js
-yarn install
-```
-
-open the basic example
-
-```
-cd examples/basic
-yarn start
-```
-
-Open localhost:3000 and look at the `src` directiory
-
 ## Author
 
-- Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
+* Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
 
 ## Inspiration
 
-- [Razzle](https://github.com/jaredpalmer/razzle)
-- [Next.js](https://github.com/zeit/next.js)
+* [Razzle](https://github.com/jaredpalmer/razzle)
+* [Next.js](https://github.com/zeit/next.js)
 
 --
 MIT License
