@@ -12,17 +12,15 @@ class App extends React.Component {
     this.prefetcherCache = {};
   }
 
-  // // only runs clizzient
+  // only runs clizzient
   componentWillReceiveProps(nextProps, nextState) {
     const navigated = nextProps.location !== this.props.location;
-
-    // const { routes } = this.props;
     if (navigated) {
       window.scrollTo(0, 0);
       // save the location so we can render the old screen
       this.setState({
         previousLocation: this.props.location,
-        // data: undefined,
+        data: undefined, // unless you want to keep it
       });
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
         match: nextProps.match,
@@ -32,7 +30,10 @@ class App extends React.Component {
         .then(data => {
           this.setState({ previousLocation: null, data: data[0] });
         })
-        .catch(e => console.log(e));
+        .catch(e => {
+          // @todo we should more cleverly handle errors???
+          console.log(e);
+        });
     }
   }
 
@@ -56,6 +57,7 @@ class App extends React.Component {
     const initialData = this.prefetcherCache[location.pathname]
       ? this.prefetcherCache[location.pathname]
       : data;
+
     return (
       <Switch>
         {this.props.routes.map((r, i) => (

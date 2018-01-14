@@ -16,6 +16,7 @@ require('../config/env');
 const webpack = require('webpack');
 const fs = require('fs-extra');
 const chalk = require('chalk');
+const path = require('path');
 const paths = require('../config/paths');
 const createConfig = require('../config/createConfig');
 const printErrors = require('razzle-dev-utils/printErrors');
@@ -69,7 +70,7 @@ measureFileSizesBeforeBuild(paths.appBuildPublic)
     }
   );
 
-function build(previousFileSizes) {
+async function build(previousFileSizes) {
   // Check if razzle.config.js exists
   let razzle = {};
   try {
@@ -107,6 +108,12 @@ ${razzle.port !== '3000' && `PORT=${razzle.port}`}
   }
 
   process.noDeprecation = true; // turns off that loadQuery clutter.
+
+  await fs.copy(path.join(__dirname, '../lib'), paths.appTemp + '/src', {
+    overwrite: true,
+  });
+  await fs.copy('src', paths.appTemp + '/src', { overwrite: true });
+  await fs.copy('public', paths.appTemp + '/public', { overwrite: true });
 
   console.log('Creating an optimized production build...');
   console.log('Compiling client...');
