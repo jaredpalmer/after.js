@@ -1,6 +1,6 @@
 # After.js
 
-If Next.js and React Router had a baby...it'd be this.
+If Next.js and React Router 4 had a baby...
 
 > This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
 
@@ -55,7 +55,7 @@ Create a folder called `src` in your project's root. For demo purposes, create
 two React components in `src/Home.js` and `src/About.js`
 
 ```js
-// pages/Home.js
+// src/Home.js
 import React from 'react';
 import NavLink from 'react-router-dom/NavLink';
 
@@ -75,7 +75,7 @@ export default Home;
 ```
 
 ```js
-// pages/About.js
+// src/About.js
 import React from 'react';
 import NavLink from 'react-router-dom/NavLink';
 
@@ -98,6 +98,7 @@ Now create a file `src/_routes.js` and export an array of React Router 4
 compatible `<Route component>` _objects_ that export the 2 pages we just made.
 
 ```js
+// src/_routes.js
 import Home from './Home';
 import About from './About';
 
@@ -126,7 +127,7 @@ This will be called on both initial server render, and then client mounts.
 Results are made available on `this.props`.
 
 ```js
-// pages/About.js
+// src/About.js
 import React from 'react';
 import NavLink from 'react-router-dom/NavLink';
 
@@ -175,7 +176,7 @@ routing. You can use any and all parts of RR4.
 ### Parameterized Routing
 
 ```js
-// pages/_route.js
+// src/_route.js
 import Home from './Home';
 import About from './About';
 import Detail from './Detail';
@@ -202,7 +203,7 @@ export default routes;
 ```
 
 ```js
-// pages/Detail.js
+// src/Detail.js
 import React from 'react';
 import NavLink from 'react-router-dom/NavLink';
 
@@ -248,7 +249,7 @@ the same exact way.
 
 ## Codesplitting
 
-After lets you easily define lazy-loaded or code-split routes in your `_routes.js` file. The only change you need to make is to modify your route's `component` definition like so:
+After,js lets you easily define lazy-loaded or code-split routes in your `_routes.js` file. To do this, you'll need to modify the relevant route's `component` definition like so:
 
 ```js
 // src/_routes.js
@@ -277,7 +278,7 @@ export default [
 
 ## Customization
 
-After.js is a slightly modified version of my other project [Razzle](https://github.com/jaredpalmer/razzle). To customize your After.js project, with custom Babel transforms, webpack plugins, environment variables, please refer to the Razzle documentation. From a config perspective, the 2 projects are identical (even down to the `razzle.config.js`).
+After.js is actually just a slightly modified version of my other project [Razzle](https://github.com/jaredpalmer/razzle). To customize your After.js project (e.g. custom Babel transforms, webpack plugins, environment variables, etc.) please refer to the Razzle documentation. From a config perspective, the 2 projects are identical (even down to the `razzle.config.js` file).
 
 ## Example
 
@@ -295,3 +296,15 @@ yarn start
 ```
 
 Open localhost:3000 and look at the `src` directiory
+
+## Author
+
+- Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
+
+## Inspiration
+
+- [Razzle](https://github.com/jaredpalmer/razzle)
+- [Next.js](https://github.com/zeit/next.js)
+
+--
+MIT License
