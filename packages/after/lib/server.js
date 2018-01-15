@@ -1,14 +1,17 @@
 import App from './_app';
 import routes from './_routes';
+import Doc from './_document';
 import loadInitialProps from './loadInitialProps';
 import React from 'react';
 import url from 'url';
+import Helmet from 'react-helmet';
 import ReactDOMServer from 'react-dom/server';
 import express from 'express';
 import { StaticRouter } from 'react-router-dom';
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
-
 const server = express();
+
+const modPageFn = Page => props => <Page {...props} />;
 
 server
   .disable('x-powered-by')
@@ -21,36 +24,28 @@ server
         res,
       });
 
-      const markup = ReactDOMServer.renderToString(
-        <StaticRouter location={req.url} context={context}>
-          <App routes={routes} data={data[0]} />
-        </StaticRouter>
-      );
+      const renderPage = (fn = modPageFn) => {
+        const html = ReactDOMServer.renderToString(
+          <StaticRouter location={req.url} context={context}>
+            {fn(App)({ routes, data: data[0] })}
+          </StaticRouter>
+        );
+        const helmet = Helmet.renderStatic();
+        return { html, helmet };
+      };
 
+      const { html, ...docProps } = await Doc.getInitialProps({
+        req,
+        res,
+        assets,
+        renderPage,
+        data: data[0],
+      });
+
+      const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
       res.send(
-        `<!doctype html>
-      <html lang="">
-      <head>
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-          <meta charSet='utf-8' />
-          <title>Welcome to Razzle</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          ${
-            assets.client.css
-              ? `<link rel="stylesheet" href="${assets.client.css}">`
-              : ''
-          }
-           ${
-             process.env.NODE_ENV === 'production'
-               ? `<script src="${assets.client.js}" defer></script>`
-               : `<script src="${assets.client.js}" defer crossorigin></script>`
-           }
-      </head>
-      <body>
-          <div id="root">${markup}</div>
-          <script>window.__AFTER__ = ${JSON.stringify(data[0])};</script>
-      </body>
-  </html>`
+        `<!doctype html>` +
+          doc.replace('DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP', html)
       );
     } catch (error) {
       res.json(error);

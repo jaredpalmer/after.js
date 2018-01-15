@@ -87,6 +87,11 @@ module.exports = (
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
+        // @todo Should we alias this stuff???
+        'react-router-dom': require.resolve('react-router-dom'),
+        'react-helmet': require.resolve('react-helmet'),
+        react: require.resolve('react'),
+        'react-dom': require.resolve('react-dom'),
       },
     },
     resolveLoader: {
