@@ -1,7 +1,7 @@
 {
   "name": "@jaredpalmer/after",
   "private": false,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "git@github.com:jaredpalmer/after.git",
   "author": "Jared Palmer <jared@palmer.net>",
