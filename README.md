@@ -308,10 +308,10 @@ While After.js comes with the battery pack included, you can customize and confi
 
 ### Custom `<Document>`
 
-After.js works similarly to Next.js with respect to overriding HTML document structure. This comes in handy if you are using a CSS-in-JS library or just want to collect data out of react context before or after render. To do this, create a file in `././src/_document.js` like so:
+After.js works similarly to Next.js with respect to overriding HTML document structure. This comes in handy if you are using a CSS-in-JS library or just want to collect data out of react context before or after render. To do this, create a file in `./src/_document.js` like so:
 
 ```js
-// ././src/_document.js
+// ./src/_document.js
 import React from 'react';
 
 class Document extends React.Component {
@@ -366,7 +366,7 @@ export default Document;
 If you were using something like `styled-components`, and you need to wrap you entire app with some sort of additional provider or function, you can do this with `renderPage()`.
 
 ```js
-// ././src/_document.js
+// ./src/_document.js
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components'
 
