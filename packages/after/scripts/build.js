@@ -112,8 +112,17 @@ ${razzle.port !== '3000' && `PORT=${razzle.port}`}
   await fs.copy(path.join(__dirname, '../lib'), paths.appTemp + '/src', {
     overwrite: true,
   });
-  await fs.copy('src', paths.appTemp + '/src', { overwrite: true });
-  await fs.copy('public', paths.appTemp + '/public', { overwrite: true });
+
+  try {
+    await fs.copy('src', paths.appTemp + '/src', { overwrite: true });
+  } catch (error) {
+    console.log('Please create a src directory in the root of your project');
+    process.exit(1);
+  }
+
+  try {
+    await fs.copy('public', paths.appTemp + '/public', { overwrite: true });
+  } catch (e) {}
 
   console.log('Creating an optimized production build...');
   console.log('Compiling client...');
