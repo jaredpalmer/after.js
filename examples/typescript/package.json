@@ -1,12 +1,14 @@
 {
-  "name": "@jaredpalmer/after-example",
+  "name": "@jaredpalmer/after-typescript-example",
   "version": "0.5.0",
   "license": "MIT",
   "scripts": {
     "start": "after start",
     "build": "after build",
+    "pretest": "yarn run tsc",
     "test": "after test --env=jsdom",
-    "start:prod": "NODE_ENV=production node build/build/server.js"
+    "start:prod": "NODE_ENV=production node build/build/server.js",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@jaredpalmer/after": "^0.5.0",

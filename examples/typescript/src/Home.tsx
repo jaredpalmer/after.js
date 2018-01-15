@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
+import { AfterProps } from '@jaredpalmer/after';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-class Home extends React.Component<{prefetch: (path: string) => void; stuff?: string; }> {
+class Home extends React.Component<AfterProps<{ stuff?: string; }>> {
   static getInitialProps() {
     return sleep(300).then(() => ({ stuff: 'hello' }));
   }
