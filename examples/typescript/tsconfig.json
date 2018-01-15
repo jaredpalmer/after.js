@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "jsx": "react",
+        "lib": [
+            "es2016",
+            "dom"
+        ],
+        "types": [
+            "node",
+            "jest"
+        ]
+    }
+}
