@@ -1,10 +1,8 @@
-
+![repo-banner](https://user-images.githubusercontent.com/4060187/34948491-454de294-f9db-11e7-8fc5-86985ba05be8.png)
 
 # After.js
 
-If Next.js and React Router 4 had a baby...
-
-> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
+If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.com/reacttraining/react-router) had a baby...
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
