@@ -66,10 +66,10 @@ In your `package.json`, add the following:
 ```
 
 Create a folder called `src` in your project's root. For demo purposes, create
-two React components in `src/Home.js` and `src/About.js`
+two React components in `./src/Home.js` and `./src/About.js`
 
 ```js
-// src/Home.js
+// ./src/Home.js
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -89,7 +89,7 @@ export default Home;
 ```
 
 ```js
-// src/About.js
+// ./src/About.js
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -108,11 +108,11 @@ class About extends React.Component {
 export default About;
 ```
 
-Now create a file `src/_routes.js` and export an array of React Router 4
+Now create a file `./src/_routes.js` and export an array of React Router 4
 compatible `<Route component>` _objects_ that export the 2 pages we just made.
 
 ```js
-// src/_routes.js
+// ./src/_routes.js
 import Home from './Home';
 import About from './About';
 
@@ -152,9 +152,9 @@ This will be called on both initial server render, and then client mounts.
 Results are made available on `this.props`.
 
 ```js
-// src/About.js
+// ./src/About.js
 import React from 'react';
-import NavLink from 'react-router-dom/NavLink';
+import { NavLink } from 'react-router-dom';
 
 class About extends React.Component {
   static async getInitialProps({ req, res, match }) {
@@ -186,11 +186,12 @@ the client and the server:
 * `res?: Request`: (server-only) An Express.js response object
 * `match`: React Router 4's `match` object.
 * `history`: React Router 4's `history` object.
-* `location`: (client-only) React Router 4's `match` object.
+* `location`: (client-only) React Router 4's `location` object.
 
 ### Injected Page Props
 
 * Whatever you have returned in `getInitialProps`
+* `prefetch: (pathname: string) => void` - Impertively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
 * `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
 
 ## Routing
@@ -201,7 +202,7 @@ routing. You can use any and all parts of RR4.
 ### Parameterized Routing
 
 ```js
-// src/_route.js
+// ./src/_route.js
 import Home from './Home';
 import About from './About';
 import Detail from './Detail';
@@ -228,7 +229,7 @@ export default routes;
 ```
 
 ```js
-// src/Detail.js
+// ./src/Detail.js
 import React from 'react';
 import NavLink from 'react-router-dom/NavLink';
 
@@ -277,7 +278,7 @@ the same exact way.
 After,js lets you easily define lazy-loaded or code-split routes in your `_routes.js` file. To do this, you'll need to modify the relevant route's `component` definition like so:
 
 ```js
-// src/_routes.js
+// ./src/_routes.js
 import React from 'react';
 import Home from './Home';
 import asyncComponent from '@jaredpalmer/after/asyncComponent';
@@ -307,10 +308,10 @@ While After.js comes with the battery pack included, you can customize and confi
 
 ### Custom `<Document>`
 
-After.js works similarly to Next.js with respect to overriding HTML document structure. This comes in handy if you are using a CSS-in-JS library or just want to collect data out of react context before or after render. To do this, create a file in `./src/_document.js` like so:
+After.js works similarly to Next.js with respect to overriding HTML document structure. This comes in handy if you are using a CSS-in-JS library or just want to collect data out of react context before or after render. To do this, create a file in `././src/_document.js` like so:
 
 ```js
-// ./src/_document.js
+// ././src/_document.js
 import React from 'react';
 
 class Document extends React.Component {
@@ -365,7 +366,7 @@ export default Document;
 If you were using something like `styled-components`, and you need to wrap you entire app with some sort of additional provider or function, you can do this with `renderPage()`.
 
 ```js
-// ./src/_document.js
+// ././src/_document.js
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components'
 
@@ -476,7 +477,7 @@ after comes with [Create React App's ESLint configuration](https://github.com/fa
 * `process.env.HOST`: default is `0.0.0.0`
 * `process.env.NODE_ENV`: `'development'` or `'production'`
 * `process.env.BUILD_TARGET`: either `'client'` or `'server'`
-* `process.env.PUBLIC_PATH`: Only in used in `after build`. You can alter the `webpack.config.output.publicPath` of the client assets (bundle, css, and images). This is useful if you plan to serve your assets from a CDN. Make sure to _include_ a trailing slash (e.g. `PUBLIC_PATH=https://cdn.example.com/`). If you are using React and altering the public path, make sure to also [include the `crossorigin` attribute](https://reactjs.org/docs/installation.html#using-a-cdn) on your `<script>` tag in `src/server.js`.
+* `process.env.PUBLIC_PATH`: Only in used in `after build`. You can alter the `webpack.config.output.publicPath` of the client assets (bundle, css, and images). This is useful if you plan to serve your assets from a CDN. Make sure to _include_ a trailing slash (e.g. `PUBLIC_PATH=https://cdn.example.com/`). If you are using React and altering the public path, make sure to also [include the `crossorigin` attribute](https://reactjs.org/docs/installation.html#using-a-cdn) on your `<script>` tag in `./src/server.js`.
 
 You can create your own custom build-time environment variables. They must start
 with `AFTER_`. Any other variables except the ones listed above will be ignored to avoid accidentally exposing a private key on the machine that could have the same name. Changing any environment variables will require you to restart the development server if it is running.
