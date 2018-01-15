@@ -1,6 +1,8 @@
+![repo-banner](https://user-images.githubusercontent.com/4060187/34948491-454de294-f9db-11e7-8fc5-86985ba05be8.png)
+
 # After.js
 
-If Next.js and React Router 4 had a baby...
+If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.com/reacttraining/react-router) had a baby...
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -222,16 +224,16 @@ class Detail extends React.Component {
     return (
       <div>
         <h1>Detail</h1>
-        {this.props.data ? this.props.data.item : 'Loading...'}
+        {this.props.item ? this.props.item : 'Loading...'}
         <Route
           path="/detail/:id/more"
           exact
-          render={() => <div>{this.props.data.item.stuff}</div>}
+          render={() => <div>{this.props.item.more}</div>}
         />
         <Route
           path="/detail/:id/other"
           exact
-          render={() => <div>{this.props.data.item.stuff}</div>}
+          render={() => <div>{this.props.item.other}</div>}
         />
       </div>
     );
