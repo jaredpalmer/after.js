@@ -391,5 +391,6 @@ export default class Document extends React.Component {
 * [Razzle](https://github.com/jaredpalmer/razzle)
 * [Next.js](https://github.com/zeit/next.js)
 
---  
-MIT License
+---
+
+> MIT License
