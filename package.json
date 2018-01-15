@@ -1,7 +1,7 @@
 {
   "private": true,
-  "bugs": "https://github.com/jaredpalmer/razzle/issues",
-  "homepage": "https://github.com/jaredpalmer/razzle#readme",
+  "bugs": "https://github.com/jaredpalmer/after.js/issues",
+  "homepage": "https://github.com/jaredpalmer/after.js#readme",
   "devDependencies": {
     "eslint": "^4.6.1",
     "husky": "^0.14.3",
@@ -20,14 +20,12 @@
     "bootstrap": "lerna bootstrap && node ./scripts/bootstrap.js",
     "postinstall": "npm run clean && npm run bootstrap",
     "changelog": "lerna-changelog",
-    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
+    "format":
+      "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma es5 --single-quote --write",
-      "git add"
-    ]
+    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
   },
   "dependencies": {},
   "jest": {
@@ -36,9 +34,7 @@
       "<rootDir>/node_modules/",
       "<rootDir>/examples/"
     ],
-    "collectCoverageFrom": [
-      "**/*.js"
-    ],
+    "collectCoverageFrom": ["**/*.js"],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/packages/*/node_modules/",
