@@ -412,7 +412,7 @@ after comes with most of ES6 stuff you need. However, if you want to add your ow
 ```js
 {
   "presets": [
-    "after/babel", // NEEDED
+    "@jaredpalmer/after/babel", // NEEDED
     "stage-0"
    ],
    "plugins": [
