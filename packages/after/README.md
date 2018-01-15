@@ -541,4 +541,4 @@ Please refer to the [dotenv documentation](https://github.com/motdotla/dotenv) f
 
 ---
 
-> MIT License
+MIT License
