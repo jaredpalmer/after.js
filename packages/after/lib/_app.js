@@ -23,7 +23,6 @@ class App extends React.Component {
         data: undefined, // unless you want to keep it
       });
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
-        match: nextProps.match,
         location: nextProps.location,
         history: nextProps.history,
       })
