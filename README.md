@@ -223,16 +223,16 @@ class Detail extends React.Component {
     return (
       <div>
         <h1>Detail</h1>
-        {this.props.data ? this.props.data.item : 'Loading...'}
+        {this.props.item ? this.props.item : 'Loading...'}
         <Route
           path="/detail/:id/more"
           exact
-          render={() => <div>{this.props.data.item.stuff}</div>}
+          render={() => <div>{this.props.item.more}</div>}
         />
         <Route
           path="/detail/:id/other"
           exact
-          render={() => <div>{this.props.data.item.stuff}</div>}
+          render={() => <div>{this.props.item.other}</div>}
         />
       </div>
     );
