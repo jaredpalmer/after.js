@@ -22,7 +22,6 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 **Table of Contents**
 
-* [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
 * [Getting Started](#getting-started)
 * [Data Fetching](#data-fetching)
   * [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
