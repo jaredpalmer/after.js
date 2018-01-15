@@ -275,7 +275,7 @@ the same exact way.
 
 ## Code Splitting
 
-After,js lets you easily define lazy-loaded or code-split routes in your `_routes.js` file. To do this, you'll need to modify the relevant route's `component` definition like so:
+After.js lets you easily define lazy-loaded or code-split routes in your `_routes.js` file. To do this, you'll need to modify the relevant route's `component` definition like so:
 
 ```js
 // ./src/_routes.js
