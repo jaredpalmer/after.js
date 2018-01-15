@@ -4,6 +4,18 @@
 
 If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.com/reacttraining/react-router) had a baby...
 
+## Project Goals / Philosophy / Requirements
+
+Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
+
+* Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
+* Next.js's `getInitialProps` was/is a brilliant idea.
+* Route-based code-splitting should come for free or be easy to opt into.
+* Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
+* Must work well with TypeScript (i.e. without Babel)
+* Generally, everything should come with the battery pack included, but be overridable.
+
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -34,17 +46,6 @@ If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.
 * [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Project Goals / Philosophy / Requirements
-
-Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
-
-* Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
-* Next.js's `getInitialProps` was/is a brilliant idea.
-* Route-based code-splitting should come for free or be easy to opt into.
-* Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
-* Must work well with TypeScript (i.e. without Babel)
-* Generally, everything should come with the battery pack included, but be overridable.
 
 ## Getting Started
 
