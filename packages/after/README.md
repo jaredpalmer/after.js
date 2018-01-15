@@ -1,3 +1,11 @@
+
+
+# After.js
+
+If Next.js and React Router 4 had a baby...
+
+> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -18,12 +26,6 @@
 * [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# After.js
-
-If Next.js and React Router 4 had a baby...
-
-> This is a work in progress. Checkout [issues](https://github.com/jaredpalmer/after.js/issues) to see what's coming.
 
 ## Project Goals / Philosophy / Requirements
 
