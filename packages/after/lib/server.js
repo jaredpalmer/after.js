@@ -8,14 +8,14 @@ import Helmet from 'react-helmet';
 import ReactDOMServer from 'react-dom/server';
 import express from 'express';
 import { StaticRouter } from 'react-router-dom';
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const assets = require(process.env.AFTER_ASSETS_MANIFEST);
 const server = express();
 
 const modPageFn = Page => props => <Page {...props} />;
 
 server
   .disable('x-powered-by')
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(express.static(process.env.AFTER_PUBLIC_DIR))
   .get('/*', async (req, res) => {
     try {
       const context = {};

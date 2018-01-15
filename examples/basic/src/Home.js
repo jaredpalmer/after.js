@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from 'react-router-dom/NavLink';
+import { NavLink } from 'react-router-dom';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 

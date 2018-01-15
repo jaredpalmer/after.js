@@ -71,36 +71,36 @@ measureFileSizesBeforeBuild(paths.appBuildPublic)
   );
 
 async function build(previousFileSizes) {
-  // Check if razzle.config.js exists
-  let razzle = {};
+  // Check if after.config.js exists
+  let after = {};
   try {
-    razzle = require(paths.appRazzleConfig);
+    after = require(paths.appAfterConfig);
     /* eslint-disable no-empty */
   } catch (e) {}
   /* eslint-enable */
 
-  if (razzle.clearConsole === false || !!razzle.host || !!razzle.port) {
-    logger.warn(`Specifying options \`port\`, \`host\`, and \`clearConsole\` in razzle.config.js has been deprecated. 
+  if (after.clearConsole === false || !!after.host || !!after.port) {
+    logger.warn(`Specifying options \`port\`, \`host\`, and \`clearConsole\` in after.config.js has been deprecated. 
 Please use a .env file instead.
 
-${razzle.host !== 'localhost' && `HOST=${razzle.host}`}
-${razzle.port !== '3000' && `PORT=${razzle.port}`}
+${after.host !== 'localhost' && `HOST=${after.host}`}
+${after.port !== '3000' && `PORT=${after.port}`}
 `);
   }
 
-  // Create our production webpack configurations and pass in razzle options.
-  let clientConfig = createConfig('web', 'prod', razzle);
-  let serverConfig = createConfig('node', 'prod', razzle);
+  // Create our production webpack configurations and pass in after options.
+  let clientConfig = createConfig('web', 'prod', after);
+  let serverConfig = createConfig('node', 'prod', after);
 
-  // Check if razzle.config has a modify function. If it does, call it on the
+  // Check if after.config has a modify function. If it does, call it on the
   // configs we just created.
-  if (razzle.modify) {
-    clientConfig = razzle.modify(
+  if (after.modify) {
+    clientConfig = after.modify(
       clientConfig,
       { target: 'web', dev: false },
       webpack
     );
-    serverConfig = razzle.modify(
+    serverConfig = after.modify(
       serverConfig,
       { target: 'node', dev: false },
       webpack
