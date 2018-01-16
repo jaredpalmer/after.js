@@ -9,8 +9,12 @@
     "start:prod": "NODE_ENV=production node build/build/server.js"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@jaredpalmer/after": "latest",
     "express": "^4.16.2",
+=======
+    "@jaredpalmer/after": "^0.5.0",
+>>>>>>> Delete express dependency from basic example
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
