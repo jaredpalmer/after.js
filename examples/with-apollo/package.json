@@ -1,0 +1,26 @@
+{
+  "name": "with-apollo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "RxAssim",
+  "license": "MIT",
+  "scripts": {
+    "start": "after start",
+    "build": "after build",
+    "test": "after test --env=jsdom",
+    "start:prod": "NODE_ENV=production node build/build/server.js"
+  },
+  "dependencies": {
+    "@jaredpalmer/after": "^0.5.0",
+    "apollo-client-preset": "^1.0.6",
+    "graphql": "^0.12.3",
+    "graphql-tag": "^2.6.1",
+    "isomorphic-unfetch": "^2.0.0",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-apollo": "^2.0.4",
+    "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0",
+    "react-router-dom": "^4.2.2"
+  }
+}
