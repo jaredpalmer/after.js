@@ -78,6 +78,7 @@ class Home extends React.Component {
     return (
       <div>
         <NavLink to="/">Home</NavLink>
+        {" "}
         <NavLink to="/about">About</NavLink>
         <h1>Home</h1>
       </div>
