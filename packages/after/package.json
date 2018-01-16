@@ -75,5 +75,8 @@
     "webpack-dev-server": "2.6.1",
     "webpack-node-externals": "1.6.0",
     "whatwg-fetch": "^2.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
