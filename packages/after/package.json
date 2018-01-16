@@ -3,7 +3,7 @@
   "private": false,
   "version": "0.5.0",
   "description": "Build isomorphic Javascript applications with ease.",
-  "repository": "git@github.com:jaredpalmer/after.js.git",
+  "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
   "license": "MIT",
   "bin": {
