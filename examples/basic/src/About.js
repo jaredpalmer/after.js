@@ -10,7 +10,7 @@ class About extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="page">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>About</h1>

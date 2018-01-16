@@ -1,6 +1,6 @@
-import './Home.css'
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import logo from './logo.svg';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -11,7 +11,8 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="page">
+        <img className="logo" src={logo} alt="After.js Logo" />
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>Home</h1>
