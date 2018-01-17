@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "jsx": "react",
+        "outDir": "build/ts",
+        "lib": [
+            "es2016",
+            "dom"
+        ],
+        "types": [
+            "node",
+            "jest"
+        ]
+    },
+    "exclude": [
+        "build/"
+    ]
+}
