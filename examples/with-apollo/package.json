@@ -1,6 +1,6 @@
 {
   "name": "after-examples-with-apollo",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "license": "MIT",
   "scripts": {
     "start": "after start",
