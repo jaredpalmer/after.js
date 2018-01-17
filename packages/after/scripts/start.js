@@ -63,21 +63,6 @@ if (after.modify) {
 }
 
 async function start() {
-  await fs.copy(path.join(__dirname, '../lib'), paths.appTemp + '/src', {
-    overwrite: true,
-  });
-
-  try {
-    await fs.copy('src', paths.appTemp + '/src', { overwrite: true });
-  } catch (error) {
-    console.log('Please create a src directory in the root of your project');
-    process.exit(1);
-  }
-
-  try {
-    await fs.copy('public', paths.appTemp + '/public', { overwrite: true });
-  } catch (e) {}
-
   const tempSrc = paths.appTemp + '/src';
 
   const serverCompiler = compile(serverConfig);
@@ -132,6 +117,31 @@ function compile(config) {
   return compiler;
 }
 
+// copyFiles
+async function copyFiles() {
+  await fs.copy(path.join(__dirname, '../lib'), paths.appTemp + '/src', {
+    overwrite: true,
+    preserveTimestamps: true,
+  });
+
+  try {
+    await fs.copy('src', paths.appTemp + '/src', {
+      overwrite: true,
+      preserveTimestamps: true,
+    });
+  } catch (error) {
+    console.log('Please create a src directory in the root of your project');
+    process.exit(1);
+  }
+
+  try {
+    await fs.copy('public', paths.appTemp + '/public', {
+      overwrite: true,
+      preserveTimestamps: true,
+    });
+  } catch (e) {}
+}
+
 // Checks if PORT and PORT_DEV are available and suggests alternatives if not
 async function setPorts() {
   const port = await choosePort(process.env.HOST, process.env.PORT || 3000);
@@ -144,5 +154,6 @@ async function setPorts() {
 }
 
 setPorts()
+  .then(copyFiles)
   .then(start)
   .catch(console.error);
