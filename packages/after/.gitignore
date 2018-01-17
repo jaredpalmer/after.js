@@ -34,3 +34,4 @@ node_modules
 # Build Output
 build
 .vscode
+package-lock.json

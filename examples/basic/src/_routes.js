@@ -1,3 +1,4 @@
+import './index.css';
 import React from 'react';
 import asyncComponent from '@jaredpalmer/after/asyncComponent';
 import Home from './Home';
