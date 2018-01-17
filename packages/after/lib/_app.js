@@ -41,7 +41,9 @@ class App extends React.Component {
       history: this.props.history,
     })
       .then(data => {
-        this.prefetcherCache = { ...this.prefetcherCache, [pathname]: data[0] };
+        this.prefetcherCache = Object.assign({}, this.prefetcherCache, {
+          [pathname]: data[0],
+        });
       })
       .catch(e => console.log(e));
   };
@@ -57,26 +59,24 @@ class App extends React.Component {
       ? this.prefetcherCache[location.pathname]
       : data;
 
-    return (
-      <Switch>
-        {this.props.routes.map((r, i) => (
-          <Route
-            key={`route--${i}`}
-            path={r.path}
-            exact={r.exact}
-            location={previousLocation || location}
-            render={props => {
-              return React.createElement(r.component, {
-                ...initialData,
-                history,
-                location: previousLocation || location,
-                match,
-                prefetch: this.prefetch,
-              });
-            }}
-          />
-        ))}
-      </Switch>
+    return React.createElement(
+      Switch,
+      this.props.routes.map((r, i) =>
+        React.createElement(Route, {
+          key: `route--${i}`,
+          path: r.path,
+          exact: r.exact,
+          location: previousLocation || location,
+          render: props =>
+            React.createElement(r.component, {
+              ...initialData,
+              history,
+              location: previousLocation || location,
+              match,
+              prefetch: this.prefetch,
+            }),
+        })
+      )
     );
   }
 }
