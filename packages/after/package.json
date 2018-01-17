@@ -82,5 +82,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/react": "16.0.34",
+    "@types/react-dom": "16.0.3",
+    "typescript": "2.6.2"
   }
 }
