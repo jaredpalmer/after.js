@@ -48,10 +48,6 @@ class App extends React.Component {
       .catch(e => console.log(e));
   };
 
-  updateData = data => {
-    this.setState({ data });
-  };
-
   render() {
     const { previousLocation, data } = this.state;
     const { location, history, match } = this.props;
