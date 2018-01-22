@@ -2,12 +2,17 @@
 const fs = require('fs');
 const path = require('path');
 const spawn = require('child_process').spawnSync;
+const os = require('os');
 
 const type = process.env.type || 'upgrade'; // yarn update types
 const logTask = msg => console.log(`👍  ${msg}`);
 
 const installPackage = at => {
-  const result = spawn('yarn', [type], { stdio: 'inherit', cwd: at });
+  const result = spawn(
+    os.platform() === 'win32' ? 'yarn.cmd' : 'yarn',
+    [type],
+    { stdio: 'inherit', cwd: at }
+  );
   if (result.error) {
     console.log(result.error);
     process.exit(1);
