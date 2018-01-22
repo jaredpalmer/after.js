@@ -23,7 +23,7 @@ If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.
   * [Custom `<Document>`](#custom-document)
   * [Customizing Babel Config](#customizing-babel-config)
   * [Extending Webpack](#extending-webpack)
-  * [Extending ESLint](#extending-eslint)
+  * [Adding Eslint](#adding-eslint)
   * [Environment Variables](#environment-variables)
   * [Adding Temporary Environment Variables In Your Shell](#adding-temporary-environment-variables-in-your-shell)
     * [Windows (cmd.exe)](#windows-cmdexe)
@@ -452,18 +452,10 @@ module.exports = {
 
 Last but not least, if you find yourself needing a more customized setup, after is _very_ forkable. There is one webpack configuration factory that is 300 lines of code, and 4 scripts (`build`, `start`, `test`, and `init`). The paths setup is shamelessly taken from [create-react-app](https://github.com/facebookincubator/create-react-app), and the rest of the code related to logging.
 
-### Extending ESLint
+### Adding Eslint
 
-after comes with [Create React App's ESLint configuration](https://github.com/facebookincubator/create-react-app/tree/master/packages/eslint-config-react-app). Add a `.eslintrc` file to the root of your project to use your own configuration.
+Add a `.eslintrc` file to the root of your project with your eslint config to make `after` display linting errors in console.
 
-```js
-{
-  "extends": "react-app",
-  "rules": {
-    // modify default rules
-  }
-}
-```
 
 ### Environment Variables
 
