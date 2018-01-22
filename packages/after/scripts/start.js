@@ -97,7 +97,7 @@ async function start() {
   chokidar
     .watch('src', { ignored: /(^|[\/\\])\../ })
     .on('change', changedPath => {
-      fs.copyFile(changedPath, tempSrc.replace('src', changedPath), err => {
+      fs.copy(changedPath, tempSrc.replace('src', changedPath), err => {
         if (err) {
           console.log(err);
         }
