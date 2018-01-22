@@ -48,11 +48,6 @@ module.exports = (
 
   if (hasEslintRc) {
     console.log('Using .eslintrc defined in your app root');
-  } else {
-    mainEslintOptions.baseConfig = {
-      extends: [require.resolve('eslint-config-react-app')],
-    };
-    mainEslintOptions.useEslintrc = false;
   }
 
   // Define some useful shorthands.
@@ -107,11 +102,11 @@ module.exports = (
           enforce: 'pre',
           use: [
             {
-              options: mainEslintOptions,
+              options: hasEslintRc ? mainEslintOptions : {},
               loader: require.resolve('eslint-loader'),
             },
           ],
-          include: paths.appSrc,
+          include: paths.appActualSrc,
         },
         // Transform ES6 with Babel
         {
