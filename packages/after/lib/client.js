@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import routes from './_routes';
 
-const data = window.__AFTER__;
+const data = JSON.parse(document.getElementById('server-app-state').innerHTML);
 
 ensureReady(routes).then(() => {
   ReactDOM.hydrate(
