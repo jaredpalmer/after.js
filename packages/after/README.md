@@ -346,7 +346,7 @@ class Document extends React.Component {
             id="server-app-state"
             type="application/json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(data).replace(/<\/script>/g, '%3C/script%3E')
+              __html: JSON.stringify({...data}).replace(/<\/script>/g, '%3C/script%3E')
             }}
           />
           <script
