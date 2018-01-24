@@ -29,9 +29,13 @@ class Document extends React.Component {
         <body {...bodyAttrs}>
           <div id="root">DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP</div>
           <script
-            type="text/javascript"
+            id="server-app-state"
+            type="application/json"
             dangerouslySetInnerHTML={{
-              __html: ` window.__AFTER__ = ${JSON.stringify(data)}; `,
+              __html: JSON.stringify({ ...data }).replace(
+                /<\/script>/g,
+                '%3C/script%3E'
+              ),
             }}
           />
           <script
