@@ -55,9 +55,7 @@ class App extends React.Component {
   render() {
     const { previousLocation, data } = this.state;
     const { location, history, match } = this.props;
-    const initialData = this.prefetcherCache[location.pathname]
-      ? this.prefetcherCache[location.pathname]
-      : data;
+    const initialData = this.prefetcherCache[location.pathname] || data;
 
     return React.createElement(
       Switch,
