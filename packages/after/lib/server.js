@@ -19,7 +19,7 @@ server
   .get('/*', async (req, res) => {
     try {
       const context = {};
-      const { match, data } = await loadInitialProps(
+      const { match = {}, data } = await loadInitialProps(
         routes,
         url.parse(req.url).pathname,
         {
