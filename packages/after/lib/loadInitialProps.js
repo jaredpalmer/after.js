@@ -1,10 +1,10 @@
 import { matchPath } from 'react-router-dom';
 
-export default function loadInitialProps(routes, pathname, ctx) {
+export default async function loadInitialProps(routes, pathname, ctx) {
   const promises = [];
-  routes.some(route => {
+  const match = routes.find(route => {
     const match = matchPath(pathname, route);
-    if (match && route.component.getInitialProps) {
+    if (match && route.component && route.component.getInitialProps) {
       promises.push(
         route.component.load
           ? route.component
@@ -17,7 +17,10 @@ export default function loadInitialProps(routes, pathname, ctx) {
           : route.component.getInitialProps({ match, ...ctx }).catch(() => {})
       );
     }
-    return !!match;
+    return match;
   });
-  return Promise.all(promises);
+  return {
+    match,
+    data: (await Promise.all(promises))[0],
+  };
 }

@@ -17,4 +17,13 @@ export default [
       Placeholder: () => <div>LOADING...</div>,
     }),
   },
+  {
+    path: '/redirect_test',
+    redirectTo: '/',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    component: () => 'Not Found!',
+  },
 ];
