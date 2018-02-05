@@ -35,6 +35,6 @@ switch (script) {
   }
   default:
     console.log('Unknown script "' + script + '".');
-    console.log('Perhaps you need to update razzle?');
+    console.log('Perhaps you need to update after?');
     break;
 }
