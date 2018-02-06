@@ -1,7 +1,9 @@
-import './index.css';
 import React from 'react';
 import asyncComponent from '@jaredpalmer/after/asyncComponent';
+
 import Home from './Home';
+
+import './index.css';
 
 export default [
   {
@@ -16,14 +18,5 @@ export default [
       loader: () => import('./About'),
       Placeholder: () => <div>LOADING...</div>,
     }),
-  },
-  {
-    path: '/redirect_test',
-    redirectTo: '/',
-    pathMatch: 'full',
-  },
-  {
-    path: '**',
-    component: () => 'Not Found!',
   },
 ];

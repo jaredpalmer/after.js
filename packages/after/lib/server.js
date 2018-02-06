@@ -19,15 +19,29 @@ server
   .get('/*', async (req, res) => {
     try {
       const context = {};
-      const data = await loadInitialProps(routes, url.parse(req.url).pathname, {
-        req,
-        res,
-      });
+      const { match = {}, data } = await loadInitialProps(
+        routes,
+        url.parse(req.url).pathname,
+        {
+          req,
+          res,
+        }
+      );
+
+      if (match.path === '**') {
+        res.status(404);
+      } else if (match.redirectTo) {
+        res.redirect(
+          301,
+          req.originalUrl.replace(match.path, match.redirectTo)
+        );
+        return;
+      }
 
       const renderPage = (fn = modPageFn) => {
         const html = ReactDOMServer.renderToString(
           <StaticRouter location={req.url} context={context}>
-            {fn(App)({ routes, data: data[0] })}
+            {fn(App)({ routes, data })}
           </StaticRouter>
         );
         const helmet = Helmet.renderStatic();
@@ -39,7 +53,7 @@ server
         res,
         assets,
         renderPage,
-        data: data[0],
+        data,
       });
 
       const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
@@ -48,7 +62,8 @@ server
           doc.replace('DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP', html)
       );
     } catch (error) {
-      res.json(error);
+      console.error(error);
+      res.status(500).json(error);
     }
   });
 

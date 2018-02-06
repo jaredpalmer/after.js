@@ -53,12 +53,21 @@ immediately in all the examples.
 
 ### Updating your fork
 
+Only first time add a upstream remote to your fork:
+
+```bash
+git remote add upstream https://github.com/jaredpalmer/after.js.git
+```
+
 When you want to pull down changes to your fork enter the following into your terminal:
 
 ```bash
+git fetch upstream
 git checkout master
-git pull origin master
+git merge upstream/master
 ```
+
+References: [Configure a remote for a fork](https://help.github.com/articles/configuring-a-remote-for-a-fork/), [sync a fork](https://help.github.com/articles/syncing-a-fork/)
 
 ## Adding examples
 

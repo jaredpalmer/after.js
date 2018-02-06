@@ -8,7 +8,7 @@ try {
   shell = require('shelljs');
 } catch (e) {
   console.log(
-    "👉 Please be sure to 'npm install' or 'yarn install' in the root razzle/ directory before running 'clean'"
+    "👉 Please be sure to 'npm install' or 'yarn install' in the root after.js/ directory before running 'clean'"
   );
   process.exit();
 }
