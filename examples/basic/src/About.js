@@ -1,23 +1,9 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { Component } from 'react';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-class About extends React.Component {
-  static getInitialProps() {
-    return sleep(300).then(() => ({ stuff: 'about' }));
-  }
-
+class Home extends Component {
   render() {
-    return (
-      <div className="page">
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/about">About</NavLink>
-        <h1>About</h1>
-        <pre>data: {this.props.stuff ? this.props.stuff : 'Loading...'}</pre>
-      </div>
-    );
+    return <div>about</div>;
   }
 }
 
-export default About;
+export default Home;

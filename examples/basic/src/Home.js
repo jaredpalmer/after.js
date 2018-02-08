@@ -1,27 +1,27 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import logo from './react.svg';
+import './Home.css';
+import { Link } from 'react-router-dom';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-class Home extends React.Component {
-  static getInitialProps() {
-    return sleep(300).then(() => ({ stuff: 'hello' }));
+class Home extends Component {
+  static getInitialProps({ req, res, match, history, location, ...ctx }) {
+    console.log(ctx);
+    return Promise.resolve(ctx);
   }
-
   render() {
+    console.log(this.props);
     return (
-      <div className="page">
-        <img className="logo" src={logo} alt="After.js Logo" />
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/about">About</NavLink>
-        <h1>Home</h1>
-        <p>Click the button to prefetch data for the About page</p>
-        <button onClick={() => this.props.prefetch('/about')}>
-          Prefetch Data!
-        </button>
-
-        <pre>data: {this.props.stuff ? this.props.stuff : 'Loading...'}</pre>
+      <div className="Home">
+        <div className="Home-header">
+          <img src={logo} className="Home-logo" alt="logo" />
+          <h2>Welcome to After.js</h2>
+        </div>
+        <p className="Home-intro">
+          To get started, edit
+          <code>src/Home.js</code> or <code>src/About.js</code>and save to
+          reload.
+        </p>
+        <Link to="/about">About -></Link>
       </div>
     );
   }

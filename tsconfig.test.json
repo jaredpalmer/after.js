@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "build",
+    "declaration": true,
+    "jsx": "react",
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "build",
+    "node_modules",
+    "coverage",
+    "config",
+    "src/**/*.story.tsx"
+  ]
+}

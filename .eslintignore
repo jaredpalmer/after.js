@@ -1,6 +1,0 @@
-node_modules/
-.after
-dist
-my-app*
-test/fixtures
-test/tests
