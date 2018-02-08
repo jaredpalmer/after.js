@@ -1,1 +1,1 @@
-module.exports = require('./build/asyncComponent');
+module.exports = require('./build/asyncComponent').asyncComponent;

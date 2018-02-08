@@ -1,1 +1,1 @@
-module.exports = require('./build/After');
+module.exports = require('./build/After').After;

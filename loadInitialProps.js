@@ -1,1 +1,1 @@
-module.exports = require('./build/loadInitialProps');
+module.exports = require('./build/loadInitialProps').loadInitialProps;

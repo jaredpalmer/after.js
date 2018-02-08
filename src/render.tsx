@@ -2,43 +2,27 @@ import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { RouteProps, StaticRouter } from 'react-router-dom';
-import { Document } from './Document';
+import { Document as Doc } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
-import url from 'url';
+import * as url from 'url';
 
 const modPageFn = (Page: React.ComponentType<any>) => (props: any) => (
   <Page {...props} />
 );
 
-export async function render({
-  req,
-  res,
-  routes,
-  assets,
-  document = Document,
-}: {
+export type AfterRenderProps<T> = T & {
   req: any;
   res: any;
   assets: any;
   routes: Partial<RouteProps>[];
   document: React.ComponentType<any>;
-}) {
-  const { match = {}, data } = await loadInitialProps(
-    routes,
-    url.parse(req.url).pathname as any,
-    {
-      req,
-      res,
-    }
-  );
+};
 
-  if (match.path === '**') {
-    res.status(404);
-  } else if (match.redirectTo) {
-    res.redirect(301, req.originalUrl.replace(match.path, match.redirectTo));
-    return;
-  }
+export async function render<T>(options: AfterRenderProps<T>) {
+  let { req, res, routes, assets, document, ...rest } = options as any;
+  document = document || Doc;
+  console.log(rest);
   const context = {};
   const renderPage = (fn = modPageFn) => {
     const html = ReactDOMServer.renderToString(
@@ -50,7 +34,24 @@ export async function render({
     return { html, helmet };
   };
 
-  const { html, ...docProps } = await Document.getInitialProps({
+  const { match = {}, data } = await loadInitialProps(
+    routes,
+    url.parse(req.url).pathname as any,
+    {
+      req,
+      res,
+      ...rest,
+    }
+  );
+
+  if (match.path === '**') {
+    res.status(404);
+  } else if (match.redirectTo) {
+    res.redirect(301, req.originalUrl.replace(match.path, match.redirectTo));
+    return;
+  }
+
+  const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
     assets,
@@ -58,7 +59,7 @@ export async function render({
     data,
   });
 
-  const doc = ReactDOMServer.renderToStaticMarkup(<Document {...docProps} />);
+  const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
   return (
     `<!doctype html>` +
     doc.replace('DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP', html)

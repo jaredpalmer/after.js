@@ -13,7 +13,7 @@ export interface AsyncRouteComponentState {
  * Note the closure here protecting Component, and providing a unique
  * instance of Component to the static implementation of `load`.
  */
-export function generateAsyncComponent<Props = any>({
+export function asyncComponent<Props = any>({
   loader,
   Placeholder,
 }: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 export class Document extends React.Component<any, any> {
   static getInitialProps({ assets, data, renderPage }: any) {
@@ -27,17 +27,8 @@ export class Document extends React.Component<any, any> {
           )}
         </head>
         <body {...bodyAttrs}>
-          <div id="root">DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP</div>
-          <script
-            id="server-app-state"
-            type="application/json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({ ...data }).replace(
-                /<\/script>/g,
-                '%3C/script%3E'
-              ),
-            }}
-          />
+          <AfterRoot />
+          <AfterData data={data} />
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -48,4 +39,23 @@ export class Document extends React.Component<any, any> {
       </html>
     );
   }
+}
+
+export function AfterRoot() {
+  return <div id="root">DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP</div>;
+}
+
+export function AfterData({ data }: any) {
+  return (
+    <script
+      id="server-app-state"
+      type="application/json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({ ...data }).replace(
+          /<\/script>/g,
+          '%3C/script%3E'
+        ),
+      }}
+    />
+  );
 }
