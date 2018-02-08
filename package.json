@@ -9,14 +9,12 @@
   "scripts": {
     "prepare": "tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json -w",
-    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
+    "format":
+      "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma es5 --single-quote --write",
-      "git add"
-    ]
+    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
   },
   "jest": {
     "testPathIgnorePatterns": [
@@ -24,15 +22,18 @@
       "<rootDir>/node_modules/",
       "<rootDir>/examples/"
     ],
-    "collectCoverageFrom": [
-      "**/*.js"
-    ],
+    "collectCoverageFrom": ["**/*.js"],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/packages/*/node_modules/",
       "<rootDir>/examples/",
       "<rootDir>/coverage/"
     ]
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-helmet": ">=5",
+    "react-router-dom": ">=4"
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
@@ -53,8 +54,5 @@
     "tslint-config-prettier": "^1.7.0",
     "tslint-react": "^3.4.0",
     "typescript": "^2.7.1"
-  },
-  "dependencies": {
-    "react-helmet": "^5.2.0"
   }
 }
