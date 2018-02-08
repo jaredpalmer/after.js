@@ -21,7 +21,8 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-* [Getting Started with After.js x Razzle](#getting-started-with-afterjs-x-razzle)
+* [Getting Started with After.js](#getting-started-with-afterjs)
+  * [Razzle Quickstart](#razzle-quickstart)
 * [Data Fetching](#data-fetching)
   * [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
   * [Injected Page Props](#injected-page-props)
@@ -35,15 +36,21 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Getting Started with After.js and [Razzle](https://github.com/jaredpalmer/razzle)
+## Getting Started with After.js
 
-After.js can be used in any SSR React application. However, it is worth mentioning that this project is developed in tandem with [Razzle](https://github.com/jaredpalmer/razzle). See the example
+After.js enables Next.js-like data fetching with any React SSR app that uses React Router 4.
+
+### Razzle Quickstart
+
+You can quickly bootstrap an SSR React app with After.js using Razzle. While Razzle is not required, an tooling configuration similar to it is assumed throughout this documentation.
 
 ```bash
 yarn create razzle-app myapp --example with-after
-cd my-app
+cd myapp
 yarn start
 ```
+
+Refer to [Razzle's](https://github.com/jaredpalmer/razzle) docs for tooling, babel, and webpack customization.
 
 ## Data Fetching
 
@@ -102,7 +109,7 @@ routing. You can use any and all parts of RR4.
 ### Parameterized Routing
 
 ```js
-// ./src/_route.js
+// ./src/routes.js
 import Home from './Home';
 import About from './About';
 import Detail from './Detail';
