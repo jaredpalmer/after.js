@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { RouteProps, StaticRouter } from 'react-router-dom';
-import { Document as Doc } from './Document';
+import { Document as DefaultDoc } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
 import * as url from 'url';
@@ -21,8 +21,7 @@ export type AfterRenderProps<T> = T & {
 
 export async function render<T>(options: AfterRenderProps<T>) {
   let { req, res, routes, assets, document, ...rest } = options as any;
-  document = document || Doc;
-  console.log(rest);
+  const Doc = document || DefaultDoc;
   const context = {};
   const renderPage = (fn = modPageFn) => {
     const html = ReactDOMServer.renderToString(
