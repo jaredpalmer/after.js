@@ -45,7 +45,7 @@ After.js enables Next.js-like data fetching with any React SSR app that uses Rea
 You can quickly bootstrap an SSR React app with After.js using Razzle. While Razzle is not required, an tooling configuration similar to it is assumed throughout this documentation.
 
 ```bash
-yarn create razzle-app myapp --example with-after
+yarn create razzle-app --example with-afterjs myapp
 cd myapp
 yarn start
 ```
