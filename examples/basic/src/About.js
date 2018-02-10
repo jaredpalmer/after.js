@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 
-class Home extends Component {
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
-    console.log('getting called');
-    return { things: 'whateverssssss' };
-  }
-
+class About extends Component {
   render() {
     console.log(this.props);
     return <div>about</div>;
   }
 }
 
-export default Home;
+export default About;
