@@ -4,9 +4,8 @@ import './Home.css';
 import { Link } from 'react-router-dom';
 
 class Home extends Component {
-  static getInitialProps({ req, res, match, history, location, ...ctx }) {
-    console.log(ctx);
-    return Promise.resolve(ctx);
+  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
+    return { stuff: 'whatever' };
   }
   render() {
     console.log(this.props);
