@@ -29,8 +29,8 @@ class Afterparty extends React.Component<any, any> {
         history: nextProps.history,
         ...rest,
       })
-        .then(data => {
-          this.setState({ previousLocation: null, data: data[0] });
+        .then(({ data }) => {
+          this.setState({ previousLocation: null, data: data });
         })
         .catch(e => {
           // @todo we should more cleverly handle errors???
@@ -53,9 +53,9 @@ class Afterparty extends React.Component<any, any> {
 
   render() {
     const { previousLocation, data } = this.state;
-    const { location, history, match } = this.props;
+    const { location } = this.props;
     const initialData = this.prefetcherCache[location.pathname] || data;
-
+    console.log(initialData);
     return (
       <Switch location={previousLocation || location}>
         {this.props.routes.map((r: any, i: number) => (
@@ -67,9 +67,9 @@ class Afterparty extends React.Component<any, any> {
             render={props =>
               React.createElement(r.component, {
                 ...initialData,
-                history,
+                history: props.history,
                 location: previousLocation || location,
-                match,
+                match: props.match,
                 prefetch: this.prefetch,
               })
             }
