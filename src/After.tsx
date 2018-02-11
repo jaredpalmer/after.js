@@ -43,9 +43,9 @@ class Afterparty extends React.Component<any, any> {
     loadInitialProps(this.props.routes, pathname, {
       history: this.props.history,
     })
-      .then(data => {
+      .then(({ data }) => {
         this.prefetcherCache = Object.assign({}, this.prefetcherCache, {
-          [pathname]: data[0],
+          [pathname]: data,
         });
       })
       .catch(e => console.log(e));
