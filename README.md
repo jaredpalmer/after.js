@@ -246,7 +246,7 @@ class Document extends React.Component {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData />
+          <AfterData data={data}/>
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -295,11 +295,11 @@ export default class Document extends React.Component {
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
           {/** here is where we put our Styled Components styleTags... */}
-          {this.props.styleTags}
+          {styleTags}
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData />
+          <AfterData data={data}/>
           <script
             type="text/javascript"
             src={assets.client.js}
