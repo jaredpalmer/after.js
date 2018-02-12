@@ -16,12 +16,19 @@ export type AfterRenderProps<T> = T & {
   res: any;
   assets: any;
   routes: Partial<RouteProps>[];
-  document: React.ComponentType<any>;
+  document?: React.ComponentType<any>;
 };
 
 export async function render<T>(options: AfterRenderProps<T>) {
-  let { req, res, routes, assets, document, ...rest } = options as any;
-  const Doc = document || DefaultDoc;
+  let {
+    req,
+    res,
+    routes,
+    assets,
+    document: Document,
+    ...rest
+  } = options as any;
+  const Doc = Document || DefaultDoc;
   const context = {};
   const renderPage = (fn = modPageFn) => {
     const html = ReactDOMServer.renderToString(
