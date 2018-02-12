@@ -55,7 +55,6 @@ class Afterparty extends React.Component<any, any> {
     const { previousLocation, data } = this.state;
     const { location } = this.props;
     const initialData = this.prefetcherCache[location.pathname] || data;
-    console.log(initialData);
     return (
       <Switch>
         {this.props.routes.map((r: any, i: number) => (
