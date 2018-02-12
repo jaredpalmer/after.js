@@ -1,7 +1,7 @@
 {
   "name": "@jaredpalmer/after",
   "private": false,
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
@@ -20,12 +20,14 @@
   "scripts": {
     "prepare": "tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json -w",
-    "format":
-      "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
+    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
+    "*.js": [
+      "prettier --trailing-comma es5 --single-quote --write",
+      "git add"
+    ]
   },
   "jest": {
     "testPathIgnorePatterns": [
@@ -33,7 +35,9 @@
       "<rootDir>/node_modules/",
       "<rootDir>/examples/"
     ],
-    "collectCoverageFrom": ["**/*.js"],
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/packages/*/node_modules/",
