@@ -333,7 +333,7 @@ server
       const html = await render({
         req,
         res,
-        Document: MyDocument
+        document: MyDocument
         routes,
         assets,
       });
