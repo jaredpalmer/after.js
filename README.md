@@ -58,7 +58,7 @@ Refer to [Razzle's](https://github.com/jaredpalmer/razzle) docs for tooling, bab
 ## Data Fetching
 
 For page components, you can add a `static async getInitialProps` function.
-This will be called on both initial server render, and then client mounts.`
+This will be called on both initial server render, and then client mounts.
 Results are made available on `this.props`.
 
 ```js
