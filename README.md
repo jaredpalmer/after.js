@@ -51,6 +51,12 @@ cd myapp
 yarn start
 ```
 
+If you prefer `npx`, you can create the starting template like this:
+
+```bash
+npx create-razzle app --example with-afterjs myapp
+```
+             
 Refer to [Razzle's](https://github.com/jaredpalmer/razzle) docs for tooling, babel, and webpack customization.
 
 ## Data Fetching
