@@ -11,6 +11,10 @@ const modPageFn = (Page: React.ComponentType<any>) => (props: any) => (
   <Page {...props} />
 );
 
+const defaultRenderer = (Element: React.ReactElement<any>) => (
+  Promise.resolve(ReactDOMServer.renderToString(Element))
+);
+
 export type AfterRenderProps<T> = T & {
   req: any;
   res: any;
@@ -32,9 +36,9 @@ export async function render<T>(options: AfterRenderProps<T>) {
   } = options as any;
   const Doc = Document || DefaultDoc;
   const context = {};
-  const renderPage = (fn = modPageFn) => {
-    const renderToString = customRenderer || ReactDOMServer.renderToString;
-    const html = renderToString(
+  const renderPage = async (fn = modPageFn) => {
+    const renderToString = customRenderer || defaultRenderer;
+    const html = await renderToString(
       <StaticRouter location={req.url} context={context}>
         {fn(After)({ routes, data })}
       </StaticRouter>
