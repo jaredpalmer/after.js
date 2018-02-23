@@ -5,14 +5,11 @@ import { RouteProps, StaticRouter } from 'react-router-dom';
 import { Document as DefaultDoc } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
+import { isPromise } from './utils';
 import * as url from 'url';
 
 const modPageFn = (Page: React.ComponentType<any>) => (props: any) => (
   <Page {...props} />
-);
-
-const defaultRenderer = (Element: React.ReactElement<any>) => (
-  Promise.resolve(ReactDOMServer.renderToString(Element))
 );
 
 export type AfterRenderProps<T> = T & {
@@ -37,12 +34,13 @@ export async function render<T>(options: AfterRenderProps<T>) {
   const Doc = Document || DefaultDoc;
   const context = {};
   const renderPage = async (fn = modPageFn) => {
-    const renderToString = customRenderer || defaultRenderer;
-    const html = await renderToString(
+    const renderToString = customRenderer || ReactDOMServer.renderToString;
+    const asyncOrSyncHtml = renderToString(
       <StaticRouter location={req.url} context={context}>
         {fn(After)({ routes, data })}
       </StaticRouter>
     );
+    const html = isPromise(asyncOrSyncHtml) ? await asyncOrSyncHtml : asyncOrSyncHtml;
     const helmet = Helmet.renderStatic();
     return { html, helmet };
   };
