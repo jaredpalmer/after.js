@@ -1,7 +1,6 @@
 import React from 'react';
 import express from 'express';
 import { render } from '@jaredpalmer/after';
-import { renderToString as rdd } from 'react-dom/server';
 import { ApolloProvider, renderToStringWithData } from 'react-apollo';
 import routes from './routes';
 import createApolloClient from './createApolloClient';
