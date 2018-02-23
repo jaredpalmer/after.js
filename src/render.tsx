@@ -15,6 +15,7 @@ export type AfterRenderProps<T> = T & {
   req: any;
   res: any;
   assets: any;
+  renderToString: Function;
   routes: Partial<RouteProps>[];
   document?: React.ComponentType<any>;
 };
@@ -26,12 +27,14 @@ export async function render<T>(options: AfterRenderProps<T>) {
     routes,
     assets,
     document: Document,
+    renderToString: customRenderer,
     ...rest
   } = options as any;
   const Doc = Document || DefaultDoc;
   const context = {};
   const renderPage = (fn = modPageFn) => {
-    const html = ReactDOMServer.renderToString(
+    const renderToString = customRenderer || ReactDOMServer.renderToString;
+    const html = renderToString(
       <StaticRouter location={req.url} context={context}>
         {fn(After)({ routes, data })}
       </StaticRouter>
