@@ -1,5 +1,5 @@
 import React from 'react';
-import { hydrate, render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ensureReady, After } from '@jaredpalmer/after';
 import { ApolloProvider } from 'react-apollo';
@@ -9,10 +9,8 @@ import createApolloClient from './createApolloClient';
 
 const client = createApolloClient({ ssrMode: false });
 
-const renderDOM = !!module.hot ? render : hydrate;
-
 ensureReady(routes).then(data =>
-  renderDOM(
+  hydrate(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <After data={data} routes={routes} />
