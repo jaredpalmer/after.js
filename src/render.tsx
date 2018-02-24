@@ -5,18 +5,26 @@ import { RouteProps, StaticRouter } from 'react-router-dom';
 import { Document as DefaultDoc } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
-import { isPromise } from './utils';
+import * as utils from './utils';
 import * as url from 'url';
 
 const modPageFn = (Page: React.ComponentType<any>) => (props: any) => (
   <Page {...props} />
 );
 
+/*
+ The customRenderer parameter is a (potentially async) function that can be set to return more than just a rendered string.
+ If present, it will be used instead of the default ReactDOMServer renderToString function.
+ It has to return an object of shape { html, preHydrate }, in which html will be used as the rendered string
+ If a preHydrate function is present inside the returned object, 
+ it will be called at the end the rendering process, and its result will be inserted in a <script> tag
+  */
+
 export type AfterRenderProps<T> = T & {
   req: any;
   res: any;
   assets: any;
-  renderToString: Function;
+  customRenderer: Function;
   routes: Partial<RouteProps>[];
   document?: React.ComponentType<any>;
 };
@@ -28,21 +36,26 @@ export async function render<T>(options: AfterRenderProps<T>) {
     routes,
     assets,
     document: Document,
-    renderToString: customRenderer,
+    customRenderer,
     ...rest
   } = options as any;
   const Doc = Document || DefaultDoc;
   const context = {};
   const renderPage = async (fn = modPageFn) => {
-    const renderToString = customRenderer || ReactDOMServer.renderToString;
-    const asyncOrSyncHtml = renderToString(
+
+    // By default, we keep ReactDOMServer synchronous renderToString function
+    const defaultRenderer = (element: React.ReactElement<any>) => ({ html: ReactDOMServer.renderToString(element) });
+    const renderer = customRenderer || defaultRenderer;
+    const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
         {fn(After)({ routes, data })}
       </StaticRouter>
     );
-    const html = isPromise(asyncOrSyncHtml) ? await asyncOrSyncHtml : asyncOrSyncHtml;
+
+    // if the rendered content is a promise, we wait for it to finish
+    const renderedContent = utils.isPromise(asyncOrSyncRender) ? await asyncOrSyncRender : asyncOrSyncRender;
     const helmet = Helmet.renderStatic();
-    return { html, helmet };
+    return { helmet, ...renderedContent }
   };
 
   const { match = {}, data } = await loadInitialProps(
