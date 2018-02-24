@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as utils from './utils';
 
 export class Document extends React.Component<any, any> {
   static async getInitialProps({ assets, data, renderPage }: any) {
@@ -7,7 +8,7 @@ export class Document extends React.Component<any, any> {
   }
 
   render() {
-    const { helmet, assets, data } = this.props;
+    const { helmet, assets, data, preHydrate } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -29,6 +30,7 @@ export class Document extends React.Component<any, any> {
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
+          { utils.isFunction(preHydrate) && <script dangerouslySetInnerHTML={{ __html:  preHydrate()}} /> }
           <script
             type="text/javascript"
             src={assets.client.js}

@@ -348,6 +348,56 @@ server
 export default server;
 ```
 
+## Custom/Async Rendering
+
+You can provide a custom (potentially async) rendering function as an option to After.js `render` function.
+
+If present, it will be used instead of the default ReactDOMServer renderToString function.
+
+It has to return an object of shape `{ html : string!, preHydrate: () => string }`, in which `html` will be used as the rendered string
+
+Thus, setting `customRenderer = (node) => ({ html: ReactDOMServer.renderToString(node) })` is the the same as default option.
+
+If a preHydrate function is present inside the returned object, it will be called at the end the rendering process, and its result will be inserted in a `<script>` tag
+
+Example : 
+
+```js
+// ./src/server.js
+import express from 'express';
+import { render } from '@jaredpalmer/after';
+import { renderToString } from 'react-dom/server';
+import routes from './routes';
+import MyDocument from './Document';
+
+const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+
+const server = express();
+server
+  .disable('x-powered-by')
+  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .get('/*', async (req, res) => {
+
+    const customRenderer = (node) => ({
+      html: renderToString(node),
+      preHydrate: () => `window.alert('hello, after !')`,
+    });
+
+    try {
+      const html = await render({
+        req,
+        res,
+        routes,
+        assets,
+        customRenderer,
+      });
+      res.send(html);
+    } catch (error) {
+      res.json(error);
+    }
+  });
+```
+
 ## Author
 
 * Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
