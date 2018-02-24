@@ -1,7 +1,8 @@
 import React from 'react';
 import express from 'express';
 import { render } from '@jaredpalmer/after';
-import { ApolloProvider, renderToStringWithData } from 'react-apollo';
+import { renderToString } from 'react-dom/server';
+import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import routes from './routes';
 import createApolloClient from './createApolloClient';
 
@@ -14,10 +15,19 @@ server
   .get('/*', async (req, res) => {
     const client = createApolloClient({ ssrMode: true });
 
-    const renderToString = node =>
-      renderToStringWithData(
-        <ApolloProvider client={client}>{node}</ApolloProvider>
-      );
+    const customRenderer = node => {
+      const App = <ApolloProvider client={client}>{node}</ApolloProvider>;
+      return getDataFromTree(App).then(() => {
+        const initialState = client.extract();
+        const html = renderToString(App);
+        const preHydrate = () =>
+          `window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(
+            /</g,
+            '\\u003c'
+          )};`;
+        return { html, preHydrate };
+      });
+    };
 
     try {
       const html = await render({
@@ -25,11 +35,7 @@ server
         res,
         routes,
         assets,
-        renderToString,
-        // Anything else you add here will be made available
-        // within getInitialProps(ctx)
-        // e.g a redux store...
-        customThing: 'thing',
+        customRenderer,
       });
       res.send(html);
     } catch (error) {
