@@ -11,7 +11,9 @@ function createApolloClient({ ssrMode }) {
       credentials: 'same-origin',
       fetch,
     }),
-    cache: new InMemoryCache(),
+    cache: ssrMode
+      ? new InMemoryCache()
+      : new InMemoryCache().restore(window.__APOLLO_STATE__),
   });
 }
 
