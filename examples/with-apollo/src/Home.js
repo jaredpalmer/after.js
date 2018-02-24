@@ -1,29 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import logo from './react.svg';
 import './Home.css';
 import { Link } from 'react-router-dom';
 
-class Home extends Component {
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
-    return { stuff: 'whatevs' };
+const QUERY = gql`
+  query AllFilms {
+    allFilms {
+      films {
+        id
+        title
+      }
+    }
   }
-  render() {
-    console.log(this.props);
-    return (
-      <div className="Home">
-        <div className="Home-header">
-          <img src={logo} className="Home-logo" alt="logo" />
-          <h2>Welcome to After.js</h2>
-        </div>
-        <p className="Home-intro">
-          To get started, edit
-          <code>src/Home.js</code> or <code>src/About.js</code>and save to
-          reload.
-        </p>
-        <Link to="/about">About -></Link>
+`;
+
+function Home(props) {
+  const { data } = props;
+  return (
+    <div className="Home">
+      <div className="Home-header">
+        <img src={logo} className="Home-logo" alt="logo" />
+        <h2>Welcome to After.js with Apollo</h2>
       </div>
-    );
-  }
+      <div className="Home-intro">
+        {data.loading === true ? (
+          <div>'Loading Data...</div>
+        ) : (
+          data.allFilms.films.map(({ title, id }, i) => (
+            <div key={id}>
+              <Link to={`/about/${i + 1}`}>{title}</Link>
+            </div>
+          ))
+        )}
+      </div>
+      <Link to="/about">About -></Link>
+    </div>
+  );
 }
 
-export default Home;
+export default graphql(QUERY)(Home);

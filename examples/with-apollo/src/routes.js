@@ -12,7 +12,7 @@ export default [
     }),
   },
   {
-    path: '/about',
+    path: '/about/:id',
     exact: true,
     component: asyncComponent({
       loader: () => import('./About'), // required
