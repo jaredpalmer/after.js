@@ -7,7 +7,7 @@ function createApolloClient({ ssrMode }) {
   return new ApolloClient({
     ssrMode,
     link: createHttpLink({
-      uri: 'http://localhost:8080',
+      uri: 'http://localhost:64895',
       credentials: 'same-origin',
       fetch,
     }),

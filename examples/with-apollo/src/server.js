@@ -5,6 +5,7 @@ import { renderToString } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import routes from './routes';
 import createApolloClient from './createApolloClient';
+import Document from './Document';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -18,14 +19,9 @@ server
     const customRenderer = node => {
       const App = <ApolloProvider client={client}>{node}</ApolloProvider>;
       return getDataFromTree(App).then(() => {
-        const initialState = client.extract();
+        const initialApolloState = client.extract();
         const html = renderToString(App);
-        const preHydrate = () =>
-          `window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(
-            /</g,
-            '\\u003c'
-          )};`;
-        return { html, preHydrate };
+        return { html, initialApolloState };
       });
     };
 
@@ -36,6 +32,7 @@ server
         routes,
         assets,
         customRenderer,
+        document: Document,
       });
       res.send(html);
     } catch (error) {
