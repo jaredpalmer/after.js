@@ -14,7 +14,6 @@ export default class Document extends React.Component {
       helmet,
       assets,
       data,
-      preHydrate,
       initialApolloState,
     } = this.props;
     // get attributes from React Helmet
