@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export class Document extends React.Component<any, any> {
-  static async getInitialProps({ assets, data, renderPage }: any) {
+  static getInitialProps({ assets, data, renderPage }: any) {
     const page = renderPage();
     return { assets, data, ...page };
   }
