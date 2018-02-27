@@ -15,9 +15,8 @@ const modPageFn = (Page: React.ComponentType<any>) => (props: any) => (
 /*
  The customRenderer parameter is a (potentially async) function that can be set to return more than just a rendered string.
  If present, it will be used instead of the default ReactDOMServer renderToString function.
- It has to return an object of shape { html, preHydrate }, in which html will be used as the rendered string
- If a preHydrate function is present inside the returned object, 
- it will be called at the end the rendering process, and its result will be inserted in a <script> tag
+ It has to return an object of shape { html, ... }, in which html will be used as the rendered string
+ Other props will be also pass to the Document component
   */
 
 export type AfterRenderProps<T> = T & {
