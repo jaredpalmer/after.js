@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
-import { RouteProps, StaticRouter } from 'react-router-dom';
+import { matchPath, RouteProps, StaticRouter } from 'react-router-dom';
 import { Document as DefaultDoc } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
@@ -74,12 +74,14 @@ export async function render<T>(options: AfterRenderProps<T>) {
     return;
   }
 
+  const reactRouterMatch = matchPath(req.url, match.path);
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
     assets,
     renderPage,
     data,
+    match: reactRouterMatch,
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
