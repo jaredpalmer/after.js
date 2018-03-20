@@ -23,7 +23,7 @@ export type AfterRenderProps<T> = T & {
   req: any;
   res: any;
   assets: any;
-  customRenderer: Function;
+  customRenderer?: Function;
   routes: Partial<RouteProps>[];
   document?: React.ComponentType<any>;
 };
