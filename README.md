@@ -220,8 +220,8 @@ import React from 'react';
 import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 class Document extends React.Component {
-  static getInitialProps({ assets, data, renderPage }) {
-    const page = renderPage();
+  static async getInitialProps({ assets, data, renderPage }) {
+    const page = await renderPage();
     return { assets, data, ...page };
   }
 
@@ -247,7 +247,7 @@ class Document extends React.Component {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data}/>
+          <AfterData data={data} />
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -272,9 +272,9 @@ import { ServerStyleSheet } from 'styled-components'
 import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 export default class Document extends React.Component {
-  static getInitialProps({ assets, data, renderPage }) {
+  static async getInitialProps({ assets, data, renderPage }) {
     const sheet = new ServerStyleSheet()
-    const page = renderPage(App => props => sheet.collectStyles(<App {...props} />))
+    const page = await renderPage(App => props => sheet.collectStyles(<App {...props} />))
     const styleTags = sheet.getStyleElement()
     return { assets, data, ...page, styleTags};
   }
@@ -360,7 +360,7 @@ Thus, setting `customRenderer = (node) => ({ html: ReactDOMServer.renderToString
 
 `otherProps` will be passed as props to the rendered Document
 
-Example : 
+Example :
 
 ```js
 // ./src/server.js
