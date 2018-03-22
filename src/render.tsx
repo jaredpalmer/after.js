@@ -82,6 +82,7 @@ export async function render<T>(options: AfterRenderProps<T>) {
     renderPage,
     data,
     match: reactRouterMatch,
+    ...rest
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
