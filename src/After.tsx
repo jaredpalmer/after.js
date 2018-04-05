@@ -18,10 +18,9 @@ class Afterparty extends React.Component<any, any> {
     const navigated = nextProps.location !== this.props.location;
     if (navigated) {
       window.scrollTo(0, 0);
-      // save the location so we can render the old screen
-      // and keep the data so the render won't break
+      // save the location so we can trigger a shouldComponentUpdate lifecycle
       this.setState({
-        previousLocation: this.props.location,
+        previousLocation: this.props.location
       });
       const { data, match, routes, history, location, ...rest } = nextProps;
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
@@ -37,6 +36,10 @@ class Afterparty extends React.Component<any, any> {
           console.log(e);
         });
     }
+  }
+
+  shouldComponentUpdate(nextProps: any, nextState: any) {
+    return !nextState.previousLocation;
   }
 
   prefetch = (pathname: string) => {
