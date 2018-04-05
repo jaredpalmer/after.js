@@ -19,9 +19,9 @@ class Afterparty extends React.Component<any, any> {
     if (navigated) {
       window.scrollTo(0, 0);
       // save the location so we can render the old screen
+      // and keep the data so the render won't break
       this.setState({
         previousLocation: this.props.location,
-        data: undefined, // unless you want to keep it
       });
       const { data, match, routes, history, location, ...rest } = nextProps;
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
@@ -56,7 +56,7 @@ class Afterparty extends React.Component<any, any> {
     const { location } = this.props;
     const initialData = this.prefetcherCache[location.pathname] || data;
     return (
-      <Switch>
+      <Switch location={previousLocation || location}>
         {this.props.routes.map((r: any, i: number) => (
           <Route
             key={`route--${i}`}
@@ -67,7 +67,6 @@ class Afterparty extends React.Component<any, any> {
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
-                location: previousLocation || location,
                 match: props.match,
                 prefetch: this.prefetch,
               })
