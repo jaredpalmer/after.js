@@ -79,4 +79,4 @@ class Afterparty extends React.Component<any, any> {
   }
 }
 
-export const After = withRouter(Afterparty);
+export const After = (withRouter as any)(Afterparty);
