@@ -17,9 +17,7 @@ export async function ensureReady(routes: RouteProps[], pathname?: string) {
   let data;
   if (typeof window !== undefined && !!document) {
     data = JSON.parse(
-      (document as any)
-        .getElementById('server-app-state')
-        .textContent.replace(/%3C\/script%3E/g, '</script>')
+      (document as any).getElementById('server-app-state').textContent
     );
   }
   return Promise.resolve(data);
