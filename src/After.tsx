@@ -21,7 +21,7 @@ class Afterparty extends React.Component<any, any> {
       // save the location so we can render the old screen
       this.setState({
         previousLocation: this.props.location,
-        data: undefined, // unless you want to keep it
+        data: this.state.data
       });
       const { data, match, routes, history, location, ...rest } = nextProps;
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
