@@ -313,6 +313,7 @@ export default class Document extends React.Component {
       </html>
     );
   }
+}
 ```
 
 To use your custom `<Document>`, pass it to the `Document` option of your After.js `render` function.
