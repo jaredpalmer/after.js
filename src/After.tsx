@@ -5,6 +5,7 @@ import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
 
 export interface AfterpartyProps {
+  delayRouteTransitions: Boolean,
   history: History;
   location: Location;
   data?: Promise<any>[];
@@ -31,28 +32,50 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     this.prefetcherCache = {};
   }
 
+  beforeLoadingInitialProps() {
+    const { delayRouteTransitions } = this.props;
+
+    if (delayRouteTransitions) {
+      this.setState({
+        previousLocation: this.props.location,
+      });
+    } else {
+      window.scrollTo(0, 0);
+
+      this.setState({
+        previousLocation: this.props.location,
+        data: undefined,
+      });
+    }
+
+    return Promise.resolve()
+  }
+
+  afterLoadingInitialProps(data: any) {
+    const { delayRouteTransitions } = this.props;
+
+    if (delayRouteTransitions) {
+      window.scrollTo(0, 0);
+    }
+
+    this.setState({ previousLocation: null, data: data });
+  }
+
   // only runs clizzient
   componentWillReceiveProps(nextProps: AfterpartyProps) {
     const navigated = nextProps.location !== this.props.location;
     if (navigated) {
-      window.scrollTo(0, 0);
-      // save the location so we can render the old screen
-      this.setState({
-        previousLocation: this.props.location,
-        data: undefined // unless you want to keep it
-      });
+      const { data, match, routes, history, location, delayRouteTransitions, ...rest } = nextProps;
 
-      const { data, match, routes, history, location, ...rest } = nextProps;
-
-      loadInitialProps(this.props.routes, nextProps.location.pathname, {
-        location: nextProps.location,
-        history: nextProps.history,
-        ...rest
-      })
-        .then(({ data }) => {
-          this.setState({ previousLocation: null, data });
-        })
-        .catch((e) => {
+      this.beforeLoadingInitialProps()
+        .then(
+          () => loadInitialProps(this.props.routes, nextProps.location.pathname, {
+            location: nextProps.location,
+            history: nextProps.history,
+            ...rest,
+          })
+        ).then(({data}) => this.afterLoadingInitialProps(data))
+        .catch(e => {
           // @todo we should more cleverly handle errors???
           console.log(e);
         });
@@ -74,22 +97,23 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
   render() {
     const { previousLocation, data } = this.state;
-    const { location } = this.props;
+    const { location, delayRouteTransitions } = this.props;
     const initialData = this.prefetcherCache[location.pathname] || data;
+    const currentLocation = previousLocation || location;
 
     return (
-      <Switch>
+      <Switch location={delayRouteTransitions ? currentLocation : undefined}>
         {this.props.routes.map((r, i) => (
           <Route
             key={`route--${i}`}
             path={r.path}
             exact={r.exact}
-            location={previousLocation || location}
-            render={(props) =>
+            location={delayRouteTransitions ? undefined : currentLocation}
+            render={props =>
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
-                location: previousLocation || location,
+                location: currentLocation,
                 match: props.match,
                 prefetch: this.prefetch
               })
