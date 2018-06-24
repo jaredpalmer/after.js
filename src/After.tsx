@@ -58,7 +58,7 @@ class Afterparty extends React.Component<any, any> {
     return (
       <Switch>
         {this.props.routes.map((r: any, i: number) => {
-          const RouteComponent = r.routeComponent;
+          const RouteComponent = r.routeComponent || Route;
           return (
             <RouteComponent
               key={`route--${i}`}
