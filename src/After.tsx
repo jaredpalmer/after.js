@@ -65,7 +65,7 @@ class Afterparty extends React.Component<any, any> {
               path={r.path}
               exact={r.exact}
               location={previousLocation || location}
-              render={props =>
+              render={(props: any) =>
                 React.createElement(r.component, {
                   ...initialData,
                   history: props.history,
