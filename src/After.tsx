@@ -57,23 +57,26 @@ class Afterparty extends React.Component<any, any> {
     const initialData = this.prefetcherCache[location.pathname] || data;
     return (
       <Switch>
-        {this.props.routes.map((r: any, i: number) => (
-          <Route
-            key={`route--${i}`}
-            path={r.path}
-            exact={r.exact}
-            location={previousLocation || location}
-            render={props =>
-              React.createElement(r.component, {
-                ...initialData,
-                history: props.history,
-                location: previousLocation || location,
-                match: props.match,
-                prefetch: this.prefetch,
-              })
-            }
-          />
-        ))}
+        {this.props.routes.map((r: any, i: number) => {
+          const RouteComponent = r.routeComponent;
+          return (
+            <RouteComponent
+              key={`route--${i}`}
+              path={r.path}
+              exact={r.exact}
+              location={previousLocation || location}
+              render={props =>
+                React.createElement(r.component, {
+                  ...initialData,
+                  history: props.history,
+                  location: previousLocation || location,
+                  match: props.match,
+                  prefetch: this.prefetch,
+                })
+              }
+            />
+          );
+        })}
       </Switch>
     );
   }
