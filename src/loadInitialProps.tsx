@@ -16,11 +16,9 @@ export async function loadInitialProps(
               .then(() =>
                 (route.component as any)
                   .getInitialProps({ match, ...ctx })
-                  .catch(() => {})
               )
           : (route.component as any)
               .getInitialProps({ match, ...ctx })
-              .catch(() => {})
       );
     }
     return match;
