@@ -18,7 +18,10 @@ const QUERY = /* GraphQL */ `
 class Home extends Component {
   static async getInitialProps({urql}) {
     if (urql) {
-      return urql.executeQuery(query(QUERY));
+      return urql.executeQuery(query(QUERY)).then(props => {
+        props.loaded = true;
+        return props;
+      });
     }
   }
   render() {
