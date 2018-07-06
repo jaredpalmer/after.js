@@ -1,14 +1,11 @@
 import express from 'express';
+import React from 'react';
 import {render} from '@jaredpalmer/after';
+import {renderToString} from 'react-dom/server';
 import routes from './routes';
-import {Client} from 'urql';
-import fetch from 'isomorphic-fetch';
-
-global.fetch = fetch;
-
-const urql = new Client({
-  url: 'http://localhost:64895',
-});
+import {Provider} from 'urql';
+import Document from './Document';
+import createUrqlClient from './createUrqlClient';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -17,6 +14,13 @@ server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', async (req, res) => {
+    const urql = createUrqlClient({ssrMode: true});
+
+    const customRenderer = node => {
+      const html = renderToString(node);
+      return {html, initialUrqlStore: urql.store};
+    };
+
     try {
       const html = await render({
         urql,
@@ -24,10 +28,8 @@ server
         res,
         routes,
         assets,
-        // Anything else you add here will be made available
-        // within getInitialProps(ctx)
-        // e.g a redux store...
-        customThing: 'thing',
+        customRenderer,
+        document: Document,
       });
       res.send(html);
     } catch (error) {

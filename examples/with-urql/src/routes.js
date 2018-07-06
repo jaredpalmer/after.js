@@ -1,22 +1,18 @@
 import React from 'react';
+import About from './About';
+import Home from './Home';
 
-import { asyncComponent } from '@jaredpalmer/after';
+import {asyncComponent} from '@jaredpalmer/after';
 
 export default [
   {
     path: '/',
     exact: true,
-    component: asyncComponent({
-      loader: () => import('./Home'), // required
-      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
-    }),
+    component: Home,
   },
   {
-    path: '/about',
+    path: '/about/:id',
     exact: true,
-    component: asyncComponent({
-      loader: () => import('./About'), // required
-      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
-    }),
+    component: About,
   },
 ];
