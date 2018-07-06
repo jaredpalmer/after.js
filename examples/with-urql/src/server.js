@@ -1,9 +1,7 @@
 import express from 'express';
-import React from 'react';
 import {render} from '@jaredpalmer/after';
 import {renderToString} from 'react-dom/server';
 import routes from './routes';
-import {Provider} from 'urql';
 import Document from './Document';
 import createUrqlClient from './createUrqlClient';
 
