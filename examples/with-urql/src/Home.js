@@ -18,7 +18,7 @@ const QUERY = /* GraphQL */ `
 class Home extends Component {
   static async getInitialProps({urql}) {
     if (urql) {
-      return urql.executeQuery(query(QUERY)).catch(e => console.error(e));
+      return urql.executeQuery(query(QUERY));
     }
   }
   render() {
@@ -40,7 +40,6 @@ class Home extends Component {
             ))
           )}
         </div>
-        <Link to="/about">About -></Link>
       </div>
     );
   }

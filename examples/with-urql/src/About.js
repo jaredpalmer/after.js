@@ -16,14 +16,12 @@ const QUERY = /* GraphQL */ `
 class About extends React.Component {
   static async getInitialProps({urql, match}) {
     if (urql) {
-      return urql
-        .executeQuery(query(QUERY, {id: match.params.id}))
-        .catch(e => console.error(e));
+      return urql.executeQuery(query(QUERY, {id: match.params.id}))
     }
   }
   render() {
-    const {data} = this.props;
-    if (data.loading) {
+    const {data, loaded} = this.props;
+    if (!loaded) {
       return <div>Loading Film...</div>;
     }
     const {film} = data;
