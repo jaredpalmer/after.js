@@ -17,6 +17,6 @@
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^4.2.2",
-    "urql": "^0.3.0-next1"
+    "urql": "https://github.com/kasbah/urql#export-format-type-names-build"
   }
 }

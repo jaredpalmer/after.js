@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import logo from './react.svg';
 import './Home.css';
 import {Link} from 'react-router-dom';
-import {query, ConnectHOC} from 'urql';
+import {query, ConnectHOC, formatTypeNames} from 'urql';
 
 const QUERY = /* GraphQL */ `
   query AllFilms {
@@ -18,7 +18,8 @@ const QUERY = /* GraphQL */ `
 class Home extends Component {
   static async getInitialProps({urql}) {
     if (urql) {
-      return urql.executeQuery(query(QUERY)).then(props => {
+      const q = formatTypeNames(query(QUERY));
+      return urql.executeQuery(q).then(props => {
         props.loaded = true;
         return props;
       });

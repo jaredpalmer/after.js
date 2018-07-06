@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.css';
 import {Link} from 'react-router-dom';
-import {query, ConnectHOC} from 'urql';
+import {query, ConnectHOC, formatTypeNames} from 'urql';
 
 const QUERY = /* GraphQL */ `
   query AboutFilm($id: ID!) {
@@ -16,12 +16,11 @@ const QUERY = /* GraphQL */ `
 class About extends React.Component {
   static async getInitialProps({urql, match}) {
     if (urql) {
-      return urql
-        .executeQuery(query(QUERY, {id: match.params.id}))
-        .then(props => {
-          props.loaded = true;
-          return props;
-        });
+      const q = formatTypeNames(query(QUERY, {id: match.params.id}));
+      return urql.executeQuery(q).then(props => {
+        props.loaded = true;
+        return props;
+      });
     }
   }
   render() {
