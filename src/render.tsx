@@ -81,6 +81,7 @@ export async function render<T>(options: AfterRenderProps<T>) {
     assets,
     renderPage,
     data,
+    ...rest, // pass other custom user-defined props
     match: reactRouterMatch,
   });
 
