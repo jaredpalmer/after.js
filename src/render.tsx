@@ -90,6 +90,10 @@ export async function render<T>(options: AfterRenderProps<T>) {
     match: reactRouterMatch,
   });
 
+  if(typeof html === undefined || html.length === 0) {
+    res.sendStatus(404);
+  }
+
   const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
   return (
     `<!doctype html>` +
