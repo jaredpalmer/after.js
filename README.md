@@ -337,7 +337,7 @@ server
       const html = await render({
         req,
         res,
-        document: MyDocument
+        document: MyDocument,
         routes,
         assets,
       });
