@@ -75,6 +75,11 @@ export async function render<T>(options: AfterRenderProps<T>) {
   }
 
   const reactRouterMatch = matchPath(req.url, match.path);
+
+  if (typeof reactRouterMatch === undefined) {
+    res.status(404);
+  }
+
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
