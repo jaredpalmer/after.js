@@ -76,7 +76,7 @@ export async function render<T>(options: AfterRenderProps<T>) {
 
   const reactRouterMatch = matchPath(req.url, match.path);
 
-  if (typeof reactRouterMatch === undefined) {
+  if (!reactRouterMatch) {
     res.status(404);
   }
 
@@ -90,7 +90,7 @@ export async function render<T>(options: AfterRenderProps<T>) {
     match: reactRouterMatch,
   });
 
-  if(typeof html === undefined || html.length === 0) {
+  if(!html || html.length === 0) {
     res.sendStatus(404);
   }
 
