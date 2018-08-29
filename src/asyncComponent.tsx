@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Module, AsyncRouteableComponent } from './types';
 
 export interface AsyncRouteComponentProps {
   isInitialRender: boolean;
@@ -6,51 +7,47 @@ export interface AsyncRouteComponentProps {
 }
 
 export interface AsyncRouteComponentState {
-  Component: React.ReactNode | null;
+  Component: AsyncRouteableComponent |  null;
 }
+
 /**
  * Returns a new React component, ready to be instantiated.
  * Note the closure here protecting Component, and providing a unique
  * instance of Component to the static implementation of `load`.
  */
-export function asyncComponent<Props = any>({
+export function asyncComponent<Props>({
   loader,
-  Placeholder,
+  Placeholder
 }: {
-  loader: () => Promise<any>;
+  loader: () => Promise<Module<React.ReactElement<Props>>>;
   Placeholder?: React.ComponentType<Props>;
 }) {
-  let Component: any = null; // keep Component in a closure to avoid doing this stuff more than once
-  return class AsyncRouteComponent extends React.Component<
-    // AsyncRouteComponentProps,
-    any,
-    AsyncRouteComponentState
-  > {
+  let Component: AsyncRouteableComponent<Props> | null = null; // keep Component in a closure to avoid doing this stuff more than once
+
+  return class AsyncRouteComponent extends React.Component<Props, AsyncRouteComponentState> {
     /**
      * Static so that you can call load against an uninstantiated version of
      * this component. This should only be called one time outside of the
      * normal render path.
      */
     static load() {
-      return loader().then(ResolvedComponent => {
-        Component = ResolvedComponent.default || ResolvedComponent;
+      return loader().then((ResolvedComponent) => {
+        Component = ResolvedComponent!.default || ResolvedComponent;
       });
     }
 
     static getInitialProps(ctx: any) {
       // Need to call the wrapped components getInitialProps if it exists
       if (Component !== null) {
-        return Component.getInitialProps
-          ? Component.getInitialProps(ctx)
-          : Promise.resolve(null);
+        return Component.getInitialProps ? Component.getInitialProps(ctx) : Promise.resolve(null);
       }
     }
 
-    constructor(props: any) {
+    constructor(props: Props) {
       super(props);
       this.updateState = this.updateState.bind(this);
       this.state = {
-        Component,
+        Component
       };
     }
 
@@ -63,13 +60,14 @@ export function asyncComponent<Props = any>({
       // component, this prevent unnecessary renders.
       if (this.state.Component !== Component) {
         this.setState({
-          Component,
+          Component
         });
       }
     }
 
     render() {
-      const { Component: ComponentFromState } = this.state as any;
+      const { Component: ComponentFromState } = this.state;
+
       if (ComponentFromState) {
         return <ComponentFromState {...this.props} />;
       }
