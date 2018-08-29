@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { Module, AsyncRouteableComponent } from './types';
 
-export interface AsyncRouteComponentProps {
-  isInitialRender: boolean;
-  setAppState: (data: any) => void;
-}
-
 export interface AsyncRouteComponentState {
   Component: AsyncRouteableComponent |  null;
 }
@@ -19,7 +14,7 @@ export function asyncComponent<Props>({
   loader,
   Placeholder
 }: {
-  loader: () => Promise<Module<React.ReactElement<Props>>>;
+  loader: () => Promise<Module<React.ComponentType<Props>>>;
   Placeholder?: React.ComponentType<Props>;
 }) {
   let Component: AsyncRouteableComponent<Props> | null = null; // keep Component in a closure to avoid doing this stuff more than once

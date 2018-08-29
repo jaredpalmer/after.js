@@ -9,7 +9,7 @@ export async function ensureReady(routes: AsyncRouteProps[], pathname?: string) 
     routes.map(route => {
       const match = matchPath(pathname || window.location.pathname, route);
       if (match && route && route.component && route.component.load) {
-        return (route.component as any).load();
+        return (route.component).load();
       }
       return undefined;
     })
