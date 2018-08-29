@@ -32,7 +32,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   // only runs clizzient
-  componentWillReceiveProps(nextProps: AfterpartyProps, nextState: AfterpartyState) {
+  componentWillReceiveProps(nextProps: AfterpartyProps) {
     const navigated = nextProps.location !== this.props.location;
     if (navigated) {
       window.scrollTo(0, 0);

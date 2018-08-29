@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
-import { matchPath, RouteProps, StaticRouter } from 'react-router-dom';
+import { matchPath, StaticRouter } from 'react-router-dom';
 import { Document as DefaultDoc } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
-import { Assets } from './types';
+import { Assets, AsyncRouteProps, DocumentProps, AsyncRouteComponent } from './types';
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -20,15 +20,17 @@ const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
  It has to return an object of shape { html, ... }, in which html will be used as the rendered string
  Other props will be also pass to the Document component
   */
-export type AfterRenderProps<T> = T & {
+export interface AfterRenderOptions<T> {
   req: Request;
   res: Response;
   assets: Assets;
-  routes: Partial<RouteProps>[];
-};
+  routes: AsyncRouteProps[];
+  document: React.ComponentType<DocumentProps> & AsyncRouteComponent;
+  customRenderer: (element: React.ReactElement<T>) => ({hthl: string});
+}
 
-export async function render<T>(options: AfterRenderProps<T>) {
-  const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options as any;
+export async function render<T>(options: AfterRenderOptions<T>) {
+  const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
   const Doc = Document || DefaultDoc;
   const context = {};
   const renderPage = async (fn = modPageFn) => {
@@ -60,7 +62,7 @@ export async function render<T>(options: AfterRenderProps<T>) {
 
   if (match.path === '**') {
     res.status(404);
-  } else if (match && match.redirectTo) {
+  } else if (match && match.redirectTo && match.path) {
     res.redirect(301, req.originalUrl.replace(match.path, match.redirectTo));
     return;
   }
@@ -73,8 +75,9 @@ export async function render<T>(options: AfterRenderProps<T>) {
     assets,
     renderPage,
     data,
+    helmet: Helmet.renderStatic(),
+    match: reactRouterMatch,
     ...rest,
-    match: reactRouterMatch
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
