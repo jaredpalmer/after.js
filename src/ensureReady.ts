@@ -18,9 +18,8 @@ export async function ensureReady(routes: AsyncRouteProps[], pathname?: string) 
 
   let data;
   if (typeof window !== undefined && !!document) {
-    data = JSON.parse(
-      (document as any).getElementById('server-app-state').textContent
-    );
+    // deserialize state from 'serialize-javascript' format
+    data = eval('(' + (document as any).getElementById('server-app-state').textContent + ')');
   }
   return Promise.resolve(data);
 }
