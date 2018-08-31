@@ -3,8 +3,9 @@ import serialize from 'serialize-javascript';
 import { DocumentProps } from './types';
 
 export class Document extends React.Component<DocumentProps> {
-  static async getInitialProps({ assets, data, renderPage }: Partial<DocumentProps> & Pick<Required<DocumentProps>, 'renderPage'>) {
+  static async getInitialProps({ assets, data, renderPage }: DocumentProps) {
     const page = await renderPage();
+
     return { assets, data, ...page };
   }
 

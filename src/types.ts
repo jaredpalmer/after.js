@@ -1,6 +1,6 @@
 import { RouteProps, RouteComponentProps, match as Match } from 'react-router-dom';
-import { HelmetData} from 'react-helmet';
-import {Request, Response} from 'express';
+import { HelmetData } from 'react-helmet';
+import { Request, Response } from 'express';
 
 export interface DocumentProps {
   req: Request;
@@ -12,14 +12,27 @@ export interface DocumentProps {
   match: Match<any> | null;
 }
 
-export interface AsyncRouteComponent {
-  getInitialProps: ({ assets, data, renderPage }: DocumentProps) => any;
-  load: () => Promise<React.ReactNode>;
+export interface AsyncRouteComponentState {
+  Component: AsyncRouteableComponent | null;
 }
 
+export interface AsyncComponent {
+  getInitialProps: (props: DocumentProps) => any;
+  load?: () => Promise<React.ReactNode>;
+}
+
+export interface AsyncRouteComponent<Props = {}>
+  extends AsyncComponent,
+    React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
+
+export type AsyncRouteComponentType<Props> =
+  | React.ComponentClass<Props> & AsyncComponent
+  | React.StatelessComponent<Props> & AsyncComponent;
+
 export type AsyncRouteableComponent<Props = any> =
-| React.ComponentType<RouteComponentProps<Props>> & AsyncRouteComponent
-| React.ComponentType<any> & AsyncRouteComponent;
+  | AsyncRouteComponentType<RouteComponentProps<Props>>
+  | React.ComponentType<RouteComponentProps<Props>>
+  | React.ComponentType<Props>;
 
 export interface AsyncRouteProps<Props = any> extends RouteProps {
   component: AsyncRouteableComponent<Props>;
@@ -32,17 +45,17 @@ export interface InitialProps {
 }
 
 export type Module<P> =
-| {
-    default?: P;
-    [x: string]: any;
-  }
-| {
-    exports?: P;
-    [x: string]: any;
-  };
+  | {
+      default?: P;
+      [x: string]: any;
+    }
+  | {
+      exports?: P;
+      [x: string]: any;
+    };
 
 export interface Assets {
   [name: string]: {
-      [ext: string]: string;
+    [ext: string]: string;
   };
 }

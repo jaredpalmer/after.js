@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Switch, Route, withRouter, match as Match } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
-import {History, Location} from 'history';
+import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
 
 export interface AfterpartyProps {
