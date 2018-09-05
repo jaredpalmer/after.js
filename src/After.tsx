@@ -10,6 +10,7 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
   data?: Promise<any>[];
   routes: AsyncRouteProps[];
   match: Match<any>;
+  Layout?: React.ComponentType<{ location: Location; children: React.ReactNode }>;
 }
 
 export interface AfterpartyState {
@@ -74,11 +75,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
   render() {
     const { previousLocation, data } = this.state;
-    const { location } = this.props;
+    const { location, Layout } = this.props;
     const initialData = this.prefetcherCache[location.pathname] || data;
 
-    return (
-      <Switch>
+    const content = (
+      <Switch location={location}>
         {this.props.routes.map((r, i) => (
           <Route
             key={`route--${i}`}
@@ -98,6 +99,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ))}
       </Switch>
     );
+    if (Layout) {
+      return <Layout location={location}>{content}</Layout>;
+    } else {
+      return content;
+    }
   }
 }
 export const After = withRouter(Afterparty);
