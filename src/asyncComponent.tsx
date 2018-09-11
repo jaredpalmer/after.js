@@ -24,7 +24,9 @@ export function asyncComponent<Props>({
      */
     static load() {
       return loader().then((ResolvedComponent) => {
-        Component = ResolvedComponent!.default || ResolvedComponent;
+        const keys = Object.keys(ResolvedComponent);
+
+        Component = ResolvedComponent.default || (keys.length && ResolvedComponent[keys[0]]) || ResolvedComponent;
       });
     }
 
