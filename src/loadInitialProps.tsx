@@ -1,28 +1,28 @@
 import { matchPath } from 'react-router-dom';
-import { AsyncRouteProps, InitialProps, AsyncRouteComponentType } from './types';
+import { AsyncRouteProps, InitialProps, AsyncRouteComponentType, CtxBase } from './types';
 import { isAsyncComponent } from './utils';
 
-export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: any): Promise<InitialProps> {
+export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
   const promises: Promise<any>[] = [];
 
-  const match = routes.find((route: AsyncRouteProps) => {
-    const matched = matchPath(pathname, route);
+  const matchedComponent = routes.find((route: AsyncRouteProps) => {
+    const match = matchPath(pathname, route);
 
-    if (matched && route.component && isAsyncComponent(route.component)) {
+    if (match && route.component && isAsyncComponent(route.component)) {
       const component = route.component as AsyncRouteComponentType<any>;
 
       promises.push(
         component.load
-          ? component.load().then(() => component.getInitialProps({ matched, ...ctx }))
-          : component.getInitialProps({ matched, ...ctx })
+          ? component.load().then(() => component.getInitialProps({ match, ...ctx }))
+          : component.getInitialProps({ match, ...ctx })
       );
     }
 
-    return !!matched;
+    return !!match;
   });
-
+  
   return {
-    match,
+    match: matchedComponent,
     data: (await Promise.all(promises))[0]
   };
 }
