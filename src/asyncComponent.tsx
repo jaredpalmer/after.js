@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Module, AsyncRouteComponentState, AsyncRouteComponentType } from './types';
+import { Module, AsyncRouteComponentState, AsyncRouteComponentType, Ctx } from './types';
 
 /**
  * Returns a new React component, ready to be instantiated.
@@ -28,7 +28,7 @@ export function asyncComponent<Props>({
       });
     }
 
-    static getInitialProps(ctx: any) {
+    static getInitialProps(ctx: Ctx<any>) {
       // Need to call the wrapped components getInitialProps if it exists
       if (Component !== null) {
         return Component.getInitialProps ? Component.getInitialProps(ctx) : Promise.resolve(null);
