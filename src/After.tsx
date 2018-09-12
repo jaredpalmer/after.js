@@ -62,19 +62,19 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   // only runs clizzient
-  componentWillReceiveProps(nextProps: AfterpartyProps) {
-    const navigated = nextProps.location !== this.props.location;
+  componentDidUpdate(prevProps: AfterpartyProps) {
+    const navigated = prevProps.location !== this.props.location;
     if (navigated) {
-      const { data, match, routes, history, location, delayRouteTransitions, ...rest } = nextProps;
+      const { data, match, routes, history, location, delayRouteTransitions, children, ...rest } = this.props;
 
       this.beforeLoadingInitialProps()
         .then(
-          () => loadInitialProps(this.props.routes, nextProps.location.pathname, {
-            location: nextProps.location,
-            history: nextProps.history,
+          () => loadInitialProps(routes, location.pathname, {
+            location,
+            history,
             ...rest,
           })
-        ).then(({data}) => this.afterLoadingInitialProps(data))
+        ).then(({ data }) => this.afterLoadingInitialProps(data))
         .catch(e => {
           // @todo we should more cleverly handle errors???
           console.log(e);
