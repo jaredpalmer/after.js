@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Switch, Route, withRouter, match as Match } from 'react-router-dom';
+import { Switch, Route, withRouter, match as Match, RouteComponentProps } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
 
-export interface AfterpartyProps {
+export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
   location: Location;
   data?: Promise<any>[];
@@ -42,7 +42,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         data: undefined // unless you want to keep it
       });
 
-      const { data, match, routes, history, location, ...rest } = nextProps;
+      const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
 
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
         location: nextProps.location,
@@ -70,7 +70,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         };
       })
       .catch((e) => console.log(e));
-  }
+  };
 
   render() {
     const { previousLocation, data } = this.state;
@@ -100,5 +100,4 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     );
   }
 }
-
-export const After = (withRouter as any)(Afterparty);
+export const After = withRouter(Afterparty);
