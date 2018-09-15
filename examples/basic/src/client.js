@@ -1,7 +1,7 @@
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { ensureReady, After } from '@jaredpalmer/after';
+import { ensureReady, After } from '../../../build';
 import './client.css';
 import routes from './routes';
 
