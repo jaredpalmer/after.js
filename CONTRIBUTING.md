@@ -50,6 +50,8 @@ immediately in all the examples.
 - `yarn run clean`: Clean up all `node_modules` and remove all symlinks from packages and examples.
 - `yarn run bootstrap`: Run `yarn` on all examples and packages. Automatically symlinks inter-dependent modules.
 - `yarn run e2e`: Runs end-to-end tests
+- `yarn test`: Run the jest tests in watch mode
+- `yarn test:ci`: Run the tests without watch and probably in a CI environment
 
 ### Updating your fork
 

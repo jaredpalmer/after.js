@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Switch, Route, withRouter, match as Match, RouteComponentProps } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
-import { AsyncRouteProps } from './types';
+import { AfterRouteProps } from './types';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
   location: Location;
   data?: Promise<any>[];
-  routes: AsyncRouteProps[];
+  routes: AfterRouteProps[];
   match: Match<any>;
 }
 

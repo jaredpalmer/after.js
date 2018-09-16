@@ -24,35 +24,35 @@ export interface Ctx<P> extends CtxBase {
   match: Match<P>;
 }
 
-export interface AsyncRouteComponentState {
-  Component: AsyncRouteableComponent | null;
+export interface AfterRouteComponentState {
+  Component: AfterRouteableComponent | null;
 }
 
-export interface AsyncComponent {
+export interface AfterComponent {
   getInitialProps: (props: Ctx<any>) => any;
   load?: () => Promise<React.ReactNode>;
 }
 
-export interface AsyncRouteComponent<Props = {}>
-  extends AsyncComponent,
-    React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
+export interface AfterRouteComponent<Props = {}>
+  extends AfterComponent,
+    React.Component<DocumentProps & Props, AfterRouteComponentState> {}
 
-export type AsyncRouteComponentType<Props> =
-  | React.ComponentClass<Props> & AsyncComponent
-  | React.StatelessComponent<Props> & AsyncComponent;
+export type AfterRouteComponentType<Props> =
+  | React.ComponentClass<Props> & AfterComponent
+  | React.StatelessComponent<Props> & AfterComponent;
 
-export type AsyncRouteableComponent<Props = any> =
-  | AsyncRouteComponentType<RouteComponentProps<Props>>
+export type AfterRouteableComponent<Props = any> =
+  | AfterRouteComponentType<RouteComponentProps<Props>>
   | React.ComponentType<RouteComponentProps<Props>>
   | React.ComponentType<Props>;
 
-export interface AsyncRouteProps<Props = any> extends RouteProps {
-  component: AsyncRouteableComponent<Props>;
+export interface AfterRouteProps<Props = any> extends RouteProps {
+  component: AfterRouteableComponent<Props>;
   redirectTo?: string;
 }
 
 export interface InitialProps {
-  match?: AsyncRouteProps;
+  match?: AfterRouteProps;
   data: Promise<any>[];
 }
 

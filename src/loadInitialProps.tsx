@@ -1,15 +1,15 @@
 import { matchPath } from 'react-router-dom';
-import { AsyncRouteProps, InitialProps, AsyncRouteComponentType, CtxBase } from './types';
-import { isAsyncComponent } from './utils';
+import { AfterRouteProps, InitialProps, AfterRouteComponentType, CtxBase } from './types';
+import { isAfterComponent } from './utils';
 
-export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
+export async function loadInitialProps(routes: AfterRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
   const promises: Promise<any>[] = [];
 
-  const matchedComponent = routes.find((route: AsyncRouteProps) => {
+  const matchedComponent = routes.find((route: AfterRouteProps) => {
     const match = matchPath(pathname, route);
 
-    if (match && route.component && isAsyncComponent(route.component)) {
-      const component = route.component as AsyncRouteComponentType<any>;
+    if (match && route.component && isAfterComponent(route.component)) {
+      const component = route.component as AfterRouteComponentType<any>;
 
       promises.push(
         component.load
