@@ -8,7 +8,7 @@ import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
-import { Assets, AsyncRouteProps } from './types';
+import { Assets, AsyncRouteProps, LayoutComponent } from './types';
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -27,10 +27,7 @@ export interface AfterRenderOptions<T> {
   assets: Assets;
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
-  layout?: React.ComponentType<{ 
-    location: Location; 
-    children: React.ReactNode 
-  }>;
+  layout?: LayoutComponent;
   customRenderer?: (element: React.ReactElement<T>) => { hthl: string };
 }
 

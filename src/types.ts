@@ -4,6 +4,13 @@ import { Request, Response } from 'express';
 import { IncomingMessage, ServerResponse } from 'http';
 import { History, Location } from 'history';
 
+export interface LayoutProps { 
+  location: Location; 
+  children: React.ReactNode 
+}
+
+export type LayoutComponent = React.ComponentClass<LayoutProps>
+
 export interface DocumentProps {
   req: Request;
   res: Response;

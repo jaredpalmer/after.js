@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Switch, Route, withRouter, match as Match, RouteComponentProps } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
-import { AsyncRouteProps } from './types';
+import { AsyncRouteProps, LayoutComponent } from './types';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -10,7 +10,7 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
   data?: Promise<any>[];
   routes: AsyncRouteProps[];
   match: Match<any>;
-  Layout?: React.ComponentType<{ location: Location; children: React.ReactNode }>;
+  Layout?: LayoutComponent;
 }
 
 export interface AfterpartyState {
@@ -43,17 +43,17 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         data: undefined // unless you want to keep it
       });
 
-      const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
+      const { data, match, routes, history, location, staticContext, Layout, ...rest } = nextProps;
 
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
         location: nextProps.location,
         history: nextProps.history,
         ...rest
       })
-        .then(({ data }) => {
+        .then(({ data }: { data: any }) => {
           this.setState({ previousLocation: null, data });
         })
-        .catch((e) => {
+        .catch((e: any) => {
           // @todo we should more cleverly handle errors???
           console.log(e);
         });
