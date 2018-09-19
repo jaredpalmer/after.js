@@ -1,6 +1,6 @@
 import React from 'react';
 
-class NonDymamiImport extends React.Component {
+class NonDymamicImport extends React.Component {
   static displayName = 'NonDynamicExport';
 
   static async getInitialProps({ req, res, match, history, location, ...ctx }) {
@@ -14,4 +14,4 @@ class NonDymamiImport extends React.Component {
   }
 }
 
-export default NonDymamiImport;
+export default NonDymamicImport;
