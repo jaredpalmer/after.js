@@ -16,6 +16,7 @@
     "config",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
-    "src/**/*.story.tsx"
+    "src/**/*.story.tsx",
+    "src/test"
   ]
 }

@@ -1,5 +1,5 @@
 import { matchPath } from 'react-router-dom';
-import { AsyncRouteProps, InitialProps, AsyncRouteComponentType, CtxBase } from './types';
+import { AsyncRouteProps, InitialProps, CtxBase } from './types';
 import { isAsyncComponent } from './utils';
 
 export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
@@ -9,7 +9,7 @@ export async function loadInitialProps(routes: AsyncRouteProps[], pathname: stri
     const match = matchPath(pathname, route);
 
     if (match && route.component && isAsyncComponent(route.component)) {
-      const component = route.component as AsyncRouteComponentType<any>;
+      const component = route.component;
 
       promises.push(
         component.load

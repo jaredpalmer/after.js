@@ -12,7 +12,7 @@
     "@jaredpalmer/after": "^0.5.2",
     "express": "^4.16.2",
     "raf": "^3.4.0",
-    "razzle": "^2.0.0-alpha.5",
+    "razzle": "^2.4.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
