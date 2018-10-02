@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Module, AfterRouteComponentState, AfterRouteComponentType, Ctx } from './types';
+import { Module, AsyncRouteComponentState, AsyncRouteComponentType, Ctx } from './types';
 
 /**
  * Returns a new React component, ready to be instantiated.
@@ -14,9 +14,9 @@ export function asyncComponent<Props>({
   Placeholder?: React.ComponentType<Props>;
 }) {
   // keep Component in a closure to avoid doing this stuff more than once
-  let Component: AfterRouteComponentType<Props> | null = null;
+  let Component: AsyncRouteComponentType<Props> | null = null;
 
-  return class AsyncRouteComponent extends React.Component<Props, AfterRouteComponentState> {
+  return class AsyncRouteComponent extends React.Component<Props, AsyncRouteComponentState> {
     /**
      * Static so that you can call load against an uninstantiated version of
      * this component. This should only be called one time outside of the

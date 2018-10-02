@@ -1,4 +1,4 @@
-import { AfterRouteableComponent, AfterRouteComponentType } from "./types";
+import { AsyncRouteableComponent, AsyncRouteComponentType } from "./types";
 
 /** @private is the given object a Function? */
 export const isFunction = (obj: any) => 'function' === typeof obj;
@@ -10,12 +10,12 @@ export const isObject = (obj: any) => obj !== null && typeof obj === 'object';
 export const isPromise = (value: any): boolean =>
   isObject(value) && isFunction(value.then);
 
-/** @private Guard cluase to narrow the AfterRouteableComponent union type on getInitialProps */
-export function isAfterComponent(Component: AfterRouteableComponent): Component is AfterRouteComponentType<any> {
-  return (<AfterRouteComponentType<any>>Component).getInitialProps !== undefined;
+/** @private Guard cluase to narrow the AsyncRouteableComponent union type on getInitialProps */
+export function isAsyncComponent(Component: AsyncRouteableComponent): Component is AsyncRouteComponentType<any> {
+  return (<AsyncRouteComponentType<any>>Component).getInitialProps !== undefined;
 }
 
-/** @private Guard cluase to narrow the AfterRouteableComponent union type on load */
-export function isLoadableComponent(Component: AfterRouteableComponent): Component is AfterRouteComponentType<any> {
-  return (<AfterRouteComponentType<any>>Component).load !== undefined;
+/** @private Guard cluase to narrow the AsyncRouteableComponent union type on load */
+export function isLoadableComponent(Component: AsyncRouteableComponent): Component is AsyncRouteComponentType<any> {
+  return (<AsyncRouteComponentType<any>>Component).load !== undefined;
 }
