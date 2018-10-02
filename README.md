@@ -141,7 +141,7 @@ export default routes;
 ```js
 // ./src/Detail.js
 import React from 'react';
-import NavLink from 'react-router-dom/NavLink';
+import { Route } from 'react-router-dom';
 
 class Detail extends React.Component {
   // Notice that this will be called for
