@@ -104,6 +104,68 @@ the client and the server:
 * `prefetch: (pathname: string) => void` - Imperatively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
 * `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
 
+### Exclude server code from client bundle
+
+You cannot use a module that can only run in nodejs (server) inside your component's `getInitialProps`. Say you have a function that uses `bcrypt` to hash a string in the server:
+
+```js
+// file util.js
+const bcrypt = require("bcrypt");
+
+export const hashString = async aString => {
+  return bcrypt.hash(aString, 10);
+};
+```
+
+and you want to inject a hashed string to the component on initial server rendering:
+
+```js
+// Home.js
+ static async getInitialProps({ req, res, match, history, location, ...ctx }) {
+    var data = { stuff: "whatevs" };
+    if (req) {
+      // we know this block of code will only be executed in the server 
+      try {
+        const hashed = require("./server/util").hashString("Hello world");
+        data["hashed"] = hashed;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    return data;
+  }
+```
+
+The client compilation will fail because bcrypt can only be used in nodejs environment.
+
+```
+...
+ERROR in ./node_modules/bcrypt/node_modules/node-pre-gyp/lib/info.js
+Module not found: Error: Can't resolve 'aws-sdk' in '/after.js/examples/with-server-code-excluded/node_modules/bcrypt/node_modules/node-pre-gyp/lib'
+...
+```
+
+To solve this, you need to use webpack's IgnorePlugin:
+
+1. Create a `razzle.config.js` if not exists.
+2. Add the IgnorePlugin to the config:
+
+    ```js
+    module.exports = {
+      modify: (config, { target, dev }, webpack) => {
+        if (target === 'web') {
+          config.plugins.push(new webpack.IgnorePlugin(/server\//));
+        }
+
+        return config;
+      },
+    };
+    ```
+
+  The regular expression inside IgnorePlugin should point to the directory of the server codes. So it's better to put all the server-only codes inside a single directory. 
+
+  Please check `with-server-code-excluded` in the examples directory.
+
 ## Routing
 
 As you have probably figured out, React Router 4 powers all of After.js's
