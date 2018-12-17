@@ -5,7 +5,6 @@ import { DocumentProps } from './types';
 export class Document extends React.Component<DocumentProps> {
   static async getInitialProps({ assets, data, renderPage }: DocumentProps) {
     const page = await renderPage();
-
     return { assets, data, ...page };
   }
 
@@ -25,12 +24,19 @@ export class Document extends React.Component<DocumentProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
+          {assets.client.css && (
+            <link rel="stylesheet" href={assets.client.css} />
+          )}
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
-          <script type="text/javascript" src={assets.client.js} defer crossOrigin="anonymous" />
+          <script
+            type="text/javascript"
+            src={assets.client.js}
+            defer
+            crossOrigin="anonymous"
+          />
         </body>
       </html>
     );
@@ -47,7 +53,7 @@ export function AfterData({ data }: any) {
       id="server-app-state"
       type="application/json"
       dangerouslySetInnerHTML={{
-        __html: serialize({ ...data })
+        __html: serialize({ ...data }).replace(/<\/script>/g, '%3C/script%3E'),
       }}
     />
   );

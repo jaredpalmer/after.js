@@ -10,8 +10,6 @@
     "moduleResolution": "node"
   },
   "exclude": [
-    "build",
-    "node_modules",
     "coverage",
     "config",
     "src/**/*.story.tsx"

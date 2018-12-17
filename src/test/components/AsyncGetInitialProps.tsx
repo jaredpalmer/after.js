@@ -1,10 +1,10 @@
 import React from 'react';
 
 export interface AsyncGetInitialPropsProps {
-  stuff: string;
+  stuff: string,
 }
 
-const api = () => Promise.resolve({stuff: 'async call'})
+const api = () => Promise.resolve({ stuff: 'async call' });
 
 class AsyncGetInitialProps extends React.Component<AsyncGetInitialPropsProps> {
   static async getInitialProps({ req, res, match, history, location, ...ctx }) {
@@ -12,7 +12,7 @@ class AsyncGetInitialProps extends React.Component<AsyncGetInitialPropsProps> {
   }
 
   render() {
-    return <h1>AsyncGetInitialProps</h1>
+    return <h1>AsyncGetInitialProps</h1>;
   }
 }
 

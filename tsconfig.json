@@ -15,13 +15,8 @@
     "strict": true,
     "pretty": true,
     "jsx": "react",
-    "lib": [
-      "es2015",
-      "dom"
-    ],
+    "lib": ["es2015", "dom"],
     "suppressImplicitAnyIndexErrors": true
   },
-  "exclude": [
-    "src/test"
-  ]
+  "exclude": ["build", "node_modules"]
 }

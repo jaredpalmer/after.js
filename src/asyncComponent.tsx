@@ -1,37 +1,47 @@
 import * as React from 'react';
-import { Module, AsyncRouteComponentState, AsyncRouteComponentType, Ctx } from './types';
+import {
+  Module,
+  AsyncRouteComponentState,
+  AsyncRouteComponentType,
+  Ctx,
+} from './types';
 
 /**
  * Returns a new React component, ready to be instantiated.
  * Note the closure here protecting Component, and providing a unique
  * instance of Component to the static implementation of `load`.
  */
-export function asyncComponent<Props>({
-  loader,
-  Placeholder
-}: {
-  loader: () => Promise<Module<React.ComponentType<Props>>>;
-  Placeholder?: React.ComponentType<Props>;
-}) {
+export function asyncComponent<Props>(
+  {
+    loader,
+    Placeholder,
+  }: {
+    loader: () => Promise<Module<React.ComponentType<Props>>>,
+    Placeholder?: React.ComponentType<Props>,
+  }
+) {
   // keep Component in a closure to avoid doing this stuff more than once
   let Component: AsyncRouteComponentType<Props> | null = null;
 
-  return class AsyncRouteComponent extends React.Component<Props, AsyncRouteComponentState> {
+  return class AsyncRouteComponent
+    extends React.Component<Props, AsyncRouteComponentState> {
     /**
      * Static so that you can call load against an uninstantiated version of
      * this component. This should only be called one time outside of the
      * normal render path.
      */
     static load() {
-      return loader().then((ResolvedComponent) => {
-        Component = ResolvedComponent!.default || ResolvedComponent;
+      return loader().then(ResolvedComponent => {
+        Component = ResolvedComponent.default || ResolvedComponent;
       });
     }
 
     static getInitialProps(ctx: Ctx<any>) {
       // Need to call the wrapped components getInitialProps if it exists
       if (Component !== null) {
-        return Component.getInitialProps ? Component.getInitialProps(ctx) : Promise.resolve(null);
+        return Component.getInitialProps
+          ? Component.getInitialProps(ctx)
+          : Promise.resolve(null);
       }
     }
 
@@ -39,7 +49,7 @@ export function asyncComponent<Props>({
       super(props);
       this.updateState = this.updateState.bind(this);
       this.state = {
-        Component
+        Component,
       };
     }
 
@@ -52,7 +62,7 @@ export function asyncComponent<Props>({
       // component, this prevent unnecessary renders.
       if (this.state.Component !== Component) {
         this.setState({
-          Component
+          Component,
         });
       }
     }

@@ -15,7 +15,7 @@ const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
 };
 
 /*
- The customRenderer parameter is a (potentially async) function that can be set to return 
+ The customRenderer parameter is a (potentially async) function that can be set to return
  more than just a rendered string.
  If present, it will be used instead of the default ReactDOMServer renderToString function.
  It has to return an object of shape { html, ... }, in which html will be used as the rendered string
@@ -27,17 +27,27 @@ export interface AfterRenderOptions<T> {
   assets: Assets;
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
-  customRenderer?: (element: React.ReactElement<T>) => { hthl: string };
+  customRenderer?: (element: React.ReactElement<T>) => { html: string };
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
+  const {
+    req,
+    res,
+    routes,
+    assets,
+    document: Document,
+    customRenderer,
+    ...rest
+  } = options;
   const Doc = Document || DefaultDoc;
 
   const context = {};
   const renderPage = async (fn = modPageFn) => {
     // By default, we keep ReactDOMServer synchronous renderToString function
-    const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
+    const defaultRenderer = (element: React.ReactElement<T>) => ({
+      html: ReactDOMServer.renderToString(element),
+    });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
@@ -45,17 +55,23 @@ export async function render<T>(options: AfterRenderOptions<T>) {
       </StaticRouter>
     );
 
-    const renderedContent = utils.isPromise(asyncOrSyncRender) ? await asyncOrSyncRender : asyncOrSyncRender;
+    const renderedContent = utils.isPromise(asyncOrSyncRender)
+      ? await asyncOrSyncRender
+      : asyncOrSyncRender;
     const helmet = Helmet.renderStatic();
 
     return { helmet, ...renderedContent };
   };
 
-  const { match, data } = await loadInitialProps(routes, url.parse(req.url).pathname as string, {
-    req,
-    res,
-    ...rest
-  });
+  const { match, data } = await loadInitialProps(
+    routes,
+    url.parse(req.url).pathname as string,
+    {
+      req,
+      res,
+      ...rest,
+    }
+  );
 
   if (!match) {
     res.status(404);
@@ -79,9 +95,12 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     data,
     helmet: Helmet.renderStatic(),
     match: reactRouterMatch,
-    ...rest
+    ...rest,
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
-  return `<!doctype html>${doc.replace('DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP', html)}`;
+  return `<!doctype html>${doc.replace(
+    'DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP',
+    html
+  )}`;
 }
