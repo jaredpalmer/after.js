@@ -28,19 +28,21 @@ export interface AfterRenderOptions<T> {
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
   customRenderer?: (element: React.ReactElement<T>) => { hthl: string };
+  basename?: string;
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
+  const { req, res, routes, assets, document: Document, customRenderer, basename, ...rest } = options;
   const Doc = Document || DefaultDoc;
 
   const context = {};
+
   const renderPage = async (fn = modPageFn) => {
     // By default, we keep ReactDOMServer synchronous renderToString function
     const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
-      <StaticRouter location={req.url} context={context}>
+      <StaticRouter basename={basename ? basename : ''} location={req.url} context={context}>
         {fn(After)({ routes, data })}
       </StaticRouter>
     );
