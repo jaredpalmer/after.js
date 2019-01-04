@@ -27,7 +27,7 @@ export interface AfterRenderOptions<T> {
   assets: Assets;
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
-  customRenderer?: (element: React.ReactElement<T>) => { hthl: string };
+  customRenderer?: (element: React.ReactElement<T>) => { html: string };
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
