@@ -4,6 +4,13 @@ import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
 
+export type InjectedProps<T = {}> = {
+  history: History;
+  location: Location;
+  match: Match<any>;
+  prefetch: (pathname: string) => void;
+} & T;
+
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
   location: Location;
