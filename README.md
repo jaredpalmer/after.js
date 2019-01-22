@@ -92,7 +92,7 @@ export default About;
 Within `getInitialProps`, you have access to all you need to fetch data on both
 the client and the server:
 
-* `req?: Request`: (server-only) A Express.js request object
+* `req?: Request`: (server-only) An Express.js request object
 * `res?: Request`: (server-only) An Express.js response object
 * `match`: React Router 4's `match` object.
 * `history`: React Router 4's `history` object.
