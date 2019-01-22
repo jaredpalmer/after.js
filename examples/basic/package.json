@@ -9,7 +9,7 @@
     "start": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
-    "@jaredpalmer/after": "^0.5.2",
+    "@jaredpalmer/after": "^1.0.0",
     "express": "^4.16.2",
     "raf": "^3.4.0",
     "razzle": "^2.4.0",
