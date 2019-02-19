@@ -53,6 +53,7 @@
     "express": ">=4",
     "react": ">=16",
     "react-helmet": ">=5.2.0",
+    "react-router-config": ">=4.4.0",
     "react-router-dom": ">=4.2.2",
     "serialize-javascript": ">=1.5.0"
   },
@@ -63,6 +64,7 @@
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/react-helmet": "^5.0.3",
+    "@types/react-router-config": "^1.1.1",
     "@types/react-router-dom": "^4.3.0",
     "@types/serialize-javascript": "^1.3.2",
     "express": "^4.16.2",
@@ -73,6 +75,7 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-helmet": "^5.2.0",
+    "react-router-config": "^4.4.0-beta.6",
     "react-router-dom": "^4.2.2",
     "serialize-javascript": "^1.5.0",
     "ts-jest": "^23.1.4",

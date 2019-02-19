@@ -9,16 +9,20 @@ describe('loadInitialProps', () => {
   beforeEach(() => {
     history = createMemoryHistory();
   })
-  
+
   it('should find matched component and call getInitialProps', async () => {
     const url = '/'
 
     const matched = await loadInitialProps(routes, url, { history });
-
     const expected = routes.find(r => r.path === url);
 
-    expect(matched.match).toEqual(expected);
-
+    expect(matched.route).toEqual(expected);
+    expect(matched.match).toEqual({
+      isExact: matched.route.exact,
+      path: matched.route.path,
+      url: matched.route.path,
+      params: {}
+    });
     expect(matched.data).toEqual({ stuff: 'home stuffs' });
   });
 
@@ -28,7 +32,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.route.path).toBe(url);
 
     expect(matched.data).toEqual({ stuff: 'async call' });
   });
@@ -38,7 +42,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.route.path).toBe(url);
 
     expect(matched.data).toEqual({ stuff: 'non dynamic export' });
   });
@@ -48,7 +52,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.route.path).toBe(url);
 
     expect(matched.data).toEqual({ stuff: 'non default export' });
   });
@@ -58,8 +62,19 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.route.path).toBe(url);
 
     expect(matched.data).toBeUndefined();
+  });
+
+  it('should call getInitialProps for nested routes components', async () => {
+    const url = '/route/nested';
+
+    const matched = await loadInitialProps(routes, url, { history });
+
+    console.log(matched.data)
+    // expect(matched.route.path).toBe(url);
+
+    expect(matched.data).toEqual({ stuff: 'root route' });
   });
 })

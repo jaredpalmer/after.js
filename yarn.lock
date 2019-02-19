@@ -60,6 +60,13 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
+"@babel/runtime@^7.1.2":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.1.tgz#574b03e8e8a9898eaf4a872a92ea20b7846f6f2a"
+  integrity sha512-7jGW8ppV0ant637pIqAcFfQDDH1orEPGJb8aXfUozuCU3QqX7rX4DA8iwrbPrR1hcH0FTTHz47yQnk+bl5xHQA==
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@babel/template@7.0.0-beta.44":
   version "7.0.0-beta.44"
   resolved "http://registry.npmjs.org/@babel/template/-/template-7.0.0-beta.44.tgz#f8832f4fdcee5d59bf515e595fc5106c529b394f"
@@ -163,6 +170,15 @@
   resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-5.0.7.tgz#1cae65b2c37fe54cf56f40cd388836d4619dbc51"
   dependencies:
     "@types/react" "*"
+
+"@types/react-router-config@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-router-config/-/react-router-config-1.1.1.tgz#4d72ff7003ed568e537a53703825b6e55d59c368"
+  integrity sha512-0VLeZnP6qO+8HRUGvpqVp/AB5/TcFYRJEfCLZX3amVsv3V9CNtfWNDHX5DG6ZdBF6uPfWkhZ4/GUYCsog65V7Q==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
 
 "@types/react-router-dom@^4.3.0":
   version "4.3.0"
@@ -6336,6 +6352,13 @@ react-helmet@^5.2.0:
     prop-types "^15.5.4"
     react-side-effect "^1.1.0"
 
+react-router-config@^4.4.0-beta.6:
+  version "4.4.0-beta.6"
+  resolved "https://registry.yarnpkg.com/react-router-config/-/react-router-config-4.4.0-beta.6.tgz#bb2a29acb22b6458ed044cc48c5d69db71ab0cfd"
+  integrity sha512-qxqqJ4LDok3UNRpJEs2NwCOBxugvKA71I4N5mk/qeZwo3EiUnqsX7YVyDIiGcTvzKx+h8qVTUyJeCqOe0fFMGw==
+  dependencies:
+    "@babel/runtime" "^7.1.2"
+
 react-router-dom@^4.2.2:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.3.1.tgz#4c2619fc24c4fa87c9fd18f4fb4a43fe63fbd5c6"
@@ -6475,6 +6498,11 @@ regenerate@^1.2.1:
 regenerator-runtime@^0.11.0:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
+
+regenerator-runtime@^0.12.0:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
+  integrity sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
 
 regenerator-transform@^0.10.0:
   version "0.10.1"

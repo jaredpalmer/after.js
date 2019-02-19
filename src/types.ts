@@ -18,7 +18,7 @@ export interface CtxBase {
   req?: IncomingMessage;
   res?: ServerResponse;
   history?: History;
-  location?: Location; 
+  location?: Location;
 }
 export interface Ctx<P> extends CtxBase {
   match: Match<P>;
@@ -52,7 +52,8 @@ export interface AsyncRouteProps<Props = any> extends RouteProps {
 }
 
 export interface InitialProps {
-  match?: AsyncRouteProps;
+  route?: AsyncRouteProps;
+  match: Match<{}> | null,
   data: Promise<any>[];
 }
 

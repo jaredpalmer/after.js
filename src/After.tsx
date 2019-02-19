@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Switch, Route, withRouter, match as Match, RouteComponentProps } from 'react-router-dom';
+import { Switch, withRouter, match as Match, RouteComponentProps } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
@@ -73,29 +74,15 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   };
 
   render() {
-    const { previousLocation, data } = this.state;
+    const { data } = this.state;
     const { location } = this.props;
-    const initialData = this.prefetcherCache[location.pathname] || data;
-
+    const initialData = this.prefetcherCache[location.pathname] || data || {};
     return (
       <Switch>
-        {this.props.routes.map((r, i) => (
-          <Route
-            key={`route--${i}`}
-            path={r.path}
-            exact={r.exact}
-            location={previousLocation || location}
-            render={(props) =>
-              React.createElement(r.component, {
-                ...initialData,
-                history: props.history,
-                location: previousLocation || location,
-                match: props.match,
-                prefetch: this.prefetch
-              })
-            }
-          />
-        ))}
+        {renderRoutes(this.props.routes, {
+          ...initialData,
+          prefetch: this.prefetch
+        })}
       </Switch>
     );
   }
