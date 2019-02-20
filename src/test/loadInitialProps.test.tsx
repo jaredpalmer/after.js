@@ -72,9 +72,6 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    console.log(matched.data)
-    // expect(matched.route.path).toBe(url);
-
-    expect(matched.data).toEqual({ stuff: 'root route' });
+    expect(matched.data).toEqual({ stuff: 'root route', sub: 'nested route' });
   });
 })

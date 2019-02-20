@@ -14,7 +14,7 @@ export function asyncComponent<Props>({
   Placeholder?: React.ComponentType<Props>;
 }) {
   // keep Component in a closure to avoid doing this stuff more than once
-  let Component: AsyncRouteComponentType<Props> | null = null;
+  let Component: AsyncRouteComponentType | null = null;
 
   return class AsyncRouteComponent extends React.Component<Props, AsyncRouteComponentState> {
     /**

@@ -18,12 +18,16 @@ export async function loadInitialProps(routes: AsyncRouteProps[], pathname: stri
       );
     }
   });
+
   const matchedRoute = matchedRoutes.length ? matchedRoutes[0].route : null
   const matchedMatch = matchedRoutes.length ? matchedRoutes[0].match : null
+  const data = (await Promise.all(promises)).reduce((acc, item) => {
+    return { ...acc, ...item }
+  }, undefined)
 
   return {
     route: matchedRoute as AsyncRouteProps,
     match: matchedMatch as Match<{}>,
-    data: (await Promise.all(promises))[0]
+    data
   };
 }

@@ -1,4 +1,5 @@
-import { RouteProps, RouteComponentProps, match as Match } from 'react-router-dom';
+import { match as Match } from 'react-router-dom';
+import { RouteConfig, RouteConfigComponentProps } from 'react-router-config';
 import { HelmetData } from 'react-helmet';
 import { Request, Response } from 'express';
 import { IncomingMessage, ServerResponse } from 'http';
@@ -37,16 +38,16 @@ export interface AsyncRouteComponent<Props = {}>
   extends AsyncComponent,
     React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
 
-export type AsyncRouteComponentType<Props> =
+export type AsyncRouteComponentType<Props = any> =
   | React.ComponentClass<Props> & AsyncComponent
   | React.StatelessComponent<Props> & AsyncComponent;
 
 export type AsyncRouteableComponent<Props = any> =
-  | AsyncRouteComponentType<RouteComponentProps<Props>>
-  | React.ComponentType<RouteComponentProps<Props>>
-  | React.ComponentType<Props>;
+  | AsyncRouteComponentType<RouteConfigComponentProps<Props>>
+  | React.ComponentType<RouteConfigComponentProps<Props>>
+  | React.ComponentType;
 
-export interface AsyncRouteProps<Props = any> extends RouteProps {
+export interface AsyncRouteProps<Props = any> extends RouteConfig {
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
 }

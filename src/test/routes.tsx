@@ -41,4 +41,18 @@ export default [
     exact: true,
     component: NoGetInitialProps
   },
+  {
+    path: '/route',
+    component: asyncComponent({
+      loader: () => import('./components/RootRoute'),
+      Placeholder
+    }),
+    routes: [{
+      path: '/route/nested',
+      component: asyncComponent({
+        loader: () => import('./components/NestedRoute'),
+        Placeholder
+      }),
+    }]
+  },
 ];
