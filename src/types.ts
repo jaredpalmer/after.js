@@ -54,7 +54,7 @@ export interface AsyncRouteProps<Props = any> extends RouteConfig {
 
 export interface InitialProps {
   route?: AsyncRouteProps;
-  match: Match<{}> | null,
+  match?: Match<{}>;
   data: Promise<any>[];
 }
 

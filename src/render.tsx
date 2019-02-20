@@ -56,15 +56,15 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     ...rest
   });
 
-  if (!route) {
+  if (!route || !match) {
     res.status(404);
     return;
   }
 
-  if (route.path === '**') {
+  if (match.path === '**') {
     res.status(404);
-  } else if (route && route.redirectTo && route.path) {
-    res.redirect(301, req.originalUrl.replace(route.path, route.redirectTo));
+  } else if (match && route.redirectTo && match.path) {
+    res.redirect(301, req.originalUrl.replace(match.path, route.redirectTo));
     return;
   }
 
@@ -74,8 +74,8 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     assets,
     renderPage,
     data,
-    helmet: Helmet.renderStatic(),
     match,
+    helmet: Helmet.renderStatic(),
     ...rest
   });
 
