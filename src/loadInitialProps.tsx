@@ -5,6 +5,8 @@ import { isAsyncComponent } from './utils';
 export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
   const promises: Promise<any>[] = [];
   const matchedRoutes = matchRoutes(routes, pathname);
+  if (!matchedRoutes.length) return { data: [] }
+
   matchedRoutes.forEach((matched: MatchedRoute<{}>) => {
     const { match, route } = matched
     if (route.component && isAsyncComponent(route.component)) {
