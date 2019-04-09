@@ -15,7 +15,7 @@ const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
 };
 
 /*
- The customRenderer parameter is a (potentially async) function that can be set to return 
+ The customRenderer parameter is a (potentially async) function that can be set to return
  more than just a rendered string.
  If present, it will be used instead of the default ReactDOMServer renderToString function.
  It has to return an object of shape { html, ... }, in which html will be used as the rendered string
@@ -28,13 +28,13 @@ export interface AfterRenderOptions<T> {
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
   customRenderer?: (element: React.ReactElement<T>) => { html: string };
+  context: {};
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
+  const { req, res, routes, assets, document: Document, customRenderer, context = {}, ...rest } = options;
   const Doc = Document || DefaultDoc;
 
-  const context = {};
   const renderPage = async (fn = modPageFn) => {
     // By default, we keep ReactDOMServer synchronous renderToString function
     const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
