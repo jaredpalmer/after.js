@@ -14,9 +14,9 @@ export async function loadInitialProps(routes: AsyncRouteProps[], pathname: stri
   
   const matchedComponent = matchedRoute && matchedRoute.component || undefined
   const initialPropsData = matchedComponent && isAsyncComponent(matchedComponent) ? await (
-    component.load
-      ? component.load().then(() => component.getInitialProps({ match, ...ctx }))
-      : component.getInitialProps({ match, ...ctx })
+    matchedComponent.load
+      ? matchedComponent.load().then(() => matchedComponent.getInitialProps({ match, ...ctx }))
+      : matchedComponent.getInitialProps({ match, ...ctx })
   ) : undefined
   
   return {
