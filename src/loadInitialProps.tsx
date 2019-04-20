@@ -13,8 +13,8 @@ export async function loadInitialProps(
     // if no route is found, attempt to find a fallback (not-found) route
     (route) => !route.hasOwnProperty("path")
   )
-  // if this is the fallback (not-found) route, `matchPath` errors out if there is no `path`, so we use "*"
-  const match = matchedRoute && matchPath(pathname, matchedRoute.hasOwnProperty("path") ? matchedRoute : { path: "*" }) || undefined
+  // if this is the fallback (not-found) route, `matchPath` errors out if there is no `path`, so we use "**"
+  const match = matchedRoute && matchPath(pathname, matchedRoute.hasOwnProperty("path") ? matchedRoute : { path: "**" }) || undefined
   
   const matchedComponent = matchedRoute && matchedRoute.component || undefined
   const initialPropsData = matchedComponent && match && isAsyncComponent(matchedComponent) ? await (
