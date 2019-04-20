@@ -4,12 +4,14 @@ import { Request, Response } from 'express';
 import { IncomingMessage, ServerResponse } from 'http';
 import { History, Location } from 'history';
 
+export type TRouteData = any;
+
 export interface DocumentProps {
   req: Request;
   res: Response;
   helmet: HelmetData;
   assets: Assets;
-  data: Promise<any>[];
+  data: Promise<TRouteData>;
   renderPage: () => Promise<any>;
   match: Match<any> | null;
 }
@@ -29,7 +31,7 @@ export interface AsyncRouteComponentState {
 }
 
 export interface AsyncComponent {
-  getInitialProps: (props: Ctx<any>) => any;
+  getInitialProps: (props: Ctx<TRouteData>) => TRouteData;
   load?: () => Promise<React.ReactNode>;
 }
 
@@ -53,7 +55,7 @@ export interface AsyncRouteProps<Props = any> extends RouteProps {
 
 export interface InitialProps {
   match?: AsyncRouteProps;
-  data: Promise<any>[];
+  data: TRouteData;
 }
 
 export type Module<P> =
