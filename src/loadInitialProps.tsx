@@ -1,4 +1,4 @@
-import { AsyncRouteProps, InitialProps, CtxBase } from './types';
+import { AsyncRouteProps, InitialProps, CtxBase, TRouteData } from './types';
 import { isAsyncComponent, findMatchedRoute, loadRouteComponent } from './utils';
 
 export async function loadInitialProps(
