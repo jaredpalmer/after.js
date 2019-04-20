@@ -5,7 +5,7 @@ import { isAsyncComponent } from './utils';
 export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
   const matchedRoute = routes.find(
     (route) => !!route.hasOwnProperty("path") && !!matchPath(pathname, route)
-  ) || (
+  ) || routes.find(
     // if no route is found, attempt to find a fallback (not-found) route
     (route) => !route.hasOwnProperty("path")
   )
