@@ -11,7 +11,7 @@ export interface DocumentProps {
   res: Response;
   helmet: HelmetData;
   assets: Assets;
-  data: Promise<TRouteData>;
+  data: TRouteData;
   renderPage: () => Promise<any>;
   match: Match<any> | null;
 }
