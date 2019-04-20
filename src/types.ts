@@ -31,7 +31,7 @@ export interface AsyncRouteComponentState {
 }
 
 export interface AsyncComponent {
-  getInitialProps: (props: Ctx<TRouteData>) => TRouteData;
+  getInitialProps: (props: Ctx<any>) => TRouteData;
   load?: () => Promise<React.ReactNode>;
 }
 
