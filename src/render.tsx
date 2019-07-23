@@ -10,10 +10,6 @@ import * as url from 'url';
 import { Request, Response } from 'express';
 import { Assets, AsyncRouteProps } from './types';
 
-const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
-  return (props: Props) => <Page {...props} />;
-};
-
 /*
  The customRenderer parameter is a (potentially async) function that can be set to return 
  more than just a rendered string.
@@ -24,24 +20,27 @@ const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
 export interface AfterRenderOptions<T> {
   req: Request;
   res: Response;
-  assets: Assets;
+	assets: Assets;
+	App: React.ComponentType;
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
-  customRenderer?: (element: React.ReactElement<T>) => { html: string };
+  customRenderer?: (element: JSX.Element) => { html: string };
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
+  const { req, res, routes, assets, document: Document, customRenderer, App = React.Fragment, ...rest } = options;
   const Doc = Document || DefaultDoc;
 
   const context = {};
-  const renderPage = async (fn = modPageFn) => {
+  const renderPage = async () => {
     // By default, we keep ReactDOMServer synchronous renderToString function
-    const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
+    const defaultRenderer = (element: JSX.Element) => ({ html: ReactDOMServer.renderToString(element) });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
-        {fn(After)({ routes, data })}
+				<App>
+					<After data={data} routes={routes} />
+				</App>
       </StaticRouter>
     );
 
