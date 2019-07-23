@@ -23,18 +23,22 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-* [Getting Started with After.js](#getting-started-with-afterjs)
-  * [Razzle Quickstart](#razzle-quickstart)
-* [Data Fetching](#data-fetching)
-  * [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-  * [Injected Page Props](#injected-page-props)
-* [Routing](#routing)
-  * [Parameterized Routing](#parameterized-routing)
-  * [Client Only Data and Routing](#client-only-data-and-routing)
-* [Code Splitting](#code-splitting)
-* [Custom `<Document>`](#custom-document)
-* [Author](#author)
-* [Inspiration](#inspiration)
+- [After.js](#afterjs)
+  - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+  - [Getting Started with After.js](#getting-started-with-afterjs)
+    - [Razzle Quickstart](#razzle-quickstart)
+  - [Data Fetching](#data-fetching)
+    - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+    - [Injected Page Props](#injected-page-props)
+  - [Routing](#routing)
+    - [Parameterized Routing](#parameterized-routing)
+    - [Client Only Data and Routing](#client-only-data-and-routing)
+  - [Code Splitting](#code-splitting)
+  - [Custom `<Document>`](#custom-document)
+  - [Custom `<App>`](#custom-app)
+  - [Custom/Async Rendering](#customasync-rendering)
+  - [Author](#author)
+  - [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -349,6 +353,88 @@ server
   });
 
 export default server;
+```
+
+## Custom `<App>`
+
+You can provide an App component in order to use Context Api And Render Components which need to render inside Router Context. On server, components get rendered inside an `<StaticRouter>` component.
+
+```js
+// ./src/App.js
+import React from 'react';
+import App from './App';
+
+function App({ children }) {
+  return(
+    <MyContextProvider>
+      <Header />
+      {children}
+      <Footer />
+    </MyContextProvider>
+  );
+}
+
+export default App;
+```
+
+```js
+// ./src/server.js
+import express from 'express';
+import { render } from '@jaredpalmer/after';
+import routes from './routes';
+import App from "./App";
+
+const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+
+const server = express();
+server
+  .disable('x-powered-by')
+  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .get('/*', async (req, res) => {
+    try {
+      // Pass App in here.
+      const html = await render({
+        req,
+        res,
+        App,
+        routes,
+        assets,
+      });
+      res.send(html);
+    } catch (error) {
+      console.log(error);
+      res.json(error);
+    }
+  });
+
+export default server;
+```
+
+```js
+// ./src/client.js
+import React from 'react';
+import { hydrate } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { ensureReady, After } from '@jaredpalmer/after';
+import './client.css';
+import routes from './routes';
+import App from './App';
+
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      {/* Render App in here. */}
+      <App>
+        <After data={data} routes={routes} />
+      </App>
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
+);
+
+if (module.hot) {
+  module.hot.accept();
+}
 ```
 
 ## Custom/Async Rendering
