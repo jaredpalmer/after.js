@@ -35,7 +35,6 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   componentWillReceiveProps(nextProps: AfterpartyProps) {
     const navigated = nextProps.location !== this.props.location;
     if (navigated) {
-      window.scrollTo(0, 0);
       // save the location so we can render the old screen
       this.setState({
         previousLocation: this.props.location,
@@ -50,6 +49,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       })
         .then(({ data }) => {
+          window.scrollTo(0, 0);
           this.setState({ previousLocation: null, data });
         })
         .catch((e) => {
