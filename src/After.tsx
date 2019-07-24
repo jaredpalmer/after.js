@@ -49,7 +49,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       })
         .then(({ data }) => {
+          // Only for page changes, prevent scroll up for anchor links
+          if (
+            (this.state.previousLocation &&
+              this.state.previousLocation.pathname) !==
+            nextProps.location.pathname
+          ) {
           window.scrollTo(0, 0);
+          }
           this.setState({ previousLocation: null, data });
         })
         .catch((e) => {
