@@ -9,6 +9,7 @@ import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
 import { Assets, AsyncRouteProps } from './types';
+import { StaticRouterContext } from "react-router"
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -34,7 +35,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
   const Doc = Document || DefaultDoc;
 
-  const context = {};
+  const context: StaticRouterContext = {};
   const renderPage = async (fn = modPageFn) => {
     // By default, we keep ReactDOMServer synchronous renderToString function
     const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
