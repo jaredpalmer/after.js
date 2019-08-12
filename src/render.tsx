@@ -68,9 +68,10 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     ...rest
   });
 
-	const { redirectTo, statusCode} = data as { statusCode?: number, redirectTo?: string };
-
+	
 	if (data) {
+		const { redirectTo, statusCode} = data as { statusCode?: number, redirectTo?: string };
+		
 		if (statusCode) {
 			context.statusCode = statusCode;
 		}
