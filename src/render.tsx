@@ -33,7 +33,7 @@ export interface AfterRenderOptions<T> {
 
 export async function render<T>(options: AfterRenderOptions<T>) {
   const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
-  const Doc = Document || DefaultDoc;
+	const Doc = Document || DefaultDoc;
 
   const context: StaticRouterContext = {};
   const renderPage = async (fn = modPageFn) => {
@@ -42,7 +42,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
-        {fn(After)({ routes, data })}
+        {fn(After)({ routes: utils.getAllRoutes(routes), data })}
       </StaticRouter>
     );
 
@@ -71,7 +71,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 	
 	if (data) {
 		const { redirectTo, statusCode} = data as { statusCode?: number, redirectTo?: string };
-		
+
 		if (statusCode) {
 			context.statusCode = statusCode;
 		}
