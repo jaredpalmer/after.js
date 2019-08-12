@@ -48,6 +48,16 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 
     const renderedContent = utils.isPromise(asyncOrSyncRender) ? await asyncOrSyncRender : asyncOrSyncRender;
     const helmet = Helmet.renderStatic();
+		
+		const { statusCode, url: redirectTo } = context;
+
+		if (redirectTo) {
+			res.redirect(statusCode || 301, redirectTo);
+		}
+	
+		if (statusCode) {
+			res.status(statusCode);
+		}
 
     return { helmet, ...renderedContent };
   };
