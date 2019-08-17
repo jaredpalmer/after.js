@@ -16,7 +16,7 @@
     "pretty": true,
     "jsx": "react",
     "lib": [
-      "es2015",
+      "es2016",
       "dom"
     ],
     "suppressImplicitAnyIndexErrors": true
