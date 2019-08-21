@@ -10,12 +10,14 @@ If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.
 
 Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
 
-* Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
-* Next.js's `getInitialProps` was/is a brilliant idea.
-* Route-based code-splitting should come for free or be easy to opt into.
-* Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
+- Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
+- Next.js's `getInitialProps` was/is a brilliant idea.
+- Route-based code-splitting should come for free or be easy to opt into.
+- Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
 
 **Table of Contents**
+
+<!-- prettier-ignore-start -->
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -43,6 +45,8 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 	- [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- prettier-ignore-end -->
 
 ## Getting Started with After.js
 
@@ -98,17 +102,17 @@ export default About;
 Within `getInitialProps`, you have access to all you need to fetch data on both
 the client and the server:
 
-* `req?: Request`: (server-only) An Express.js request object
-* `res?: Request`: (server-only) An Express.js response object
-* `match`: React Router 4's `match` object.
-* `history`: React Router 4's `history` object.
-* `location`: (client-only) React Router 4's `location` object.
+- `req?: Request`: (server-only) An Express.js request object
+- `res?: Request`: (server-only) An Express.js response object
+- `match`: React Router 4's `match` object.
+- `history`: React Router 4's `history` object.
+- `location`: (client-only) React Router 4's `location` object.
 
 ### Injected Page Props
 
-* Whatever you have returned in `getInitialProps`
-* `prefetch: (pathname: string) => void` - Imperatively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
-* `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
+- Whatever you have returned in `getInitialProps`
+- `prefetch: (pathname: string) => void` - Imperatively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
+- `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
 
 ## Routing
 
@@ -197,7 +201,7 @@ React Router 4 can detect No Match (404) Routes and show a fallback component, y
 // ./src/routes.js
 import React from 'react';
 import Home from './Home';
-import Notfound  from './Notfound';
+import Notfound from './Notfound';
 import { asyncComponent } from '@jaredpalmer/after';
 
 export default [
@@ -206,13 +210,13 @@ export default [
     path: '/',
     exact: true,
     component: Home,
-	},
-	// 404 route
-	{
-		// there is no need to declare path variable 
-		// react router will pick this component as fallback
-		component: Notfound
-	}
+  },
+  // 404 route
+  {
+    // there is no need to declare path variable
+    // react router will pick this component as fallback
+    component: Notfound,
+  },
 ];
 ```
 
@@ -221,7 +225,7 @@ Notfound component must set `staticContext.statusCode` to 404 so express can set
 ```js
 // ./src/Notfound.js
 import React from 'react';
-import { Route } from "react-router-dom"
+import { Route } from 'react-router-dom';
 
 function NotFound() {
   return (
@@ -231,7 +235,7 @@ function NotFound() {
         return <div>The Page You Were Looking For Was Not Found</div>;
       }}
     />
-  )
+  );
 }
 
 export default NotFound;
@@ -244,29 +248,30 @@ if you don't declare 404 component in `routes.js` After.js will use it's default
 Sometimes you may need to send 404 response based on some api response, in this case react router don't show fallback and you have to check for that in your component.
 
 ```js
-import Notfound from "./Notfound"
+import Notfound from './Notfound';
 
 function ProductPage({ product, error }) {
-
   if (error) {
     if (error.response.status === 404) {
-      return <Notfound />
+      return <Notfound />;
     }
 
-    return <p>Something went Wrong !</p>
+    return <p>Something went Wrong !</p>;
   }
-  {/* if there was no errors we have our data */}
-  return <h1>{product.name}</h1>
+  {
+    /* if there was no errors we have our data */
+  }
+  return <h1>{product.name}</h1>;
 }
 
 ProductPage.getInitialProps = async ({ match }) => {
   try {
-    const { data } = await fetchProduct(match.params.slug)
-    return { product: data }
+    const { data } = await fetchProduct(match.params.slug);
+    return { product: data };
   } catch (error) {
-    return { error }
+    return { error };
   }
-}
+};
 ```
 
 this makes code unreadable and hard to maintain. after.js makes this easy by providing an api for handling Dynamic 404 pages. you can return `{ statusCode: 404 }` from `getInitialProps` and after.js will show 404 fallback component that you defined in `routes.js` for you.
@@ -274,43 +279,47 @@ this makes code unreadable and hard to maintain. after.js makes this easy by pro
 ```js
 function ProductPage({ product }) {
   if (error) {
-		{/* you can ignore error and catch it in ComponentDidCatch too ! */}
-    return <p>Something went Wrong !</p>
+    {
+      /* you can ignore error and catch it in ComponentDidCatch too ! */
+    }
+    return <p>Something went Wrong !</p>;
   }
 
-  return <h1>{product.name}</h1>
+  return <h1>{product.name}</h1>;
 }
 
 ProductPage.getInitialProps = async ({ match }) => {
   try {
-    const { data } = await fetchProduct(match.params.slug)
-    return { product: data }
+    const { data } = await fetchProduct(match.params.slug);
+    return { product: data };
   } catch (error) {
-    if (error.response.status === 404) return { statusCode: 404 }
-    return { error }
+    if (error.response.status === 404) return { statusCode: 404 };
+    return { error };
   }
-}
+};
 ```
 
 ### Redirect
 
-You can redirect user to other route by using `Redirect` from react router, but it can make your code unreadable and hard to maintain. 
+You can redirect user to other route by using `Redirect` from react router, but it can make your code unreadable and hard to maintain.
 with after.js you can redirect client to other route by returning `{ redirectTo: "/new-location" }` from `getInitialProps`.
 this can become handy for authorization, when user dose not have premissions to access specific route and you can redirect him/her to login page.
 
 ```js
 Dashboard.getInitialProps = async ({ match }) => {
   try {
-    const { data } = await fetchProfile()
-    return { data }
+    const { data } = await fetchProfile();
+    return { data };
   } catch (error) {
-    if (error.response.status === 401) return { statusCode: 401, redirectTo: "/login" }
-    return { error }
+    if (error.response.status === 401)
+      return { statusCode: 401, redirectTo: '/login' };
+    return { error };
   }
-}
+};
 ```
+
 Redirect will happen before after.js start render react to string soo it's fast.
-when using `redirectTo` default value for `statusCode` is 301, but you can use any numeric value you want. 
+when using `redirectTo` default value for `statusCode` is 301, but you can use any numeric value you want.
 
 ## Code Splitting
 
@@ -399,18 +408,20 @@ If you were using something like `styled-components`, and you need to wrap you e
 ```js
 // ./src/Document.js
 import React from 'react';
-import { ServerStyleSheet } from 'styled-components'
+import { ServerStyleSheet } from 'styled-components';
 import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 export default class Document extends React.Component {
   static async getInitialProps({ assets, data, renderPage }) {
-    const sheet = new ServerStyleSheet()
-    const page = await renderPage(App => props => sheet.collectStyles(<App {...props} />))
-    const styleTags = sheet.getStyleElement()
-    return { assets, data, ...page, styleTags};
+    const sheet = new ServerStyleSheet();
+    const page = await renderPage(App => props =>
+      sheet.collectStyles(<App {...props} />)
+    );
+    const styleTags = sheet.getStyleElement();
+    return { assets, data, ...page, styleTags };
   }
 
- render() {
+  render() {
     const { helmet, assets, data, styleTags } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
@@ -431,7 +442,7 @@ export default class Document extends React.Component {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data}/>
+          <AfterData data={data} />
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -543,12 +554,12 @@ export default server;
 
 ## Author
 
-* Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
+- Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
 
 ## Inspiration
 
-* [Razzle](https://github.com/jaredpalmer/razzle)
-* [Next.js](https://github.com/zeit/next.js)
+- [Razzle](https://github.com/jaredpalmer/razzle)
+- [Next.js](https://github.com/zeit/next.js)
 
 ---
 
