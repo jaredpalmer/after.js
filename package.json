@@ -26,7 +26,7 @@
     "test:ci": "CI=true yarn test"
   },
   "lint-staged": {
-    "*.js": [
+    "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)": [
       "prettier --trailing-comma es5 --single-quote --write",
       "git add"
     ]
