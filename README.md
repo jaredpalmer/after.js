@@ -23,24 +23,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [After.js](#afterjs)
-	- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
-	- [Getting Started with After.js](#getting-started-with-afterjs)
-		- [Razzle Quickstart](#razzle-quickstart)
-	- [Data Fetching](#data-fetching)
-		- [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-		- [Injected Page Props](#injected-page-props)
-	- [Routing](#routing)
-		- [Parameterized Routing](#parameterized-routing)
-		- [Client Only Data and Routing](#client-only-data-and-routing)
-		- [404 Page](#404-page)
-		- [Dynamic 404](#dynamic-404)
-		- [Redirect](#redirect)
-	- [Code Splitting](#code-splitting)
-	- [Custom `<Document>`](#custom-document)
-	- [Custom/Async Rendering](#customasync-rendering)
-	- [Author](#author)
-	- [Inspiration](#inspiration)
+- [After.js](#afterjs) - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements) - [Getting Started with After.js](#getting-started-with-afterjs) - [Razzle Quickstart](#razzle-quickstart) - [Data Fetching](#data-fetching) - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data) - [Injected Page Props](#injected-page-props) - [Routing](#routing) - [Parameterized Routing](#parameterized-routing) - [Client Only Data and Routing](#client-only-data-and-routing) - [404 Page](#404-page) - [Dynamic 404](#dynamic-404) - [Redirect](#redirect) - [Code Splitting](#code-splitting) - [Custom `<Document>`](#custom-document) - [Custom/Async Rendering](#customasync-rendering) - [Author](#author) - [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -254,7 +237,9 @@ function ProductPage({ product, error }) {
 
     return <p>Something went Wrong !</p>;
   }
-  {/* if there was no errors we have our data */}
+  {
+    /* if there was no errors we have our data */
+  }
   return <h1>{product.name}</h1>;
 }
 
@@ -273,7 +258,9 @@ this makes code unreadable and hard to maintain. after.js makes this easy by pro
 ```js
 function ProductPage({ product }) {
   if (error) {
-    {/* you can ignore error and catch it in ComponentDidCatch too ! */}
+    {
+      /* you can ignore error and catch it in ComponentDidCatch too ! */
+    }
     return <p>Something went Wrong !</p>;
   }
 
