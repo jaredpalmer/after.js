@@ -1,11 +1,11 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 class AsyncRedirectComponent extends React.Component {
-  static displayName = "AsyncRedirectComponent";
+  static displayName = 'AsyncRedirectComponent';
 
   static async getInitialProps({ req, res, match, history, location, ...ctx }) {
-    return await Promise.resolve({ redirectTo: "/new-location" });
+    return await Promise.resolve({ redirectTo: '/new-location' });
   }
 
   render() {

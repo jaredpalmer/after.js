@@ -1,8 +1,8 @@
-import React from "react";
-import { Route } from "react-router-dom";
+import React from 'react';
+import { Route } from 'react-router-dom';
 
 class UserDefined404Component extends React.Component {
-  static displayName = "UserDefined404Component";
+  static displayName = 'UserDefined404Component';
   static data = `UserDefined404Component rendred !`;
 
   render() {
