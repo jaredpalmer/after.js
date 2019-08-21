@@ -17,15 +17,36 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 **Table of Contents**
 
+<!-- prettier-ignore-start -->
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [After.js](#afterjs) - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements) - [Getting Started with After.js](#getting-started-with-afterjs) - [Razzle Quickstart](#razzle-quickstart) - [Data Fetching](#data-fetching) - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data) - [Injected Page Props](#injected-page-props) - [Routing](#routing) - [Parameterized Routing](#parameterized-routing) - [Client Only Data and Routing](#client-only-data-and-routing) - [404 Page](#404-page) - [Dynamic 404](#dynamic-404) - [Redirect](#redirect) - [Code Splitting](#code-splitting) - [Custom `<Document>`](#custom-document) - [Custom/Async Rendering](#customasync-rendering) - [Author](#author) - [Inspiration](#inspiration)
+- [After.js](#afterjs)
+	- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+	- [Getting Started with After.js](#getting-started-with-afterjs)
+		- [Razzle Quickstart](#razzle-quickstart)
+	- [Data Fetching](#data-fetching)
+		- [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+		- [Injected Page Props](#injected-page-props)
+	- [Routing](#routing)
+		- [Parameterized Routing](#parameterized-routing)
+		- [Client Only Data and Routing](#client-only-data-and-routing)
+		- [404 Page](#404-page)
+		- [Dynamic 404](#dynamic-404)
+		- [Redirect](#redirect)
+	- [Code Splitting](#code-splitting)
+	- [Custom `<Document>`](#custom-document)
+	- [Custom/Async Rendering](#customasync-rendering)
+	- [Author](#author)
+	- [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- prettier-ignore-end -->
 
 ## Getting Started with After.js
 
