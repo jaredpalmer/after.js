@@ -52,8 +52,8 @@ Results are made available on `this.props`.
 
 ```js
 // ./src/About.js
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 class About extends React.Component {
   static async getInitialProps({ req, res, match }) {
@@ -67,7 +67,7 @@ class About extends React.Component {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>About</h1>
-        {this.props.stuff ? this.props.stuff : "Loading..."}
+        {this.props.stuff ? this.props.stuff : 'Loading...'}
       </div>
     );
   }
@@ -102,26 +102,26 @@ routing. You can use any and all parts of RR4.
 
 ```js
 // ./src/routes.js
-import Home from "./Home";
-import About from "./About";
-import Detail from "./Detail";
+import Home from './Home';
+import About from './About';
+import Detail from './Detail';
 
 // Internally these will become:
 // <Route path={path} exact={exact} render={props => <component {...props} data={data} />} />
 const routes = [
   {
-    path: "/",
+    path: '/',
     exact: true,
-    component: Home
+    component: Home,
   },
   {
-    path: "/about",
-    component: About
+    path: '/about',
+    component: About,
   },
   {
-    path: "/detail/:id",
-    component: Detail
-  }
+    path: '/detail/:id',
+    component: Detail,
+  },
 ];
 
 export default routes;
@@ -129,8 +129,8 @@ export default routes;
 
 ```js
 // ./src/Detail.js
-import React from "react";
-import { Route } from "react-router-dom";
+import React from 'react';
+import { Route } from 'react-router-dom';
 
 class Detail extends React.Component {
   // Notice that this will be called for
@@ -146,7 +146,7 @@ class Detail extends React.Component {
     return (
       <div>
         <h1>Detail</h1>
-        {this.props.item ? this.props.item : "Loading..."}
+        {this.props.item ? this.props.item : 'Loading...'}
         <Route
           path="/detail/:id/more"
           exact
@@ -178,24 +178,24 @@ React Router 4 can detect No Match (404) Routes and show a fallback component, y
 
 ```js
 // ./src/routes.js
-import React from "react";
-import Home from "./Home";
-import Notfound from "./Notfound";
-import { asyncComponent } from "@jaredpalmer/after";
+import React from 'react';
+import Home from './Home';
+import Notfound from './Notfound';
+import { asyncComponent } from '@jaredpalmer/after';
 
 export default [
   // normal route
   {
-    path: "/",
+    path: '/',
     exact: true,
-    component: Home
+    component: Home,
   },
   // 404 route
   {
     // there is no need to declare path variable
     // react router will pick this component as fallback
-    component: Notfound
-  }
+    component: Notfound,
+  },
 ];
 ```
 
@@ -203,8 +203,8 @@ Notfound component must set `staticContext.statusCode` to 404 so express can set
 
 ```js
 // ./src/Notfound.js
-import React from "react";
-import { Route } from "react-router-dom";
+import React from 'react';
+import { Route } from 'react-router-dom';
 
 function NotFound() {
   return (
@@ -227,7 +227,7 @@ if you don't declare 404 component in `routes.js` After.js will use it's default
 Sometimes you may need to send 404 response based on some api response, in this case react router don't show fallback and you have to check for that in your component.
 
 ```js
-import Notfound from "./Notfound";
+import Notfound from './Notfound';
 
 function ProductPage({ product, error }) {
   if (error) {
@@ -291,7 +291,7 @@ Dashboard.getInitialProps = async ({ match }) => {
     return { data };
   } catch (error) {
     if (error.response.status === 401)
-      return { statusCode: 401, redirectTo: "/login" };
+      return { statusCode: 401, redirectTo: '/login' };
     return { error };
   }
 };
@@ -306,26 +306,26 @@ After.js lets you easily define lazy-loaded or code-split routes in your `_route
 
 ```js
 // ./src/_routes.js
-import React from "react";
-import Home from "./Home";
-import { asyncComponent } from "@jaredpalmer/after";
+import React from 'react';
+import Home from './Home';
+import { asyncComponent } from '@jaredpalmer/after';
 
 export default [
   // normal route
   {
-    path: "/",
+    path: '/',
     exact: true,
-    component: Home
+    component: Home,
   },
   // codesplit route
   {
-    path: "/about",
+    path: '/about',
     exact: true,
     component: asyncComponent({
-      loader: () => import("./About"), // required
-      Placeholder: () => <div>...LOADING...</div> // this is optional, just returns null by default
-    })
-  }
+      loader: () => import('./About'), // required
+      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
+    }),
+  },
 ];
 ```
 
@@ -335,8 +335,8 @@ After.js works similarly to Next.js with respect to overriding HTML document str
 
 ```js
 // ./src/Document.js
-import React from "react";
-import { AfterRoot, AfterData } from "@jaredpalmer/after";
+import React from 'react';
+import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 class Document extends React.Component {
   static async getInitialProps({ assets, data, renderPage }) {
@@ -386,9 +386,9 @@ If you were using something like `styled-components`, and you need to wrap you e
 
 ```js
 // ./src/Document.js
-import React from "react";
-import { ServerStyleSheet } from "styled-components";
-import { AfterRoot, AfterData } from "@jaredpalmer/after";
+import React from 'react';
+import { ServerStyleSheet } from 'styled-components';
+import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 export default class Document extends React.Component {
   static async getInitialProps({ assets, data, renderPage }) {
@@ -416,7 +416,7 @@ export default class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {/** here is where we put our Styled Components styleTags... */}
+          {/* here is where we put our Styled Components styleTags... */}
           {styleTags}
         </head>
         <body {...bodyAttrs}>
@@ -439,18 +439,18 @@ To use your custom `<Document>`, pass it to the `Document` option of your After.
 
 ```js
 // ./src/server.js
-import express from "express";
-import { render } from "@jaredpalmer/after";
-import routes from "./routes";
-import MyDocument from "./Document";
+import express from 'express';
+import { render } from '@jaredpalmer/after';
+import routes from './routes';
+import MyDocument from './Document';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
 const server = express();
 server
-  .disable("x-powered-by")
+  .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .get("/*", async (req, res) => {
+  .get('/*', async (req, res) => {
     try {
       // Pass document in here.
       const html = await render({
@@ -458,7 +458,7 @@ server
         res,
         document: MyDocument,
         routes,
-        assets
+        assets,
       });
       res.send(html);
     } catch (error) {
@@ -486,22 +486,22 @@ Example :
 
 ```js
 // ./src/server.js
-import React from "react";
-import express from "express";
-import { render } from "@jaredpalmer/after";
-import { renderToString } from "react-dom/server";
-import { ApolloProvider, getDataFromTree } from "react-apollo";
-import routes from "./routes";
-import createApolloClient from "./createApolloClient";
-import Document from "./Document";
+import React from 'react';
+import express from 'express';
+import { render } from '@jaredpalmer/after';
+import { renderToString } from 'react-dom/server';
+import { ApolloProvider, getDataFromTree } from 'react-apollo';
+import routes from './routes';
+import createApolloClient from './createApolloClient';
+import Document from './Document';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
 const server = express();
 server
-  .disable("x-powered-by")
+  .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .get("/*", async (req, res) => {
+  .get('/*', async (req, res) => {
     const client = createApolloClient({ ssrMode: true });
 
     const customRenderer = node => {
@@ -520,7 +520,7 @@ server
         routes,
         assets,
         customRenderer,
-        document: Document
+        document: Document,
       });
       res.send(html);
     } catch (error) {
