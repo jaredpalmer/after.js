@@ -437,7 +437,7 @@ export default class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {/** here is where we put our Styled Components styleTags... */}
+          {/* here is where we put our Styled Components styleTags... */}
           {styleTags}
         </head>
         <body {...bodyAttrs}>
