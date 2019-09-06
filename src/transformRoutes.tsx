@@ -1,7 +1,10 @@
 import { asyncComponent } from "./asyncComponent";
 import { AsyncRouteProps } from "./types";
+import path from "path";
 
-export function transformRoutes(routes: AsyncRouteProps<any>[]): AsyncRouteProps<any>[] {
+export function transformRoutes(
+  routes: AsyncRouteProps<any>[]
+): AsyncRouteProps<any>[] {
   return routes.map(route => {
     // undocumented feature that used to redirect!
     // that's not a route so we don't to anything with it
@@ -9,7 +12,7 @@ export function transformRoutes(routes: AsyncRouteProps<any>[]): AsyncRouteProps
       return route;
     }
 
-		// route must have a "name" property
+    // route must have a "name" property
     if (!route.name) {
       // @todo add link to documentation or show more useful error message
       if (process.env.NODE_ENV !== "production") {
@@ -24,8 +27,8 @@ export function transformRoutes(routes: AsyncRouteProps<any>[]): AsyncRouteProps
     }
 
     // it's just a route that have a component so
-		// user added component no need to do anything here
-		// but it must have a "name" property (more info in documentation)
+    // user added component no need to do anything here
+    // but it must have a "name" property (more info in documentation)
     if (route.component) {
       return route;
     }
@@ -37,7 +40,13 @@ export function transformRoutes(routes: AsyncRouteProps<any>[]): AsyncRouteProps
       ...route,
       component: asyncComponent({
         loader: () =>
-          import(/* webpackChunkName: "[request]" */ `./pages/${route.name!}`),
+          import(
+            /* webpackChunkName: "[request]" */ path.join(
+              __dirname,
+              process.env.RAZZLE_AFTER_PAGES_DIR!,
+              route.name!
+            )
+          ),
         Placeholder: route.Placeholder
       })
     };
