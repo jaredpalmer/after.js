@@ -3,14 +3,14 @@ import serialize from 'serialize-javascript';
 import { DocumentProps } from './types';
 
 export class Document extends React.Component<DocumentProps> {
-  static async getInitialProps({ assets, data, renderPage }: DocumentProps) {
+  static async getInitialProps({ assets, data, renderPage, scripts, styles, prefix }: DocumentProps) {
     const page = await renderPage();
 
-    return { assets, data, ...page };
+    return { assets, data, scripts, styles, prefix, ...page };
   }
 
   render() {
-    const { helmet, assets, data } = this.props;
+    const { helmet, assets, data, scripts, styles, prefix } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -25,11 +25,23 @@ export class Document extends React.Component<DocumentProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
+					{assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
+					{styles.map((path) => (
+            <link key={path} rel="stylesheet" href={path} />
+          ))}
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
+					{scripts.map((path) => (
+            <script
+              key={path}
+              defer
+              type="text/javascript"
+              src={prefix + path}
+              crossOrigin="anonymous"
+            />
+          ))}
           <script type="text/javascript" src={assets.client.js} defer crossOrigin="anonymous" />
         </body>
       </html>
