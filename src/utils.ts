@@ -11,6 +11,14 @@ export const isObject = (obj: any) => obj !== null && typeof obj === 'object';
 export const isPromise = (value: any): boolean =>
   isObject(value) && isFunction(value.then);
 
+/** @private we render on client? */
+export const isDOM = (): boolean =>
+	typeof window === "object" && typeof window.document === "object";
+
+/** @private we render on server? */
+export const isServer = (): boolean =>
+	!isDOM()
+
 /** @private Guard cluase to narrow the AsyncRouteableComponent union type on getInitialProps */
 export function isAsyncComponent(Component: AsyncRouteableComponent): Component is AsyncRouteComponentType<any> {
   return (<AsyncRouteComponentType<any>>Component).getInitialProps !== undefined;
