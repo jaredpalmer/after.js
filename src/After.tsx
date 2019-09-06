@@ -8,7 +8,6 @@ import { get404Component, getAllRoutes } from "./utils"
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
   location: Location;
-  data?: Promise<any>[];
   routes: AsyncRouteProps[];
   match: Match<any>;
 }
@@ -18,6 +17,9 @@ export interface AfterpartyState {
   previousLocation: Location | null;
 }
 
+const SERVER_APP_STATE = (window as any).__SERVER_APP_STATE__ as Promise<any>[]
+delete (window as any).__SERVER_APP_STATE__
+
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 	prefetcherCache: any;
 	NotfoundComponent:React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
@@ -26,7 +28,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     super(props);
 
     this.state = {
-      data: props.data,
+      data: SERVER_APP_STATE,
       previousLocation: null
     };
 
@@ -44,7 +46,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         data: undefined // unless you want to keep it
       });
 
-      const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
+      const { match, routes, history, location, staticContext, ...rest } = nextProps;
 
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
         location: nextProps.location,

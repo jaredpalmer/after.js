@@ -47,7 +47,7 @@ export function AfterData({ data }: any) {
       id="server-app-state"
       type="application/json"
       dangerouslySetInnerHTML={{
-        __html: serialize({ ...data })
+        __html: `window.__SERVER_APP_STATE__=${serialize({ ...data })}`
       }}
     />
   );
