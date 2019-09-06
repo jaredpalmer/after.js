@@ -56,10 +56,9 @@ export function AfterRoot() {
 export function AfterData({ data }: any) {
   return (
     <script
-      id="server-app-state"
-      type="application/json"
+			defer
       dangerouslySetInnerHTML={{
-        __html: `window.__SERVER_APP_STATE__=${serialize({ ...data })}`
+        __html: `window.__SERVER_APP_STATE__ = ${serialize({ ...data })}`
       }}
     />
   );
