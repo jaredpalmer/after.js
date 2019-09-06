@@ -11,7 +11,10 @@ export interface DocumentProps {
   assets: Assets;
   data: Promise<any>[];
   renderPage: () => Promise<any>;
-  match: Match<any> | null;
+	match: Match<any> | null;
+	scripts: string[]
+	styles: string[]
+	prefix: string
 }
 
 export interface CtxBase {
@@ -46,7 +49,12 @@ export type AsyncRouteableComponent<Props = any> =
   | React.ComponentType<RouteComponentProps<Props>>
   | React.ComponentType<Props>;
 
+// @todo: fix typings
+// all routes must have a name
+// but redirectTo don't need it!
 export interface AsyncRouteProps<Props = any> extends RouteProps {
+	name?: string
+	Placeholder?: React.ComponentType<any>
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
 }
@@ -70,4 +78,17 @@ export interface Assets {
   [name: string]: {
     [ext: string]: string;
   };
+}
+
+export interface manifest {
+	[key: string]: {
+		css: string[]
+		js: string[]
+	}
+}
+
+export interface getAssets {
+	manifest: manifest
+	match: Match<any> | null
+	routes: AsyncRouteProps[]
 }
