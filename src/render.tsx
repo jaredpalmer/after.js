@@ -10,7 +10,8 @@ import * as url from 'url';
 import { Request, Response } from 'express';
 import { Assets, AsyncRouteProps, manifest } from './types';
 import { StaticRouterContext } from "react-router"
-import { getAssests } from "./getAssests"
+import { getAssests } from "./getAssests";
+import { transformRoutes } from "./transformRoutes";
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -34,8 +35,10 @@ export interface AfterRenderOptions<T> {
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes, assets, document: Document, customRenderer, manifest, ...rest } = options;
+  const { req, res, routes: pureRoutes, assets, document: Document, customRenderer, manifest, ...rest } = options;
 	const Doc = Document || DefaultDoc;
+
+	const routes = transformRoutes(pureRoutes)
 
   const context: StaticRouterContext = {};
   const renderPage = async (fn = modPageFn) => {

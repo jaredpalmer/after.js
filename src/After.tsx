@@ -3,7 +3,8 @@ import { Switch, Route, withRouter, Redirect,  match as Match, RouteComponentPro
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
-import { get404Component, getAllRoutes } from "./utils"
+import { get404Component, getAllRoutes, isDOM } from './utils';
+import { transformRoutes } from './transformRoutes';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -21,19 +22,25 @@ export interface AfterpartyState {
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 	prefetcherCache: any;
 	NotfoundComponent:React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
+	routes: AsyncRouteProps<any>[]
 
   constructor(props: AfterpartyProps) {
 		super(props);
-		
-		let SERVER_APP_STATE = props.data || (window as any).__SERVER_APP_STATE__ as Promise<any>[] || undefined;
+
+		let SERVER_APP_STATE = props.data
+		if (isDOM() && !SERVER_APP_STATE) {
+			SERVER_APP_STATE = (window as any).__SERVER_APP_STATE__ as Promise<any>[]
+		}
 
     this.state = {
       data: SERVER_APP_STATE,
       previousLocation: null
     };
 
+		
+		this.routes = isDOM ? transformRoutes(props.routes) : props.routes
 		this.prefetcherCache = {};
-		this.NotfoundComponent = get404Component(this.props.routes)
+		this.NotfoundComponent = get404Component(this.routes)
   }
 
   // only runs clizzient
@@ -48,7 +55,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
       const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
 
-      loadInitialProps(this.props.routes, nextProps.location.pathname, {
+      loadInitialProps(this.routes, nextProps.location.pathname, {
         location: nextProps.location,
         history: nextProps.history,
         ...rest
@@ -72,7 +79,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   prefetch = (pathname: string) => {
-    loadInitialProps(this.props.routes, pathname, {
+    loadInitialProps(this.routes, pathname, {
       history: this.props.history
     })
       .then(({ data }) => {
@@ -93,7 +100,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       <Switch>
 				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
 				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
-        {getAllRoutes(this.props.routes).map((r, i) => (
+        {getAllRoutes(this.routes).map((r, i) => (
           <Route
             key={`route--${i}`}
             path={r.path}
