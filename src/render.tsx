@@ -8,8 +8,9 @@ import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
-import { Assets, AsyncRouteProps } from './types';
+import { Assets, AsyncRouteProps, manifest } from './types';
 import { StaticRouterContext } from "react-router"
+import { getAssests } from "./getAssests"
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -27,12 +28,13 @@ export interface AfterRenderOptions<T> {
   res: Response;
   assets: Assets;
   routes: AsyncRouteProps[];
-  document?: typeof DefaultDoc;
+	document?: typeof DefaultDoc;
+	manifest: manifest
   customRenderer?: (element: React.ReactElement<T>) => { html: string };
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes, assets, document: Document, customRenderer, ...rest } = options;
+  const { req, res, routes, assets, document: Document, customRenderer, manifest, ...rest } = options;
 	const Doc = Document || DefaultDoc;
 
   const context: StaticRouterContext = {};
@@ -87,8 +89,14 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     return;
   }
 
-  const reactRouterMatch = matchPath(req.url, match as RouteProps);
+	const reactRouterMatch = matchPath(req.url, match as RouteProps);
 
+	const prefix =
+	process.env.NODE_ENV === "production"
+		? "/"
+		: `http://${process.env.HOST!}:${parseInt(process.env.PORT!, 10) + 1}/`
+	
+	const { scripts, styles } = getAssests({ match: reactRouterMatch, routes, manifest })
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
@@ -96,7 +104,10 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     renderPage,
     data,
     helmet: Helmet.renderStatic(),
-    match: reactRouterMatch,
+		match: reactRouterMatch,
+		scripts,
+		styles,
+		prefix,
     ...rest
   });
 
