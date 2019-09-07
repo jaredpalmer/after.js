@@ -1,9 +1,10 @@
 import { asyncComponent } from "./asyncComponent";
 import { AsyncRouteProps } from "./types";
-import path from "path";
+import { Module } from "./types";
 
 export function transformRoutes(
-  routes: AsyncRouteProps<any>[]
+  routes: AsyncRouteProps<any>[],
+  loader: (name: string) => Promise<Module<React.ComponentType<any>>>
 ): AsyncRouteProps<any>[] {
   return routes.map(route => {
     // undocumented feature that used to redirect!
@@ -32,21 +33,10 @@ export function transformRoutes(
     if (route.component) {
       return route;
     }
-    return {
-      // we load component from pages folder
-      // also add webpackChunkName it's necessary
-      // to have links for scripts and css files
-      // that code spilited on inital html
+    return {	
       ...route,
       component: asyncComponent({
-        loader: () =>
-          import(
-            /* webpackChunkName: "[request]" */ path.join(
-              __dirname,
-              process.env.RAZZLE_AFTER_PAGES_DIR!,
-              route.name!
-            )
-          ),
+        loader: () => loader(route.name!),
         Placeholder: route.Placeholder
       })
     };
