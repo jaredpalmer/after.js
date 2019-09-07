@@ -4,7 +4,6 @@ import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
 import { get404Component, getAllRoutes, isDOM } from './utils';
-import { transformRoutes } from './transformRoutes';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -22,7 +21,6 @@ export interface AfterpartyState {
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 	prefetcherCache: any;
 	NotfoundComponent:React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
-	routes: AsyncRouteProps<any>[]
 
   constructor(props: AfterpartyProps) {
 		super(props);
@@ -37,10 +35,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       previousLocation: null
     };
 
-		
-		this.routes = isDOM ? transformRoutes(props.routes) : props.routes
 		this.prefetcherCache = {};
-		this.NotfoundComponent = get404Component(this.routes)
+		this.NotfoundComponent = get404Component(props.routes)
   }
 
   // only runs clizzient
@@ -55,7 +51,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
       const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
 
-      loadInitialProps(this.routes, nextProps.location.pathname, {
+      loadInitialProps(this.props.routes, nextProps.location.pathname, {
         location: nextProps.location,
         history: nextProps.history,
         ...rest
@@ -79,7 +75,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   prefetch = (pathname: string) => {
-    loadInitialProps(this.routes, pathname, {
+    loadInitialProps(this.props.routes, pathname, {
       history: this.props.history
     })
       .then(({ data }) => {
@@ -100,7 +96,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       <Switch>
 				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
 				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
-        {getAllRoutes(this.routes).map((r, i) => (
+        {getAllRoutes(this.props.routes).map((r, i) => (
           <Route
             key={`route--${i}`}
             path={r.path}
