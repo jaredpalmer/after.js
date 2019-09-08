@@ -31,7 +31,7 @@ export function isLoadableComponent(Component: AsyncRouteableComponent): Compone
 
 /** @private is given routes have 404 page?  */
 export function is404ComponentAvailable(routes: AsyncRouteProps<any>[]): AsyncRouteProps<any> | false {
-  return routes.find(route => ["**", "*", undefined].includes(route.path)) || false
+  return routes.find(route => ["**", "*", ,"" , undefined].includes(route.path)) || false
 }
 
 /** @private Returns 404Component from given routes if component was not avaliable returns default 404component */
