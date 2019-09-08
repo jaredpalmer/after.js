@@ -42,5 +42,5 @@ export function get404Component(routes: AsyncRouteProps<any>[]): AsyncRouteableC
 
 /** @private Checks if 404Component is in routes, if it's not available add default 404 component */
 export function getAllRoutes(routes: AsyncRouteProps<any>[]): AsyncRouteProps<any>[] {
-  return is404ComponentAvailable(routes) ? routes : [...routes, { name: "NotFoundComponent", component: NotFoundComponent }]
+  return is404ComponentAvailable(routes) ? routes : [...routes, { chunkName: "NotFoundComponent", component: NotFoundComponent }]
 }
