@@ -60,7 +60,7 @@ export interface AsyncRouteProps<Props = any> extends RouteProps {
 }
 
 export interface InitialProps {
-  match: AsyncRouteProps;
+  match?: AsyncRouteProps;
   data: Promise<any>[];
 }
 
@@ -89,5 +89,5 @@ export interface manifest {
 
 export interface getAssets {
 	manifest: manifest
-	route: AsyncRouteProps<any>
+	route?: AsyncRouteProps<any>
 }

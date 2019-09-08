@@ -3,7 +3,11 @@ import { isLoadableComponent } from "./utils";
 
 export function getAssets({ route, manifest }: getAssets) {
   let scripts: string[] = [];
-  let styles: string[] = [];
+	let styles: string[] = [];
+	
+	if (!route)
+  	return { scripts, styles };
+
 
   // @todo add link to documentation or show more useful error message
   if (process.env.NODE_ENV !== "production") {
