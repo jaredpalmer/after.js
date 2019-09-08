@@ -96,7 +96,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 		? "/"
 		: `http://${process.env.HOST!}:${parseInt(process.env.PORT!, 10) + 1}/`
 	
-	const { scripts, styles } = getAssests({ match: reactRouterMatch, routes, manifest })
+	const { scripts, styles } = getAssests({ route: match, manifest })
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
