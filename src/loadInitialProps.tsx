@@ -5,6 +5,9 @@ import { isAsyncComponent } from './utils';
 export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
   const promises: Promise<any>[] = [];
 
+	// matchedComponent can not be undefined
+	// because afterjs will add 404Component 
+	// and it will always match :)
   const matchedComponent = routes.find((route: AsyncRouteProps) => {
     const match = matchPath(pathname, route);
 
@@ -19,7 +22,7 @@ export async function loadInitialProps(routes: AsyncRouteProps[], pathname: stri
     }
 
     return !!match;
-  });
+  })!;
   
   return {
     match: matchedComponent,
