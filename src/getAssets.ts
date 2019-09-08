@@ -1,7 +1,7 @@
 import { getAssets } from "./types";
 import { isLoadableComponent } from "./utils";
 
-export function getAssests({ route, manifest }: getAssets) {
+export function getAssets({ route, manifest }: getAssets) {
   let scripts: string[] = [];
   let styles: string[] = [];
 

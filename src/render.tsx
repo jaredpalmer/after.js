@@ -10,7 +10,7 @@ import * as url from 'url';
 import { Request, Response } from 'express';
 import { Assets, AsyncRouteProps, manifest } from './types';
 import { StaticRouterContext } from "react-router"
-import { getAssests } from "./getAssests";
+import { getAssets } from "./getAssets";
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -96,7 +96,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 		? "/"
 		: `http://${process.env.HOST!}:${parseInt(process.env.PORT!, 10) + 1}/`
 	
-	const { scripts, styles } = getAssests({ route: match, manifest })
+	const { scripts, styles } = getAssets({ route: match, manifest })
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
