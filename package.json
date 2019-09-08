@@ -12,7 +12,6 @@
     "build",
     "after.js",
     "document.js",
-    "transformRoutes.js",
     "asyncComponent.js",
     "render.js",
     "loadInitialProps.js"
