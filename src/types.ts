@@ -89,6 +89,5 @@ export interface manifest {
 
 export interface getAssets {
 	manifest: manifest
-	match: Match<any> | null
-	routes: AsyncRouteProps[]
+	route: AsyncRouteProps<any>
 }

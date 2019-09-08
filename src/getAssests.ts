@@ -1,15 +1,24 @@
 import { getAssets } from "./types"
+import { isLoadableComponent } from "./utils"
 
-export function getAssests({ match, routes, manifest }: getAssets) {
+export function getAssests({ route, manifest }: getAssets) {
   let scripts: string[] = []
 	let styles: string[] = []
 	
-  if (match) {
-		// route can not be null, because it's matched 
-    const route = routes.find(item => item.path === match.path)!
+	// @todo add link to documentation or show more useful error message
+	if (process.env.NODE_ENV !== "production") {
+		if (isLoadableComponent(route.component) && route.chunkName === undefined) {
+			throw new Error(
+				`all async routes must have a "chunkName" property with value of /* webpackChunkName: "MyChunkName" */ ${JSON.stringify(
+					{ chunkName: "MyChunkName", ...route },
+					null,
+					2
+				)}`
+			);
+		}
 
-    if (route.name) {
-      const { name: chunkName } = route
+    if (route.chunkName) {
+      const { chunkName } = route
 
       if (manifest[chunkName] && manifest[chunkName].js) {
         scripts = manifest[chunkName].js
