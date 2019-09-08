@@ -9,7 +9,10 @@ export async function loadInitialProps(routes: AsyncRouteProps[], pathname: stri
 	// because afterjs will add 404Component 
 	// and it will always match :)
   const matchedComponent = routes.find((route: AsyncRouteProps) => {
-    const match = matchPath(pathname, route);
+
+		// matchPath dont't accept undifined path property
+		// in <Switch> componet Child <Route> default path value is an empty string
+    const match = matchPath(pathname, {...route, path: route.path || ""});
 
     if (match && route.component && isAsyncComponent(route.component)) {
       const component = route.component;
