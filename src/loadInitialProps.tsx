@@ -1,6 +1,7 @@
 import { matchPath } from 'react-router-dom';
 import { AsyncRouteProps, InitialProps, CtxBase } from './types';
 import { isAsyncComponent } from './utils';
+import { RouteProps } from 'react-router-dom';
 
 export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
   const promises: Promise<any>[] = [];
@@ -8,7 +9,7 @@ export async function loadInitialProps(routes: AsyncRouteProps[], pathname: stri
 	// matchedComponent can not be undefined
 	// because afterjs will add 404Component 
 	// and it will always match :)
-  const matchedComponent = routes.find((route: AsyncRouteProps) => {
+  const matchedComponent = routes.find((route: RouteProps) => {
 
 		// matchPath dont't accept undifined path property
 		// in <Switch> componet Child <Route> default path value is an empty string
