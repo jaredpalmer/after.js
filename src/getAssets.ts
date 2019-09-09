@@ -13,8 +13,8 @@ export function getAssets({ route, manifest }: getAssets) {
   if (isLoadableComponent(route.component) && route.chunkName === undefined) {
     logger.error(
       `all async routes must have a chunkName property with value of /* webpackChunkName: "MyChunkName" */ check your routes config or use babel-plugin-after-async-component`
-		);
-		throw new Error()
+    );
+    throw new Error();
   }
 
   // if component was LoadableComponent and had a chunkName

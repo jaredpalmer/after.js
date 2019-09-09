@@ -23,12 +23,9 @@ function getAssets(url, route = getRoute(url)) {
   return getRouteChunks({ route, manifest });
 }
 
-
-jest.mock('razzle-dev-utils/logger')
-
+jest.mock('razzle-dev-utils/logger');
 
 describe('getAssets', () => {
-
   test('for non-dynamic-import route should return empty array', () => {
     const requestUrl = '/non-dynamic-import';
     const { scripts, styles } = getAssets(requestUrl);
@@ -45,9 +42,8 @@ describe('getAssets', () => {
   });
 
   test('should log and then throw error when chunkName is undefined and component is async', () => {
-		
-		const errorLoger = jest.fn()
-		logger.error.mockImplementation(errorLoger)
+    const errorLoger = jest.fn();
+    logger.error.mockImplementation(errorLoger);
 
     const requestUrl = '/not-valid-route';
     const route = {
@@ -56,10 +52,8 @@ describe('getAssets', () => {
     };
     expect(() => {
       getAssets(requestUrl, route);
-		}).toThrow();
+    }).toThrow();
 
-		expect(errorLoger).toBeCalledTimes(1)
-
-	});
-
+    expect(errorLoger).toBeCalledTimes(1);
+  });
 });
