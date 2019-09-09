@@ -24,23 +24,23 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [After.js](#afterjs)
-	- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
-	- [Getting Started with After.js](#getting-started-with-afterjs)
-		- [Razzle Quickstart](#razzle-quickstart)
-	- [Data Fetching](#data-fetching)
-		- [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-		- [Injected Page Props](#injected-page-props)
-	- [Routing](#routing)
-		- [Parameterized Routing](#parameterized-routing)
-		- [Client Only Data and Routing](#client-only-data-and-routing)
-		- [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
-		- [Dynamic 404](#dynamic-404)
-		- [Redirect](#redirect)
-	- [Code Splitting](#code-splitting)
-	- [Custom `<Document>`](#custom-document)
-	- [Custom/Async Rendering](#customasync-rendering)
-	- [Author](#author)
-	- [Inspiration](#inspiration)
+  - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+  - [Getting Started with After.js](#getting-started-with-afterjs)
+    - [Razzle Quickstart](#razzle-quickstart)
+  - [Data Fetching](#data-fetching)
+    - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+    - [Injected Page Props](#injected-page-props)
+  - [Routing](#routing)
+    - [Parameterized Routing](#parameterized-routing)
+    - [Client Only Data and Routing](#client-only-data-and-routing)
+    - [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
+    - [Dynamic 404](#dynamic-404)
+    - [Redirect](#redirect)
+  - [Code Splitting](#code-splitting)
+  - [Custom `<Document>`](#custom-document)
+  - [Custom/Async Rendering](#customasync-rendering)
+  - [Author](#author)
+  - [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -351,13 +351,13 @@ import React from 'react';
 import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 class Document extends React.Component {
-  static async getInitialProps({ assets, data, renderPage }) {
+  static async getInitialProps({ assets, data, renderPage, scripts, styles, prefix }) {
     const page = await renderPage();
-    return { assets, data, ...page };
+    return { assets, data, scripts, styles, prefix, ...page };
   }
 
   render() {
-    const { helmet, assets, data } = this.props;
+    const { helmet, assets, data, scripts, styles, prefix } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -372,6 +372,9 @@ class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
+          {styles.map((path) => (
+            <link key={path} rel="stylesheet" href={path} />
+          ))}
           {assets.client.css && (
             <link rel="stylesheet" href={assets.client.css} />
           )}
@@ -379,6 +382,15 @@ class Document extends React.Component {
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
+          {scripts.map((path) => (
+            <script
+              key={path}
+              defer
+              type="text/javascript"
+              src={prefix + path}
+              crossOrigin="anonymous"
+            />
+          ))}
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -403,15 +415,15 @@ import { ServerStyleSheet } from 'styled-components'
 import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 export default class Document extends React.Component {
-  static async getInitialProps({ assets, data, renderPage }) {
+  static async getInitialProps({ assets, data, renderPage, scripts, prefix }) {
     const sheet = new ServerStyleSheet()
     const page = await renderPage(App => props => sheet.collectStyles(<App {...props} />))
     const styleTags = sheet.getStyleElement()
-    return { assets, data, ...page, styleTags};
+    return { assets, data, ...page, scripts, prefix, styleTags};
   }
 
  render() {
-    const { helmet, assets, data, styleTags } = this.props;
+    const { helmet, assets, data, styleTags, scripts, prefix } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -432,6 +444,15 @@ export default class Document extends React.Component {
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data}/>
+          {scripts.map((path) => (
+            <script
+              key={path}
+              defer
+              type="text/javascript"
+              src={prefix + path}
+              crossOrigin="anonymous"
+            />
+          ))}
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -453,6 +474,7 @@ import express from 'express';
 import { render } from '@jaredpalmer/after';
 import routes from './routes';
 import MyDocument from './Document';
+import manifest from '../build/manifest.json';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -467,6 +489,7 @@ server
         req,
         res,
         document: MyDocument,
+        manifest,
         routes,
         assets,
       });
@@ -504,6 +527,7 @@ import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import routes from './routes';
 import createApolloClient from './createApolloClient';
 import Document from './Document';
+import manifest from '../build/manifest.json';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -529,6 +553,7 @@ server
         res,
         routes,
         assets,
+        manifest,
         customRenderer,
         document: Document,
       });
