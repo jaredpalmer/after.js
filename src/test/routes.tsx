@@ -9,7 +9,8 @@ const Placeholder = () => <div>...LOADING...</div>
 export default [
   {
     path: '/',
-    exact: true,
+		exact: true,
+		chunkName: 'components-Home',
     component: asyncComponent({
       loader: () => import('./components/Home'),
       Placeholder
@@ -17,7 +18,8 @@ export default [
   },
   {
     path: '/async-get-initial-props',
-    exact: true,
+		exact: true,
+		chunkName: 'components-AsyncGetInitialProps',
     component: asyncComponent({
       loader: () => import('./components/AsyncGetInitialProps'),
       Placeholder
@@ -30,7 +32,8 @@ export default [
   },
   {
     path: '/non-default-export',
-    exact: true,
+		exact: true,
+		chunkName: 'components-NoNDefaultExport',
     component: asyncComponent({
       loader: () => import('./components/NoNDefaultExport').then((module) => module.NonDefaultExport),
       Placeholder
