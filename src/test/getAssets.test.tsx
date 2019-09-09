@@ -45,9 +45,9 @@ describe('getAssets', () => {
     const errorLoger = jest.fn();
     logger.error.mockImplementation(errorLoger);
 
-    const requestUrl = '/not-valid-route';
+    const requestUrl = '/bad-route-config';
     const route = {
-      path: '/not-valid-route',
+      path: '/bad-route-config',
       component: asyncComponent({ loader: () => import('./components/Home') }),
     };
     expect(() => {
