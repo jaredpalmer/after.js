@@ -5,6 +5,9 @@ import { matchPath } from 'react-router-dom';
 import { AsyncRouteProps } from '../types';
 import { asyncComponent } from '../asyncComponent';
 
+// @ts-ignore
+import logger from 'razzle-dev-utils/logger';
+
 function getRoute(url): AsyncRouteProps {
   const matchedComponent = routes.find((route: AsyncRouteProps) => {
     // matchPath dont't accept undifined path property
@@ -19,6 +22,10 @@ function getRoute(url): AsyncRouteProps {
 function getAssets(url, route = getRoute(url)) {
   return getRouteChunks({ route, manifest });
 }
+
+
+jest.mock('razzle-dev-utils/logger')
+
 
 describe('getAssets', () => {
 
@@ -37,13 +44,10 @@ describe('getAssets', () => {
     expect(styles).toEqual(manifest[chunkNameForRequestedUrl].css);
   });
 
-  test('should throw error in non production env when chunkName is undefined and component is async', () => {
-
-		// change env.NODE_ENV
-		const OLD_ENV = process.env;
-		jest.resetModules() // this is important - it clears the cache
-    process.env = { ...OLD_ENV };
-    process.env.NODE_ENV = "development";
+  test('should log and then throw error when chunkName is undefined and component is async', () => {
+		
+		const errorLoger = jest.fn()
+		logger.error.mockImplementation(errorLoger)
 
     const requestUrl = '/not-valid-route';
     const route = {
@@ -53,32 +57,9 @@ describe('getAssets', () => {
     expect(() => {
       getAssets(requestUrl, route);
 		}).toThrow();
-		
-		// restore old env
-		process.env = OLD_ENV;
+
+		expect(errorLoger).toBeCalledTimes(1)
 
 	});
 
-	test('should not throw error in production env when chunkName is undefined and component is async', () => {
-
-		// change env.NODE_ENV
-		const OLD_ENV = process.env;
-		jest.resetModules() // this is important - it clears the cache
-    process.env = { ...OLD_ENV };
-    process.env.NODE_ENV = "production";
-
-    const requestUrl = '/not-valid-route';
-    const route = {
-      path: '/not-valid-route',
-      component: asyncComponent({ loader: () => import('./components/Home') }),
-    };
-    expect(() => {
-      getAssets(requestUrl, route);
-		}).not.toThrow();
-		
-		// restore old env
-		process.env = OLD_ENV;
-
-	});
-	
 });
