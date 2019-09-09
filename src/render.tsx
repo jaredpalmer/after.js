@@ -9,8 +9,8 @@ import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
 import { Assets, AsyncRouteProps, manifest } from './types';
-import { StaticRouterContext } from "react-router"
-import { getAssets } from "./getAssets";
+import { StaticRouterContext } from 'react-router';
+import { getAssets } from './getAssets';
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -28,21 +28,32 @@ export interface AfterRenderOptions<T> {
   res: Response;
   assets: Assets;
   routes: AsyncRouteProps[];
-	document?: typeof DefaultDoc;
-	manifest: manifest
+  document?: typeof DefaultDoc;
+  manifest: manifest;
   customRenderer?: (element: React.ReactElement<T>) => { html: string };
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes: pureRoutes, assets, document: Document, customRenderer, manifest, ...rest } = options;
-	const Doc = Document || DefaultDoc;
+  const {
+    req,
+    res,
+    routes: pureRoutes,
+    assets,
+    document: Document,
+    customRenderer,
+    manifest,
+    ...rest
+  } = options;
+  const Doc = Document || DefaultDoc;
 
-	const routes = utils.getAllRoutes(pureRoutes);
+  const routes = utils.getAllRoutes(pureRoutes);
 
   const context: StaticRouterContext = {};
   const renderPage = async (fn = modPageFn) => {
     // By default, we keep ReactDOMServer synchronous renderToString function
-    const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
+    const defaultRenderer = (element: React.ReactElement<T>) => ({
+      html: ReactDOMServer.renderToString(element),
+    });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
@@ -50,55 +61,63 @@ export async function render<T>(options: AfterRenderOptions<T>) {
       </StaticRouter>
     );
 
-    const renderedContent = utils.isPromise(asyncOrSyncRender) ? await asyncOrSyncRender : asyncOrSyncRender;
+    const renderedContent = utils.isPromise(asyncOrSyncRender)
+      ? await asyncOrSyncRender
+      : asyncOrSyncRender;
     const helmet = Helmet.renderStatic();
-		
-		const { statusCode, url: redirectTo } = context;
 
-		if (redirectTo) {
-			res.redirect(statusCode || 301, redirectTo);
-		}
-	
-		if (statusCode) {
-			res.status(statusCode);
-		}
+    const { statusCode, url: redirectTo } = context;
+
+    if (redirectTo) {
+      res.redirect(statusCode || 301, redirectTo);
+    }
+
+    if (statusCode) {
+      res.status(statusCode);
+    }
 
     return { helmet, ...renderedContent };
   };
 
-  const { match, data } = await loadInitialProps(routes, url.parse(req.url).pathname as string, {
-    req,
-    res,
-    ...rest
-  });
+  const { match, data } = await loadInitialProps(
+    routes,
+    url.parse(req.url).pathname as string,
+    {
+      req,
+      res,
+      ...rest,
+    }
+  );
 
-	
-	if (data) {
-		const { redirectTo, statusCode} = data as { statusCode?: number, redirectTo?: string };
+  if (data) {
+    const { redirectTo, statusCode } = data as {
+      statusCode?: number;
+      redirectTo?: string;
+    };
 
-		if (statusCode) {
-			context.statusCode = statusCode;
-		}
-		
-		if (redirectTo) {
-			res.redirect(statusCode || 301, redirectTo);
-			return;
-		}
-	}
+    if (statusCode) {
+      context.statusCode = statusCode;
+    }
 
-	if (match && match.redirectTo && match.path) {
+    if (redirectTo) {
+      res.redirect(statusCode || 301, redirectTo);
+      return;
+    }
+  }
+
+  if (match && match.redirectTo && match.path) {
     res.redirect(301, req.originalUrl.replace(match.path, match.redirectTo));
     return;
   }
 
-	const reactRouterMatch = matchPath(req.url, match as RouteProps);
+  const reactRouterMatch = matchPath(req.url, match as RouteProps);
 
-	const prefix =
-	process.env.NODE_ENV === "production"
-		? "/"
-		: `http://${process.env.HOST!}:${parseInt(process.env.PORT!, 10) + 1}/`
-	
-	const { scripts, styles } = getAssets({ route: match, manifest })
+  const prefix =
+    process.env.NODE_ENV === 'production'
+      ? '/'
+      : `http://${process.env.HOST!}:${parseInt(process.env.PORT!, 10) + 1}/`;
+
+  const { scripts, styles } = getAssets({ route: match, manifest });
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
@@ -106,13 +125,16 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     renderPage,
     data,
     helmet: Helmet.renderStatic(),
-	match: reactRouterMatch,
-	scripts,
-	styles,
-	prefix,
-    ...rest
+    match: reactRouterMatch,
+    scripts,
+    styles,
+    prefix,
+    ...rest,
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
-  return `<!doctype html>${doc.replace('DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP', html)}`;
+  return `<!doctype html>${doc.replace(
+    'DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP',
+    html
+  )}`;
 }
