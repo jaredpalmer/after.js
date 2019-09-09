@@ -1,4 +1,4 @@
-import { getAssets as getRouteChunks } from '../getAssets';
+import { getAssets as getRouteChunks, errorMeesage } from '../getAssets';
 import manifest from './manifest';
 import routes from './routes';
 import { matchPath } from 'react-router-dom';
@@ -55,5 +55,6 @@ describe('getAssets', () => {
     }).toThrow();
 
     expect(errorLoger).toBeCalledTimes(1);
+    expect(errorLoger).toBeCalledWith(errorMeesage);
   });
 });
