@@ -5,7 +5,11 @@ import logger from 'razzle-dev-utils/logger';
 
 export function getAssets({ route, manifest }: getAssets) {
   let scripts: string[] = [];
-  let styles: string[] = [];
+	let styles: string[] = [];
+	
+	if (!route) {
+		return { scripts, styles };
+	}
 
   // if component was LoadableComponent and chunkName was undefined
   // print an error message to console so Developer can fix it

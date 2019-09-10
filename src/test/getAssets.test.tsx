@@ -14,7 +14,7 @@ function getRoute(url): AsyncRouteProps {
     // in <Switch> componet Child <Route> default path value is an empty string
     const match = matchPath(url, { ...route, path: route.path || '' });
     return !!match;
-  })!;
+  });
 
   return matchedComponent;
 }
