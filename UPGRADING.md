@@ -507,6 +507,8 @@ module.exports = {
 };
 ```
 
+then you must tell your webserver to send compressed files when a request comes for files, check this [gist](https://gist.github.com/nimaa77/0bafa7afe1170003f0c2d8c32ff08175) for more information.
+
 > Check [razzle-plugin-compression](https://github.com/nimacsoft/razzle-plugin-compression) repo for more options.
 
 ### Deprecated Features
