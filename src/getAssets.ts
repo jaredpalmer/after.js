@@ -1,9 +1,9 @@
-import { getAssets } from './types';
+import { getAssetsParams } from './types';
 import { isLoadableComponent } from './utils';
 // @ts-ignore
 import logger from 'razzle-dev-utils/logger';
 
-export function getAssets({ route, manifest }: getAssets) {
+export function getAssets({ route, manifest }: getAssetsParams) {
   let scripts: string[] = [];
 	let styles: string[] = [];
 	

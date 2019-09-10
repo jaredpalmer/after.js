@@ -87,7 +87,7 @@ export interface manifest {
 	}
 }
 
-export interface getAssets {
+export interface getAssetsParams {
 	manifest: manifest
 	route?: AsyncRouteProps<any>
 }
