@@ -255,7 +255,7 @@ module.exports = {
 
 > Check [razzle-plugin-manifest](https://github.com/nimacsoft/razzle-plugin-manifest) repo for more options.
 
-### Update server.js
+### Update `server.js`
 
 Just import `manifest.json` file that webpack plugin generated for us and pass it to render. (don't panic if there is no `manifest.json` file, it will get generated once you run start or build script)
 
@@ -330,6 +330,157 @@ server
   });
 
 export default server;
+```
+
+### Update `Document.js`
+
+if you defined custom `document.js` in `server.js` you should get scripts and styles from props and then loop through them 
+
+From:
+
+```jsx
+// Document.js
+
+import React from 'react';
+import { AfterRoot, AfterData } from '@jaredpalmer/after';
+
+class Document extends React.Component {
+  static async getInitialProps({
+    assets,
+    data,
+    renderPage,
+    scripts,
+    styles,
+    prefix,
+  }) {
+    const page = await renderPage();
+    return { assets, data, scripts, styles, prefix, ...page };
+  }
+
+  render() {
+    const { helmet, assets, data, scripts, styles, prefix } = this.props;
+    // get attributes from React Helmet
+    const htmlAttrs = helmet.htmlAttributes.toComponent();
+    const bodyAttrs = helmet.bodyAttributes.toComponent();
+
+    return (
+      <html {...htmlAttrs}>
+        <head>
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+          <meta charSet="utf-8" />
+          <title>Welcome to the Afterparty</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          {helmet.title.toComponent()}
+          {helmet.meta.toComponent()}
+          {helmet.link.toComponent()}
+          {styles.map(path => (
+            <link key={path} rel="stylesheet" href={path} />
+          ))}
+          {assets.client.css && (
+            <link rel="stylesheet" href={assets.client.css} />
+          )}
+        </head>
+        <body {...bodyAttrs}>
+          <AfterRoot />
+          <AfterData data={data} />
+          {scripts.map(path => (
+            <script
+              key={path}
+              defer
+              type="text/javascript"
+              src={prefix + path}
+              crossOrigin="anonymous"
+            />
+          ))}
+          <script
+            type="text/javascript"
+            src={assets.client.js}
+            defer
+            crossOrigin="anonymous"
+          />
+        </body>
+      </html>
+    );
+  }
+}
+
+export default Document;
+```
+
+To:
+
+```jsx
+// Document.js
+
+import React from 'react';
+import { AfterRoot, AfterData } from '@jaredpalmer/after';
+
+class Document extends React.Component {
+  static async getInitialProps({
+    assets,
+    data,
+    renderPage,
+    scripts,
+    styles,
+    prefix,
+  }) {
+    // <- scripts, styles, prefix
+    const page = await renderPage();
+    return { assets, data, scripts, styles, prefix, ...page }; // <- scripts, styles, prefix
+  }
+
+  render() {
+    const { helmet, assets, data, scripts, styles, prefix } = this.props; // <- scripts, styles, prefix
+    // get attributes from React Helmet
+    const htmlAttrs = helmet.htmlAttributes.toComponent();
+    const bodyAttrs = helmet.bodyAttributes.toComponent();
+
+    return (
+      <html {...htmlAttrs}>
+        <head>
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+          <meta charSet="utf-8" />
+          <title>Welcome to the Afterparty</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          {helmet.title.toComponent()}
+          {helmet.meta.toComponent()}
+          {helmet.link.toComponent()}
+          {styles.map((
+            path // <- loop through styles
+          ) => (
+            <link key={path} rel="stylesheet" href={path} />
+          ))}
+          {assets.client.css && (
+            <link rel="stylesheet" href={assets.client.css} />
+          )}
+        </head>
+        <body {...bodyAttrs}>
+          <AfterRoot />
+          <AfterData data={data} />
+          {scripts.map((
+            path // <- loop through scripts
+          ) => (
+            <script
+              key={path}
+              defer
+              type="text/javascript"
+              src={prefix + path}
+              crossOrigin="anonymous"
+            />
+          ))}
+          <script                   // NOTE: order should not change
+            type="text/javascript"  // first load chunks (scripts) then main.client.js
+            src={assets.client.js}
+            defer
+            crossOrigin="anonymous"
+          />
+        </body>
+      </html>
+    );
+  }
+}
+
+export default Document;
 ```
 
 ### Bonus
