@@ -1,5 +1,7 @@
 import React from 'react';
 
+// babel-plugin-after-async-component will not work with this file 
+// the import statment should be "@jaredpalmer/after" or "@jaredpalmer/after/asyncComponent"
 import { asyncComponent } from '../../../build/asyncComponent';
 
 export default [
