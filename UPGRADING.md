@@ -2,22 +2,22 @@
 
 ## Preamble
 
-#### Load Assets Faster !
+#### Load Assets Faster!
 
 > Upgrading to version 2 should not take more than 10 minutes.
 
-In v1, with `asyncComponent` you spilit part of your application into a new chunk and on BROWSER when you need that part of your code it get downloaded automatically. when page rendered on server there was no way to understand which chunks needed for current request so After.js only sends `bundle.js` and `main.css` file, then on BROWSER with `ensureReady` method it tries to fetch chunks (splitted css and js files) needed for current request. and it's slow!
+In v1, with `asyncComponent` you split part of your application into a new chunk and on BROWSER when you need that part of your code it gets downloaded automatically. when page rendered on the server there was no way to understand which chunks needed for the current request so After.js only sends `bundle.js` and `main.css` file, then on BROWSER with `ensureReady` method it tries to fetch chunks (split CSS and JS files) needed for the current request. and it's slow!
 
 #### WHY?
 
-1. browser must download `bundle.js`, then parse it and at the end it executes the code. when code get executed `ensureReady` method get called, `ensureReady` finds and download chunks needed to render current page and when all files get downloaded it start to re-hydrate.
+1. browser must download `bundle.js`, then parse it and at the end, it executes the code. when code gets executed `ensureReady` method gets called, `ensureReady` finds and download chunks needed to render the current page and when all files get downloaded it start to re-hydrate.
 
-2. browser will render page without css styles (because we spilited them and it will get them when `ensureReady` called), this makes site look ugly for 2,3 seconds (bad UX).
+2. browser will render the page without CSS styles (because we split them and it will get them when `ensureReady` called), this makes the site look ugly for 2,3 seconds (bad UX).
 
-3. have you ever thinked about why css is render blocking ?
-  if browser finds a `<link rel="stylesheet">` tag , it would stop rendering page and waits unitl css file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if css files attach to dom after page get rendered, browser must repaint whole page. (painting is too much job for browser and it's to slow)
+3. have you ever think about why CSS is render blocking?
+   if browser finds a `<link rel="stylesheet">` tag, it would stop rendering page and waits until CSS file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if CSS files attach to dom after page gets rendered, the browser must repaint the whole page. (painting is too much job for browser and it's to slow)
 
-in After.js 2 this problem is solved and it sends all js and css files needed for current request in inital server response. (no need for `ensureReady` anymore)
+in After.js 2 this problem is solved and it sends all js and CSS files needed for current request in the initial server response. (no need for `ensureReady` anymore)
 
 ## Breaking Changes
 
@@ -75,7 +75,7 @@ if (module.hot) {
 }
 ```
 
-You can access server app state from window (`window.__SERVER_APP_STATE__`), you can modify `SERVER_APP_STATE` and pass it to `<After />` component.
+You can access server app state from the window (`window.__SERVER_APP_STATE__`), you can modify `SERVER_APP_STATE` and pass it to `<After />` component.
 
 ```jsx
 <After data={modifyData(window.__SERVER_APP_STATE__)} routes={routes} />
@@ -91,7 +91,7 @@ function After({ routes, data = window.__SERVER_APP_STATE__ }) {
 
 ### `routes.js` config changed
 
-In order to send assets (css and js files) from initial server response, we need to change how we define our routes.
+To send assets (CSS and JS files) from the initial server response, we need to change how we define our routes.
 
 From:
 
@@ -157,11 +157,11 @@ export default [
 ];
 ```
 
-> This is too hard and complicated (and there is more things that we have to take care about) so we made a babel plugin to do this automatically because we care about you (DX).
+> This is too hard and complicated (and there are more things that we have to take care about) so we made a babel plugin to do this automatically because we care about you (DX).
 
 #### Use babel plugin
 
-Create a `.babelrc` file in root of project (next to the package.json)
+Create a `.babelrc` file in the root of the project (next to the package.json)
 
 ```js
 // .babelrc
@@ -237,13 +237,13 @@ function myTransformations(route) {
 
 ### Add new webpack plugin
 
-We have to add new webpack plugin in order to get chunks information from webpack (it's called stats) and save it into a file to use it later in our application.
+We have to add new webpack plugin to get chunks information from webpack (it's called stats) and save it into a file to use it later in our application.
 
 This is not magic but it's using webpack magic comments.
 
-This will create a file called `manifest.json` in build directory.
+This will create a file called `manifest.json` in the build directory.
 
-to enable `razzle-plugin-manifest` create a `razzle.config.js` file in root directory of project (next to the package.json):
+to enable `razzle-plugin-manifest` create a `razzle.config.js` file in the root directory of the project (next to the package.json):
 
 ```javascript
 // razzle.config.js
@@ -334,7 +334,7 @@ export default server;
 
 ### Update `Document.js`
 
-if you defined custom `document.js` in `server.js` you should get scripts and styles from props and then loop through them 
+if you defined custom `document.js` in `server.js` you should get scripts and styles from props and then loop through them
 
 From:
 
@@ -468,8 +468,8 @@ class Document extends React.Component {
               crossOrigin="anonymous"
             />
           ))}
-          <script                   // NOTE: order should not change
-            type="text/javascript"  // first load chunks (scripts) then main.client.js
+          <script // NOTE: order should not change
+            type="text/javascript" // first load chunks (scripts) then main.client.js
             src={assets.client.js}
             defer
             crossOrigin="anonymous"
@@ -511,4 +511,4 @@ module.exports = {
 
 ### Deprecated Features
 
-Nothing !
+Nothing!
