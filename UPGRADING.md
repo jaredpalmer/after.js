@@ -14,8 +14,8 @@ In v1, with `asyncComponent` you spilit part of your application into a new chun
 
 2. browser will render page without css styles (because we spilited them and it will get them when `ensureReady` called), this makes site look ugly for 2,3 seconds (bad UX).
 
-3. have you ever thinked why css is render blocking ?
-   if borwser find a `<link rel="stylesheet">` tag, it will stop rendering the page and waits until that style file get downloaded and parsed. this is necessary in order to have fast page render, if css files attach to dom after page get rendered browser must repaint whole page. (painting is too much job for browser and it's to slow)
+3. have you ever thinked about why css is render blocking ?
+   if borwser find a `<link rel="stylesheet">` tag, it will stop rendering the page and waits until that style file get downloaded and parsed. this is necessary in order to have fast page render, if css files attach to dom after page get rendered, browser must repaint whole page. (painting is too much job for browser and it's to slow)
 
 in After.js 2 this problem is solved and it sends all js and css files needed for current request in inital server response. (no need for `ensureReady` anymore)
 
