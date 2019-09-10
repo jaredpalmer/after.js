@@ -50,6 +50,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     this.NotfoundComponent = get404Component(props.routes);
   }
 
+	// i know it's little confusing but you will get used to it
   static getDerivedStateFromProps(
     props: AfterpartyProps,
     state: AfterpartyState
