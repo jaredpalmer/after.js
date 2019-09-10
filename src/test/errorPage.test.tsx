@@ -39,7 +39,7 @@ describe("ErrorPage", () => {
     const routes = [{ path: "/", component: AsyncNotFound }];
     const result = await render({ url: "/", res, routes, assets });
     expect(res.status).toBeCalledWith(404);
-    expect(result).toContain("Page Not Found");
+    expect(result).toContain(DefaultNotFoundComponent.data);
   });
 
   it("should redirect to '/new-location' before react render (async)", async () => {
