@@ -167,8 +167,8 @@ Create a `.babelrc` file in root of project (next to the package.json)
 // .babelrc
 
 {
-	"presets": [ "razzle/babel" ],
-	"plugins": [ "after-async-component" ]
+  "presets": [ "razzle/babel" ],
+  "plugins": [ "after-async-component" ]
 }
 ```
 
