@@ -40,12 +40,12 @@ export function asyncComponent<Props>({
       this.updateState = this.updateState.bind(this);
       this.state = {
         Component
-      };
-    }
-
-    componentWillMount() {
-      AsyncRouteComponent.load().then(this.updateState);
-    }
+			};
+		}
+		
+		componentDidMount() {
+			AsyncRouteComponent.load().then(this.updateState);
+		}
 
     updateState() {
       // Only update state if we don't already have a reference to the
