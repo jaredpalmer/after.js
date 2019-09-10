@@ -16,6 +16,7 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
 export interface AfterpartyState {
   data?: Promise<any>[];
   previousLocation: Location | null;
+  currentLocation: Location | null;
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
@@ -32,36 +33,38 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
     this.state = {
       data: SERVER_APP_STATE,
-      previousLocation: null
+			previousLocation: null,
+			currentLocation: props.location
     };
 
 		this.prefetcherCache = {};
 		this.NotfoundComponent = get404Component(props.routes)
-  }
-
-  // only runs clizzient
-  componentWillReceiveProps(nextProps: AfterpartyProps) {
-    const navigated = nextProps.location !== this.props.location;
+	}
+	
+	static getDerivedStateFromProps(props: AfterpartyProps, state: AfterpartyState) {
+		const navigated = props.location !== state.currentLocation;
     if (navigated) {
-      // save the location so we can render the old screen
-      this.setState({
-        previousLocation: this.props.location,
-        data: undefined // unless you want to keep it
-      });
+			return { previousLocation: props.location, currentLocation: props.location, data: undefined }
+		}
+		
+		return null
+	}
 
-      const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
-
-      loadInitialProps(this.props.routes, nextProps.location.pathname, {
-        location: nextProps.location,
-        history: nextProps.history,
+	componentDidUpdate(_prevProps: AfterpartyProps, prevState: AfterpartyState) {
+		const navigated = prevState.currentLocation !== this.state.currentLocation;
+		const { location, history, routes, data, match, staticContext, children, ...rest } = this.props;
+		if (navigated) {
+			loadInitialProps(routes, location.pathname, {
+        location: location,
+        history: history,
         ...rest
       })
         .then(({ data }) => {
           // Only for page changes, prevent scroll up for anchor links
           if (
-            (this.state.previousLocation &&
-              this.state.previousLocation.pathname) !==
-            nextProps.location.pathname
+            (prevState.previousLocation &&
+              prevState.previousLocation.pathname) !==
+							location.pathname
           ) {
           window.scrollTo(0, 0);
           }
@@ -71,7 +74,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           // @todo we should more cleverly handle errors???
           console.log(e);
         });
-    }
+		}
   }
 
   prefetch = (pathname: string) => {
