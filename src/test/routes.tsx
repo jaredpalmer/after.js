@@ -11,20 +11,18 @@ export default [
   {
     path: '/',
 		exact: true,
-		chunkName: 'components-Home',
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: 'components-Home' */ './components/Home'),
       Placeholder
-    }),
+    }, "components-Home"),
   },
   {
     path: '/async-get-initial-props',
 		exact: true,
-		chunkName: 'components-AsyncGetInitialProps',
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: 'components-AsyncGetInitialProps' */ './components/AsyncGetInitialProps'),
       Placeholder
-    }),
+    }, "components-AsyncGetInitialProps"),
   },
   {
     path: '/non-dynamic-import',
@@ -34,11 +32,10 @@ export default [
   {
     path: '/non-default-export',
 		exact: true,
-		chunkName: 'components-NoNDefaultExport',
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: 'components-NoNDefaultExport' */'./components/NoNDefaultExport').then((module) => module.NonDefaultExport),
       Placeholder
-    }),
+    }, "components-NoNDefaultExport"),
   },
   {
     path: '/no-get-initial-props',
