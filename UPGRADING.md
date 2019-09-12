@@ -143,14 +143,16 @@ export default [
     exact: true,
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: "whatever" */ './About'),
-    }, 'whatever'),
+      chunkName: 'whatever',
+    }),
   },
   {
     path: '/contact-us',
     exact: true,
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: "ContactUs" */ './Contact'),
-    }, 'ContactUs'),
+      chunkName: 'ContactUs',
+    }),
   },
 ];
 ```
@@ -227,7 +229,8 @@ function myTransformations(route) {
           /* webpackChunkName: "[request]" */
           `./pages/${route.name}`
         ),
-    }, route.name),
+      chunkName: route.name,
+    }),
   };
 }
 ```

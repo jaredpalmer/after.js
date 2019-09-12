@@ -13,16 +13,18 @@ export default [
 		exact: true,
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: 'components-Home' */ './components/Home'),
-      Placeholder
-    }, "components-Home"),
+      Placeholder,
+      chunkName: "components-Home",
+    }),
   },
   {
     path: '/async-get-initial-props',
 		exact: true,
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: 'components-AsyncGetInitialProps' */ './components/AsyncGetInitialProps'),
-      Placeholder
-    }, "components-AsyncGetInitialProps"),
+      Placeholder,
+      chunkName: "components-AsyncGetInitialProps",
+    }),
   },
   {
     path: '/non-dynamic-import',
@@ -34,8 +36,9 @@ export default [
 		exact: true,
     component: asyncComponent({
       loader: () => import(/* webpackChunkName: 'components-NoNDefaultExport' */'./components/NoNDefaultExport').then((module) => module.NonDefaultExport),
-      Placeholder
-    }, "components-NoNDefaultExport"),
+      Placeholder,
+      chunkName: "components-NoNDefaultExport",
+    }),
   },
   {
     path: '/no-get-initial-props',
