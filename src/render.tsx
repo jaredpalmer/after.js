@@ -96,7 +96,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 	const prefix =
 	process.env.NODE_ENV === "production"
 		? "/"
-		: `http://${process.env.HOST!}:${parseInt(process.env.PORT!, 10) + 1}/`
+		: `http://${process.env.HOST || "localhost"}:${parseInt(process.env.PORT!, 10) + 1}/`
 	
 	const { scripts, styles } = getAssets({ route: match, manifest })
   const { html, ...docProps } = await Doc.getInitialProps({
@@ -106,10 +106,10 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     renderPage,
     data,
     helmet: Helmet.renderStatic(),
-	match: reactRouterMatch,
-	scripts,
-	styles,
-	prefix,
+    match: reactRouterMatch,
+    scripts,
+    styles,
+    prefix,
     ...rest
   });
 
