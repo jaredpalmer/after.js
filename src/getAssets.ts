@@ -14,15 +14,15 @@ export function getAssets({ route, manifest }: getAssetsParams) {
   // if component was LoadableComponent and chunkName was undefined
   // print an error message to console so Developer can fix it
   // @todo add link to documentation or show more useful error message
-  if (isLoadableComponent(route.component) && route.chunkName === undefined) {
+  if (isLoadableComponent(route.component) && route.component.getChunkName() === undefined) {
     logger.error(errorMeesage);
     throw new Error();
   }
 
-  // if component was LoadableComponent and had a chunkName
-  // then we look for it's assets from manifest
-  if (isLoadableComponent(route.component) && route.chunkName) {
-    const { chunkName } = route;
+  // if component was LoadableComponent
+  // =we look for it's assets from manifest
+  if (isLoadableComponent(route.component)) {
+    const chunkName = route.component.getChunkName()!;
 
     if (manifest[chunkName] && manifest[chunkName].js) {
       scripts = manifest[chunkName].js;
