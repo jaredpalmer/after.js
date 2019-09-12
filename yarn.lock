@@ -936,10 +936,10 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-after-async-component@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-after-async-component/-/babel-plugin-after-async-component-2.0.0.tgz#acff28634f449abaf9c7410b37cccf47c2277512"
-  integrity sha512-he9fa3ezoC3UojbbTIFXIIBJF3VLOfBKh18eN6Jn7SEUE4eV7t0Dr1SrVGWAW9gIxNLBz5PbOp+tcl3EoQKnaw==
+babel-plugin-after-async-component@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-after-async-component/-/babel-plugin-after-async-component-3.0.0.tgz#6d7287246e957573707ab36e5301ac6afdba82d8"
+  integrity sha512-k0dbQVkW1iACORZjkdwpOupUtisRXdJ1bqUi6OQvJpHD2e4MXLuFshiDUubI7gbEHxKDQDcs/LFVW/fVjtAk5Q==
 
 babel-plugin-check-es2015-constants@^6.22.0:
   version "6.22.0"
