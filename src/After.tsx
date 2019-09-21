@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Switch, Route, withRouter, match as Match, RouteComponentProps } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect,  match as Match, RouteComponentProps } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
+import { get404Component, getAllRoutes } from "./utils"
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -18,7 +19,8 @@ export interface AfterpartyState {
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
-  prefetcherCache: any;
+	prefetcherCache: any;
+	NotfoundComponent:React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 
   constructor(props: AfterpartyProps) {
     super(props);
@@ -28,14 +30,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       previousLocation: null
     };
 
-    this.prefetcherCache = {};
+		this.prefetcherCache = {};
+		this.NotfoundComponent = get404Component(this.props.routes)
   }
 
   // only runs clizzient
   componentWillReceiveProps(nextProps: AfterpartyProps) {
     const navigated = nextProps.location !== this.props.location;
     if (navigated) {
-      window.scrollTo(0, 0);
       // save the location so we can render the old screen
       this.setState({
         previousLocation: this.props.location,
@@ -50,6 +52,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       })
         .then(({ data }) => {
+          // Only for page changes, prevent scroll up for anchor links
+          if (
+            (this.state.previousLocation &&
+              this.state.previousLocation.pathname) !==
+            nextProps.location.pathname
+          ) {
+          window.scrollTo(0, 0);
+          }
           this.setState({ previousLocation: null, data });
         })
         .catch((e) => {
@@ -79,7 +89,9 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
     return (
       <Switch>
-        {this.props.routes.map((r, i) => (
+				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
+				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
+        {getAllRoutes(this.props.routes).map((r, i) => (
           <Route
             key={`route--${i}`}
             path={r.path}

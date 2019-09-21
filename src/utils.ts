@@ -1,4 +1,5 @@
-import { AsyncRouteableComponent, AsyncRouteComponentType, AsyncRouteProps } from "./types";
+import { AsyncRouteableComponent, AsyncRouteComponentType, AsyncRouteProps,  } from "./types";
+import NotFoundComponent from "./NotFoundComponent"
 import { matchPath } from 'react-router-dom';
 
 /** @private is the given object a Function? */
@@ -20,7 +21,6 @@ export function isAsyncComponent(Component: AsyncRouteableComponent): Component 
 export function isLoadableComponent(Component: AsyncRouteableComponent): Component is AsyncRouteComponentType<any> {
   return (<AsyncRouteComponentType<any>>Component).load !== undefined;
 }
-
 
 /** @public Find route similar to how RR Switch does */
 export function findMatchedRoute(
@@ -51,4 +51,20 @@ export function loadRouteComponent(
   } else {
     return Promise.resolve(route.component || null)
   }
+}
+
+/** @private is given routes have 404 page?  */
+export function is404ComponentAvailable(routes: AsyncRouteProps<any>[]): AsyncRouteProps<any> | false {
+  return routes.find(route => ["**", "*", undefined].includes(route.path)) || false
+}
+
+/** @private Returns 404Component from given routes if component was not avaliable returns default 404component */
+export function get404Component(routes: AsyncRouteProps<any>[]): AsyncRouteableComponent<any> {
+	const match = is404ComponentAvailable(routes)
+  return match ? match.component : NotFoundComponent 
+}
+
+/** @private Checks if 404Component is in routes, if it's not available add default 404 component */
+export function getAllRoutes(routes: AsyncRouteProps<any>[]): AsyncRouteProps<any>[] {
+  return is404ComponentAvailable(routes) ? routes : [...routes, { component: NotFoundComponent }]
 }
