@@ -1,7 +1,6 @@
-import { matchPath } from 'react-router-dom';
+import { matchPath, RouteProps } from 'react-router-dom';
 import { AsyncRouteProps, InitialProps, CtxBase } from './types';
 import { isAsyncComponent } from './utils';
-import { RouteProps } from 'react-router-dom';
 
 export async function loadInitialProps(routes: AsyncRouteProps[], pathname: string, ctx: CtxBase): Promise<InitialProps> {
   const promises: Promise<any>[] = [];
@@ -9,8 +8,12 @@ export async function loadInitialProps(routes: AsyncRouteProps[], pathname: stri
   const matchedComponent = routes.find((route: RouteProps) => {
 
 		// matchPath dont't accept undifined path property
-		// in <Switch> componet Child <Route> default path value is an empty string
-    const match = matchPath(pathname, {...route, path: route.path || ""});
+    // in <Switch> componet all Child <Route> components
+    // have a path prop with value of "/", { path: "/" }
+    // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/Router.js#L12
+    // we get arround this problem by adding { path: "*" }
+    // to route that don't have path property 
+    const match = matchPath(pathname, {...route, path: route.path || "*"});
 
     if (match && route.component && isAsyncComponent(route.component)) {
       const component = route.component;
