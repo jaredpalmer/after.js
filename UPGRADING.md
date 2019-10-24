@@ -176,7 +176,7 @@ Create a `.babelrc` file in the root of the project (next to the package.json)
 
 **by enabling plugin THERE IS NO NEED TO CHANGE your routes, and old `route.js` file works.**
 
-#### Limitations of babel plugin
+#### Limitations of the Babel plugin
 
 There are some limitation, for example the code below won't work with Babel plugin:
 
