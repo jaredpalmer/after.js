@@ -257,7 +257,7 @@ module.exports = {
 
 ### Update `server.js`
 
-Just import `manifest.json` file that webpack plugin generated for us and pass it to render. (don't panic if there is no `manifest.json` file, it will get generated once you run start or build script)
+Import `manifest.json` file that webpack plugin generated for us and pass it as a parameter to render method. (don't panic if there is no `manifest.json` file, it will get generated once you run start or build script)
 
 From:
 
