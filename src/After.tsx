@@ -10,7 +10,7 @@ import {
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
 import { AsyncRouteProps } from './types';
-import { get404Component, getAllRoutes, isDOM } from './utils';
+import { get404Component, getAllRoutes } from './utils';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -35,13 +35,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   constructor(props: AfterpartyProps) {
     super(props);
 
-    let SERVER_APP_STATE = props.data;
-    if (isDOM() && !SERVER_APP_STATE) {
-      SERVER_APP_STATE = (window as any).__SERVER_APP_STATE__ as Promise<any>[];
-    }
-
     this.state = {
-      data: SERVER_APP_STATE,
+      data: props.data,
       previousLocation: null,
       currentLocation: props.location,
     };

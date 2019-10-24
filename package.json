@@ -13,6 +13,7 @@
     "after.js",
     "document.js",
     "asyncComponent.js",
+    "ensureReady.js",
     "render.js",
     "loadInitialProps.js"
   ],
