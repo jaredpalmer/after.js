@@ -178,7 +178,7 @@ Create a `.babelrc` file in the root of the project (next to the package.json)
 
 #### Limitations of babel plugin
 
-There are some limitation, for example blow code won't work with plugin:
+There are some limitation, for example the code below won't work with Babel plugin:
 
 ```jsx
 import Home from './Home';
