@@ -6,18 +6,18 @@
 
 > Upgrading to version 2 should not take more than 10 minutes.
 
-In v1, with `asyncComponent` you split part of your application into a new chunk and on BROWSER when you need that part of your code it gets downloaded automatically. when page rendered on the server there was no way to understand which chunks needed for the current request so After.js only sends `bundle.js` and `main.css` file, then on BROWSER with `ensureReady` method it tries to fetch chunks (split CSS and JS files) needed for the current request. and it's slow!
+In v1, with `asyncComponent` you split part of your application into a new chunk and on BROWSER when you need that part of your code it gets downloaded automatically. when page rendered on the server there was no way to understand which chunks needed for the current request so After.js only sends `client.js` and `styles.css` file, then on BROWSER with `ensureReady` method it tries to fetch chunks (split CSS and JS files) needed for the current request. and it's slow!
 
 #### WHY?
 
-1. browser must download `bundle.js`, then parse it and at the end, it executes the code. when code gets executed `ensureReady` method gets called, `ensureReady` finds and download chunks needed to render the current page and when all files get downloaded it start to re-hydrate.
+1. browser must download `client.js`, then parse it and at the end, it executes the code. when code gets executed `ensureReady` method gets called, `ensureReady` finds and download chunks needed to render the current page and when all files get downloaded it start to re-hydrate.
 
 2. browser will render the page without CSS styles (because we split them and it will get them when `ensureReady` called), this makes the site look ugly for 2,3 seconds (bad UX).
 
 3. have you ever think about why CSS is render blocking?
-iha   if browser finds a `<link rel="stylesheet">` tag, it would stop rendering page and waits until CSS file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if CSS files attach to dom after page gets rendered, the browser must repaint the whole page. (painting is too much job for browser and it's slow)
+   iha if browser finds a `<link rel="stylesheet">` tag, it would stop rendering page and waits until CSS file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if CSS files attach to dom after page gets rendered, the browser must repaint the whole page. (painting is too much job for browser and it's slow)
 
-in After.js 2 this problem is solved and it sends all js and CSS files needed for current request in the initial server response.
+in After.js 2 this problem is solved and it sends all JS and CSS files needed for current request in the initial server response.
 
 ## Breaking Changes
 
@@ -235,7 +235,7 @@ import express from 'express';
 import { render } from '@jaredpalmer/after';
 import routes from './routes';
 import MyDocument from './Document';
-import manifest from '../build/manifest.json'; // <-- import manifest
+import manifest from '../build/manifest.json'; // ⬅️ import manifest
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -250,7 +250,7 @@ server
         req,
         res,
         document: MyDocument,
-        manifest, // <-- pass it to render method
+        manifest, // ⬅️ pass it to render method
         routes,
         assets,
       });
@@ -277,20 +277,13 @@ import React from 'react';
 import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 class Document extends React.Component {
-  static async getInitialProps({
-    assets,
-    data,
-    renderPage,
-    scripts,
-    styles,
-    prefix,
-  }) {
+  static async getInitialProps({ assets, data, renderPage }) {
     const page = await renderPage();
-    return { assets, data, scripts, styles, prefix, ...page };
+    return { assets, data, ...page };
   }
 
   render() {
-    const { helmet, assets, data, scripts, styles, prefix } = this.props;
+    const { helmet, assets, data } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -305,9 +298,6 @@ class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {styles.map(path => (
-            <link key={path} rel="stylesheet" href={path} />
-          ))}
           {assets.client.css && (
             <link rel="stylesheet" href={assets.client.css} />
           )}
@@ -315,15 +305,6 @@ class Document extends React.Component {
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
-          {scripts.map(path => (
-            <script
-              key={path}
-              defer
-              type="text/javascript"
-              src={prefix + path}
-              crossOrigin="anonymous"
-            />
-          ))}
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -356,13 +337,13 @@ class Document extends React.Component {
     styles,
     prefix,
   }) {
-    // <- scripts, styles, prefix
+    // ⬅️ get scripts, styles, prefix
     const page = await renderPage();
-    return { assets, data, scripts, styles, prefix, ...page }; // <- scripts, styles, prefix
+    return { assets, data, scripts, styles, prefix, ...page }; // ⬅️ return scripts, styles, prefix
   }
 
   render() {
-    const { helmet, assets, data, scripts, styles, prefix } = this.props; // <- scripts, styles, prefix
+    const { helmet, assets, data, scripts, styles, prefix } = this.props; // ⬅️ get scripts, styles, prefix from props
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -377,21 +358,19 @@ class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {styles.map((
-            path // <- loop through styles
-          ) => (
-            <link key={path} rel="stylesheet" href={path} />
-          ))}
           {assets.client.css && (
             <link rel="stylesheet" href={assets.client.css} />
           )}
+          {/* ⬇️ loop through styles ⬇️ */}
+          {styles.map(path => (
+            <link key={path} rel="stylesheet" href={path} />
+          ))}
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
-          {scripts.map((
-            path // <- loop through scripts
-          ) => (
+          {/* ⬇️ loop through scripts ⬇️ */}
+          {scripts.map(path => (
             <script
               key={path}
               defer
@@ -400,8 +379,8 @@ class Document extends React.Component {
               crossOrigin="anonymous"
             />
           ))}
-          <script // NOTE: order should not change
-            type="text/javascript" // first load chunks (scripts) then main.client.js
+          <script // ⚠️ NOTE: order should not change
+            type="text/javascript" // first load chunks (scripts) then client.js
             src={assets.client.js}
             defer
             crossOrigin="anonymous"
