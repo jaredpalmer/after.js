@@ -15,79 +15,11 @@ In v1, with `asyncComponent` you split part of your application into a new chunk
 2. browser will render the page without CSS styles (because we split them and it will get them when `ensureReady` called), this makes the site look ugly for 2,3 seconds (bad UX).
 
 3. have you ever think about why CSS is render blocking?
-   if browser finds a `<link rel="stylesheet">` tag, it would stop rendering page and waits until CSS file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if CSS files attach to dom after page gets rendered, the browser must repaint the whole page. (painting is too much job for browser and it's to slow)
+iha   if browser finds a `<link rel="stylesheet">` tag, it would stop rendering page and waits until CSS file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if CSS files attach to dom after page gets rendered, the browser must repaint the whole page. (painting is too much job for browser and it's slow)
 
-in After.js 2 this problem is solved and it sends all js and CSS files needed for current request in the initial server response. (no need for `ensureReady` anymore)
+in After.js 2 this problem is solved and it sends all js and CSS files needed for current request in the initial server response.
 
 ## Breaking Changes
-
-### `ensureReady` is no longer available
-
-there is no need to use `ensureReady` method and it's removed from After.js.
-
-From:
-
-```jsx
-// client.js
-
-import React from 'react';
-import { hydrate } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { ensureReady, After } from '@jaredpalmer/after';
-import './client.css';
-import routes from './routes';
-
-ensureReady(routes).then(data =>
-  hydrate(
-    <BrowserRouter>
-      <After data={data} routes={routes} />
-    </BrowserRouter>,
-    document.getElementById('root')
-  )
-);
-
-if (module.hot) {
-  module.hot.accept();
-}
-```
-
-To:
-
-```jsx
-// client.js
-
-import React from 'react';
-import { hydrate } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { After } from '@jaredpalmer/after';
-import './client.css';
-import routes from './routes';
-
-hydrate(
-  <BrowserRouter>
-    <After routes={routes} />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
-
-if (module.hot) {
-  module.hot.accept();
-}
-```
-
-You can access server app state from the window (`window.__SERVER_APP_STATE__`), you can modify `SERVER_APP_STATE` and pass it to `<After />` component.
-
-```jsx
-<After data={modifyData(window.__SERVER_APP_STATE__)} routes={routes} />
-```
-
-`After` component will pick `window.__SERVER_APP_STATE__` if data prop not passed.
-
-```jsx
-function After({ routes, data = window.__SERVER_APP_STATE__ }) {
-  // ...
-}
-```
 
 ### `routes.js` config changed
 
