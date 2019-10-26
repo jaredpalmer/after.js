@@ -15,7 +15,7 @@ In v1, with `asyncComponent` you split part of your application into a new chunk
 2. browser will render the page without CSS styles (because we split them and it will get them when `ensureReady` called), this makes the site look ugly for 2,3 seconds (bad UX).
 
 3. have you ever think about why CSS is render blocking?
-   iha if browser finds a `<link rel="stylesheet">` tag, it would stop rendering page and waits until CSS file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if CSS files attach to dom after page gets rendered, the browser must repaint the whole page. (painting is too much job for browser and it's slow)
+   if browser finds a `<link rel="stylesheet">` tag, it would stop rendering page and waits until CSS file be downloaded and parsed completely (this mechanism is necessary to have fast page renders), if CSS files attach to dom after page gets rendered, the browser must repaint the whole page. (painting is too much job for browser and it's slow)
 
 in After.js 2 this problem is solved and it sends all JS and CSS files needed for current request in the initial server response.
 
@@ -89,7 +89,58 @@ export default [
 ];
 ```
 
-> This is too hard and complicated (and there are more things that we have to take care about) so we made a babel plugin to do this automatically because we care about you (DX).
+we call this code block "`/* webpackChunkName: "" */`" a magic comment, with magic comments we have more control on webpack compilation process. as you may already know webpack job is to merge all of our JS files into one file so we can easily send that one file to our users (same thing applies for css files).
+
+with dynamic import syntax `import()` we can split our CSS and JS files into multiple files and load them whenever we need them, we call these files chunks.
+
+when we use `/* webpackChunkName: "HomePage" */` inside `import()` statement, we tell webpack to give that chunk a name (in this example the created chunk name is **HomePage.js**) and all of this happens in buildtime so we don't have access to chunkNames in runtime.
+after.js needs to know `chunkName` on every request. in order to access chunkName in run time you have to specify `chunkName` property inside `asyncComponent` with exact value of `webpackChunkName` magic comment.
+
+there is one more thing that we have to take care about. if you use same component in different routes, `webpackChunkName` and `chunkName` values must be the same in all of them.
+
+```jsx
+[
+  {
+    path: '/shop/:filter([A-Za-z-]+)', // 👈 different routes
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(`pages/Shop`), // 👈 same components
+    }),
+  },
+  {
+    path: '/shop/:page([0-9]+)?', // 👈 different routes
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(`pages/Shop`), // 👈 same components
+    }),
+  },
+];
+```
+
+✅ Right way to handle above situation:
+
+```jsx
+[
+  {
+    path: '/shop/:filter([A-Za-z-]+)',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(/* webpackChunkName: "pages-Shop" */ `pages/Shop`),
+      chunkName: 'pages-Shop', // 👈  names are identical 👆
+    }),
+  },
+  {
+    path: '/shop/:page([0-9]+)?',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(/* webpackChunkName: "pages-Shop" */ `pages/Shop`),
+      chunkName: 'pages-Shop', // 👈  names are identical 👆 and they match with the previous route
+    }),
+  },
+];
+```
+
+This is too hard and complicated so we made a babel plugin to do this automatically, because we care about Developer Experience. (using this plugin is optional)
 
 #### Use babel plugin
 
@@ -106,11 +157,11 @@ Create a `.babelrc` file in the root of the project (next to the package.json)
 
 > Check [after-async-component](https://github.com/nimacsoft/babel-plugin-after-async-component) repo for more options.
 
-**by enabling plugin THERE IS NO NEED TO CHANGE your routes, and old `route.js` file works.**
+**by using the Babel plugin THERE IS NO NEED TO CHANGE your routes, and old `routes.js` file works fine.**
 
 #### Limitations of the Babel plugin
 
-There are some limitation, for example the code below won't work with Babel plugin:
+There is a limitation with babel plugin, code below won't work with Babel plugin:
 
 ```jsx
 import Home from './Home';
@@ -135,6 +186,7 @@ const routes = [
   }
 ];
 
+// 📦 this function will load are routes
 function myTransformations(route) {
   if (!route.name) return route
   return {
@@ -145,10 +197,10 @@ function myTransformations(route) {
   }
 }
 
+// at the end we will call myTransformations method
 export default routes.map(myTransformations)
 ```
-
-to fix this just change `myTransformations` function implementaion to:
+The Babel plugin is not going to detect above pattern, to fix this just change `myTransformations` function implementaion to:
 
 ```javascript
 function myTransformations(route) {
@@ -158,14 +210,16 @@ function myTransformations(route) {
     component: asyncComponent({
       loader: () =>
         import(
-          /* webpackChunkName: "[request]" */
+          /* webpackChunkName: "[request]" */ // 👈 add webpackChunkName: "[request]"
           `./pages/${route.name}`
         ),
-      chunkName: route.name,
+      chunkName: route.name, // 👈 add chunkName
     }),
   };
 }
 ```
+
+> for more details visit [babel-plugin README](https://github.com/nimacsoft/babel-plugin-after-async-component#how-its-wokring)
 
 ### Add new webpack plugin
 
@@ -235,7 +289,7 @@ import express from 'express';
 import { render } from '@jaredpalmer/after';
 import routes from './routes';
 import MyDocument from './Document';
-import manifest from '../build/manifest.json'; // ⬅️ import manifest
+import manifest from '../build/manifest.json'; // 👈 import manifest
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -250,7 +304,7 @@ server
         req,
         res,
         document: MyDocument,
-        manifest, // ⬅️ pass it to render method
+        manifest, // 👈 pass it to render method
         routes,
         assets,
       });
@@ -337,13 +391,14 @@ class Document extends React.Component {
     styles,
     prefix,
   }) {
-    // ⬅️ get scripts, styles, prefix
+    // ☝️ get scripts, styles, prefix
     const page = await renderPage();
-    return { assets, data, scripts, styles, prefix, ...page }; // ⬅️ return scripts, styles, prefix
+    return { assets, data, scripts, styles, prefix, ...page }; // 👈 return scripts, styles, prefix
   }
 
   render() {
-    const { helmet, assets, data, scripts, styles, prefix } = this.props; // ⬅️ get scripts, styles, prefix from props
+    // 👇 get scripts, styles, prefix from props
+    const { helmet, assets, data, scripts, styles, prefix } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -361,7 +416,7 @@ class Document extends React.Component {
           {assets.client.css && (
             <link rel="stylesheet" href={assets.client.css} />
           )}
-          {/* ⬇️ loop through styles ⬇️ */}
+          {/* 👇 loop through styles 👇 */}
           {styles.map(path => (
             <link key={path} rel="stylesheet" href={path} />
           ))}
@@ -369,7 +424,7 @@ class Document extends React.Component {
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
-          {/* ⬇️ loop through scripts ⬇️ */}
+          {/* 👇 loop through scripts 👇 */}
           {scripts.map(path => (
             <script
               key={path}
