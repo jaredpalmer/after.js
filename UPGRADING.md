@@ -89,14 +89,14 @@ export default [
 ];
 ```
 
-we call this code block "`/* webpackChunkName: "" */`" a magic comment, with magic comments we have more control on webpack compilation process. as you may already know webpack job is to merge all of our JS files into one file so we can easily send that one file to our users (same thing applies for css files).
+we call this code block "`/* webpackChunkName: "" */`" a magic comment, with magic comments we have more control over webpack compilation process. as you may already know webpack job is to merge all of our JS files into one file so we can easily send that one file to our users (the same thing applies for CSS files).
 
 with dynamic import syntax `import()` we can split our CSS and JS files into multiple files and load them whenever we need them, we call these files chunks.
 
-when we use `/* webpackChunkName: "HomePage" */` inside `import()` statement, we tell webpack to give that chunk a name (in this example the created chunk name is **HomePage.js**) and all of this happens in buildtime so we don't have access to chunkNames in runtime.
-after.js needs to know `chunkName` on every request. in order to access chunkName in run time you have to specify `chunkName` property inside `asyncComponent` with exact value of `webpackChunkName` magic comment.
+when we use `/* webpackChunkName: "HomePage" */` inside `import()` statement, we tell webpack to give that chunk a name (in this example the created chunk name is **HomePage.js**) and all of this happens in build time so we don't have access to chunkNames in runtime.
+after.js needs to know `chunkName` on every request. to access chunkName in run time you have to specify `chunkName` property inside `asyncComponent` with the exact value of `webpackChunkName` magic comment.
 
-there is one more thing that we have to take care about. if you use same component in different routes, `webpackChunkName` and `chunkName` values must be the same in all of them.
+there is one more thing that we have to take care about. if you use the same component in different routes, `webpackChunkName` and `chunkName` values must be the same in all of them.
 
 ```jsx
 [
@@ -117,7 +117,7 @@ there is one more thing that we have to take care about. if you use same compone
 ];
 ```
 
-✅ Right way to handle above situation:
+✅ The right way to handle the above situation:
 
 ```jsx
 [
@@ -140,7 +140,7 @@ there is one more thing that we have to take care about. if you use same compone
 ];
 ```
 
-This is too hard and complicated so we made a babel plugin to do this automatically, because we care about Developer Experience. (using this plugin is optional)
+This is too hard and complicated so we made a babel plugin to do this automatically because we care about Developer Experience. (using this plugin is optional)
 
 #### Use babel plugin
 
@@ -157,7 +157,7 @@ Create a `.babelrc` file in the root of the project (next to the package.json)
 
 > Check [after-async-component](https://github.com/nimacsoft/babel-plugin-after-async-component) repo for more options.
 
-**by using the Babel plugin THERE IS NO NEED TO CHANGE your routes, and old `routes.js` file works fine.**
+**by using the Babel plugin THERE IS NO NEED TO CHANGE your routes, and your current `routes.js` file works fine.**
 
 #### Limitations of the Babel plugin
 
@@ -186,7 +186,7 @@ const routes = [
   }
 ];
 
-// 📦 this function will load are routes
+// 📦 this function will add components to our routes
 function myTransformations(route) {
   if (!route.name) return route
   return {
@@ -197,9 +197,9 @@ function myTransformations(route) {
   }
 }
 
-// at the end we will call myTransformations method
 export default routes.map(myTransformations)
 ```
+
 The Babel plugin is not going to detect above pattern, to fix this just change `myTransformations` function implementaion to:
 
 ```javascript
@@ -223,7 +223,7 @@ function myTransformations(route) {
 
 ### Add new webpack plugin
 
-We have to add new webpack plugin to get chunks information from webpack (it's called stats) and save it into a file to use it later in our application.
+We have to add a new webpack plugin to get chunks information from webpack (it's called stats) and save it into a file to use it later in our application.
 
 This is not magic but it's using webpack magic comments.
 
@@ -463,7 +463,7 @@ module.exports = {
 };
 ```
 
-if you used `manifest` plugin then `razzle.config.js` should look like:
+if you used the `manifest` plugin then `razzle.config.js` should look like:
 
 ```javascript
 // razzle.config.js
