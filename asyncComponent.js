@@ -1,1 +1,1 @@
-module.exports = require('./build/asyncComponent').asyncComponent;
+module.exports = require('./build/cjs/asyncComponent').asyncComponent;
