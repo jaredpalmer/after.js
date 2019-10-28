@@ -1,1 +1,1 @@
-module.exports = require('./build/cjs/ensureReady');
+module.exports = require('./build/cjs/ensureReady').ensureReady;
