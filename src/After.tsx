@@ -40,8 +40,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     if (navigated) {
       // save the location so we can render the old screen
       this.setState({
-        previousLocation: this.props.location,
-        data: undefined // unless you want to keep it
+        previousLocation: this.state.previousLocation || this.props.location,
       });
 
       const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
@@ -52,6 +51,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       })
         .then(({ data }) => {
+          
+          if (location !== nextProps.location) {
+            return  
+          }
+
           // Only for page changes, prevent scroll up for anchor links
           if (
             (this.state.previousLocation &&
@@ -88,7 +92,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     const initialData = this.prefetcherCache[location.pathname] || data;
 
     return (
-      <Switch>
+      <Switch location={previousLocation || location}>
 				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
 				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
         {getAllRoutes(this.props.routes).map((r, i) => (
@@ -101,7 +105,6 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
-                location: previousLocation || location,
                 match: props.match,
                 prefetch: this.prefetch
               })
