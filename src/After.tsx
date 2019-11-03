@@ -101,7 +101,6 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
             key={`route--${i}`}
             path={r.path}
             exact={r.exact}
-            location={previousLocation || location}
             render={(props) =>
               React.createElement(r.component, {
                 ...initialData,
