@@ -38,7 +38,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   componentWillReceiveProps(nextProps: AfterpartyProps) {
     const navigated = nextProps.location !== this.props.location;
     if (navigated) {
-      // save the location so we can render the old screen
+      // save the location and data so we can render the old screen
+      // first we try to use previousLocation and then location from props
       this.setState({
         previousLocation: this.state.previousLocation || this.props.location,
       });
@@ -51,7 +52,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       })
         .then(({ data }) => {
-          
+          // if data is not for current location just don't do anything
           if (location !== nextProps.location) {
             return  
           }
