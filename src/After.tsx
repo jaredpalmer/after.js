@@ -105,6 +105,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
+                location: previousLocation || location,
                 match: props.match,
                 prefetch: this.prefetch
               })
