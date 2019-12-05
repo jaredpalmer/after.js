@@ -90,7 +90,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   render() {
     const { previousLocation, data } = this.state;
     const { location } = this.props;
-    const initialData = this.prefetcherCache[location.pathname] || data;
+     const initialData = this.prefetcherCache[(previousLocation || location).pathname] || data;
 
     return (
       <Switch location={previousLocation || location}>
