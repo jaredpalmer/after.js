@@ -1,4 +1,4 @@
 {
 	"presets": [ "razzle/babel" ],
-	"plugins": [ "after-async-component" ]
+	"plugins": [ "after" ]
 }

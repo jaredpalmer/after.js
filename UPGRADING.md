@@ -151,11 +151,11 @@ Create a `.babelrc` file in the root of the project (next to the package.json)
 
 {
   "presets": [ "razzle/babel" ],
-  "plugins": [ "after-async-component" ]
+  "plugins": [ "after" ]
 }
 ```
 
-> Check [after-async-component](https://github.com/nimacsoft/babel-plugin-after-async-component) repo for more options.
+> Check [babel-plugin-after](https://github.com/jaredpalmer/after.js/packages/babel-plugin-after) repo for more options.
 
 **by using the Babel plugin THERE IS NO NEED TO CHANGE your routes, and your current `routes.js` file works fine.**
 
@@ -219,7 +219,7 @@ function myTransformations(route) {
 }
 ```
 
-> for more details visit [babel-plugin README](https://github.com/nimacsoft/babel-plugin-after-async-component#how-its-wokring)
+> for more details visit [babel-plugin README](https://github.com/jaredpalmer/after.js/packages/babel-plugin-after#how-its-wokring)
 
 ### Add new webpack plugin
 
