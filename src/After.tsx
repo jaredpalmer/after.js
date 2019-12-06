@@ -1,16 +1,16 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Switch,
   Route,
   withRouter,
   Redirect,
   match as Match,
-  RouteComponentProps,
-} from 'react-router-dom';
-import { loadInitialProps } from './loadInitialProps';
-import { History, Location } from 'history';
-import { AsyncRouteProps } from './types';
-import { get404Component, getAllRoutes } from './utils';
+  RouteComponentProps
+} from "react-router-dom";
+import { loadInitialProps } from "./loadInitialProps";
+import { History, Location } from "history";
+import { AsyncRouteProps } from "./types";
+import { get404Component, getAllRoutes } from "./utils";
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -38,14 +38,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     this.state = {
       data: props.data,
       previousLocation: null,
-      currentLocation: props.location,
+      currentLocation: props.location
     };
 
     this.prefetcherCache = {};
     this.NotfoundComponent = get404Component(props.routes);
   }
 
-	// i know it's little confusing but you will get used to it
+  // i know it's little confusing but you will get used to it
   static getDerivedStateFromProps(
     props: AfterpartyProps,
     state: AfterpartyState
@@ -57,13 +57,13 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     if (navigated) {
       return {
         previousLocation: state.previousLocation || previousLocation,
-        currentLocation,
+        currentLocation
       };
     }
 
     return null;
   }
-  
+
   componentDidUpdate(_prevProps: AfterpartyProps, prevState: AfterpartyState) {
     const navigated = prevState.currentLocation !== this.state.currentLocation;
     if (navigated) {
@@ -80,12 +80,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       loadInitialProps(routes, location.pathname, {
         location: location,
         history: history,
-        ...rest,
+        ...rest
       })
         .then(({ data }) => {
-          if(this.state.currentLocation !== location)
-            return 
-            
+          if (this.state.currentLocation !== location) return;
+
           // Only for page changes, prevent scroll up for anchor links
           if (
             (prevState.previousLocation &&
@@ -104,12 +103,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
   prefetch = (pathname: string) => {
     loadInitialProps(this.props.routes, pathname, {
-      history: this.props.history,
+      history: this.props.history
     })
       .then(({ data }) => {
         this.prefetcherCache = {
           ...this.prefetcherCache,
-          [pathname]: data,
+          [pathname]: data
         };
       })
       .catch(e => console.log(e));
@@ -118,24 +117,34 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   render() {
     const { previousLocation, data } = this.state;
     const { location } = this.props;
-     const initialData = this.prefetcherCache[(previousLocation || location).pathname] || data;
+    const initialData =
+      this.prefetcherCache[(previousLocation || location).pathname] || data;
 
     return (
       <Switch location={previousLocation || location}>
-				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
-				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
+        {initialData &&
+          initialData.statusCode &&
+          initialData.statusCode === 404 && (
+            <Route
+              component={this.NotfoundComponent}
+              path={location.pathname}
+            />
+          )}
+        {initialData && initialData.redirectTo && initialData.redirectTo && (
+          <Redirect to={initialData.redirectTo} />
+        )}
         {getAllRoutes(this.props.routes).map((r, i) => (
           <Route
             key={`route--${i}`}
             path={r.path}
             exact={r.exact}
-            render={(props) =>
+            render={props =>
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
                 location: previousLocation || location,
                 match: props.match,
-                prefetch: this.prefetch,
+                prefetch: this.prefetch
               })
             }
           />
