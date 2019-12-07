@@ -6,6 +6,7 @@
   "author": "Jared Palmer <jared@palmer.net>",
   "license": "MIT",
   "main": "dist/index.js",
+  "umd:main": "dist/after.umd.production.js",
   "module": "dist/after.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -13,8 +14,10 @@
   ],
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "tsdx build --format=cjs,esm,umd",
     "test": "tsdx test --env=jsdom",
+    "test:watch": "npm run test -- --watchAll",
+    "prepublishOnly": "npm run build",
     "lint": "tsdx lint"
   },
   "prettier": {
