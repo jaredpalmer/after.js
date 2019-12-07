@@ -113,8 +113,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           initialData.statusCode &&
           initialData.statusCode === 404 && (
             <Route
-              // @ts-ignore
-              component={this.NotfoundComponent}
+              component={this.NotfoundComponent as React.ComponentType}
               path={location.pathname}
             />
           )}
