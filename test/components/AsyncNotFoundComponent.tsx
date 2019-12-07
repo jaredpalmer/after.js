@@ -3,7 +3,7 @@ import React from "react";
 class AsyncNotFoundComponent extends React.Component {
   static displayName = "AsyncNotFoundComponent";
 
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
+  static async getInitialProps() {
     return await Promise.resolve({ statusCode: 404 });
   }
 

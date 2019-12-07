@@ -3,7 +3,7 @@ import React from 'react';
 export class NonDefaultExport extends React.Component {
   static displayName = 'NonDefaultExport';
 
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
+  static async getInitialProps() {
     return { stuff: 'non default export' };
   }
 

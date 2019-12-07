@@ -3,7 +3,7 @@ import React from 'react';
 class NonDymamicImport extends React.Component {
   static displayName = 'NonDynamicExport';
 
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
+  static async getInitialProps() {
     return { stuff: 'non dynamic export' };
   }
 

@@ -7,7 +7,7 @@ export interface AsyncGetInitialPropsProps {
 const api = () => Promise.resolve({stuff: 'async call'})
 
 class AsyncGetInitialProps extends React.Component<AsyncGetInitialPropsProps> {
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
+  static async getInitialProps() {
     return await api();
   }
 

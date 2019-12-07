@@ -1,4 +1,4 @@
-import { loadInitialProps } from '../loadInitialProps';
+import { loadInitialProps } from '../src/loadInitialProps';
 import routes from './routes';
 import createMemoryHistory from 'history/createMemoryHistory';
 import { History } from 'history'
@@ -28,7 +28,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.match!.path).toBe(url);
 
     expect(matched.data).toEqual({ stuff: 'async call' });
   });
@@ -38,7 +38,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.match!.path).toBe(url);
 
     expect(matched.data).toEqual({ stuff: 'non dynamic export' });
   });
@@ -48,7 +48,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.match!.path).toBe(url);
 
     expect(matched.data).toEqual({ stuff: 'non default export' });
   });
@@ -58,7 +58,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(routes, url, { history });
 
-    expect(matched.match.path).toBe(url);
+    expect(matched.match!.path).toBe(url);
 
     expect(matched.data).toBeUndefined();
   });

@@ -1,19 +1,23 @@
-import { render as renderPage } from "../render";
+import { render as renderPage } from "../src/render";
 import { Helmet } from "react-helmet";
+import { Response } from "express"
 
 import Home from "./components/Home";
 import NonAsyncRedirect from "./components/NonAsyncRedirectComponent";
 import AsyncRedirectComponent from "./components/AsyncRedirectComponent";
 import UserDefined404Component from "./components/UserDefined404Component";
 import AsyncNotFound from "./components/AsyncNotFoundComponent";
-import DefaultNotFoundComponent from "../NotFoundComponent";
+import DefaultNotFoundComponent from "../src/NotFoundComponent";
 
-function render({ url, ...params }) {
-  return renderPage({ req: { url }, ...params });
+type render = { url: string, res: Partial<Response>, routes: any, assets: any }
+function render({ url, ...params }: render) {
+  const req = { url }
+  // @ts-ignore
+  return renderPage({req, ...params });
 }
 
 describe("ErrorPage", () => {
-  let res;
+  let res: Partial<Response>;
   const assets = { client: { css: "", js: "" } };
   Helmet.canUseDOM = false;
   const routes = [{ path: "/", exact: true, component: Home }];

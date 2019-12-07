@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { asyncComponent } from '../asyncComponent';
+import { asyncComponent } from '../src/asyncComponent';
 import NonDymamicImport  from './components/NonDynamicExport';
 import { NoGetInitialProps } from './components/NoGetInitialProps';
 
