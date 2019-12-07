@@ -15,11 +15,5 @@ export async function ensureReady(routes: AsyncRouteProps[], pathname?: string) 
       return undefined;
     })
   );
-
-  let data;
-  if (typeof window !== undefined && !!document) {
-    // deserialize state from 'serialize-javascript' format
-    data = eval('(' + (document as any).getElementById('server-app-state').textContent + ')');
-  }
-  return Promise.resolve(data);
+  return Promise.resolve((window as any).__SERVER_APP_STATE__ as Promise<any>[]);
 }
