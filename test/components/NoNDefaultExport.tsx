@@ -8,8 +8,6 @@ export class NonDefaultExport extends React.Component {
   }
 
   render() {
-    return (
-      <h1>Non Default Export</h1>
-    );
+    return <h1>Non Default Export</h1>;
   }
 }

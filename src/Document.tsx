@@ -25,12 +25,19 @@ export class Document extends React.Component<DocumentProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
+          {assets.client.css && (
+            <link rel="stylesheet" href={assets.client.css} />
+          )}
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
-          <script type="text/javascript" src={assets.client.js} defer crossOrigin="anonymous" />
+          <script
+            type="text/javascript"
+            src={assets.client.js}
+            defer
+            crossOrigin="anonymous"
+          />
         </body>
       </html>
     );
@@ -44,9 +51,9 @@ export function AfterRoot() {
 export function AfterData({ data }: any) {
   return (
     <script
-			defer
+      defer
       dangerouslySetInnerHTML={{
-        __html: `window.__SERVER_APP_STATE__ = ${serialize({ ...data })}`
+        __html: `window.__SERVER_APP_STATE__ = ${serialize({ ...data })}`,
       }}
     />
   );

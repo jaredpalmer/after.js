@@ -1,8 +1,8 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 class NonAsyncRedirectComponent extends React.Component {
-  static displayName = "NonAsyncRedirectComponent";
+  static displayName = 'NonAsyncRedirectComponent';
 
   static data = `NonAsyncRedirectComponent rendred !`;
 

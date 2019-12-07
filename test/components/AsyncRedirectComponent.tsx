@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 class AsyncRedirectComponent extends React.Component {
-  static displayName = "AsyncRedirectComponent";
+  static displayName = 'AsyncRedirectComponent';
 
   static async getInitialProps() {
-    return await Promise.resolve({ redirectTo: "/new-location" });
+    return await Promise.resolve({ redirectTo: '/new-location' });
   }
 
   render() {

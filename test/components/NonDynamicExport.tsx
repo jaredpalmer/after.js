@@ -8,9 +8,7 @@ class NonDymamicImport extends React.Component {
   }
 
   render() {
-    return (
-      <h1>Non Dynamic Import</h1>
-    );
+    return <h1>Non Dynamic Import</h1>;
   }
 }
 

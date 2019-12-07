@@ -141,4 +141,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     );
   }
 }
-export const After: React.ComponentClass<Pick<AfterpartyProps, "data" | "routes">, any>  = withRouter(Afterparty);
+export const After: React.ComponentClass<
+  Pick<AfterpartyProps, 'data' | 'routes'>,
+  any
+> = withRouter(Afterparty);
