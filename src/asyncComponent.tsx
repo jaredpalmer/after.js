@@ -61,6 +61,7 @@ export function asyncComponent<Props>({
       const { Component: ComponentFromState } = this.state;
 
       if (ComponentFromState) {
+        // @ts-ignore
         return <ComponentFromState {...this.props} />;
       }
 
