@@ -24,23 +24,23 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [After.js](#afterjs)
-	- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
-	- [Getting Started with After.js](#getting-started-with-afterjs)
-		- [Razzle Quickstart](#razzle-quickstart)
-	- [Data Fetching](#data-fetching)
-		- [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-		- [Injected Page Props](#injected-page-props)
-	- [Routing](#routing)
-		- [Parameterized Routing](#parameterized-routing)
-		- [Client Only Data and Routing](#client-only-data-and-routing)
-		- [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
-		- [Dynamic 404](#dynamic-404)
-		- [Redirect](#redirect)
-	- [Code Splitting](#code-splitting)
-	- [Custom `<Document>`](#custom-document)
-	- [Custom/Async Rendering](#customasync-rendering)
-	- [Author](#author)
-	- [Inspiration](#inspiration)
+  - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+  - [Getting Started with After.js](#getting-started-with-afterjs)
+    - [Razzle Quickstart](#razzle-quickstart)
+  - [Data Fetching](#data-fetching)
+    - [getInitialProps: (ctx) =&gt; Data](#getinitialprops-ctx-gt-data)
+    - [Injected Page Props](#injected-page-props)
+  - [Routing](#routing)
+    - [Parameterized Routing](#parameterized-routing)
+    - [Client Only Data and Routing](#client-only-data-and-routing)
+    - [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
+    - [Dynamic 404](#dynamic-404)
+    - [Redirect](#redirect)
+  - [Code Splitting](#code-splitting)
+  - [Custom &lt;Document&gt;](#custom-ltdocumentgt)
+  - [Custom/Async Rendering](#customasync-rendering)
+  - [Author](#author)
+  - [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -84,7 +84,7 @@ class About extends React.Component {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>About</h1>
-        {this.props.stuff ? this.props.stuff : 'Loading...'}
+        {this.props.stuff}
       </div>
     );
   }
@@ -163,7 +163,7 @@ class Detail extends React.Component {
     return (
       <div>
         <h1>Detail</h1>
-        {this.props.item ? this.props.item : 'Loading...'}
+        {this.props.item}
         <Route
           path="/detail/:id/more"
           exact
