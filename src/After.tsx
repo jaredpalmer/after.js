@@ -40,11 +40,10 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     if (navigated) {
       // save the location and data so we can render the old screen
       // first we try to use previousLocation and then location from props
-      this.setState({
-        previousLocation: this.state.previousLocation || this.props.location,
-      });
+      this.setState(prevState => ({
+        previousLocation: prevState.previousLocation || this.props.location
+      }));
 
-      const { location: currentLocation } = this.props
       const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
 
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
@@ -54,7 +53,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       })
         .then(({ data }) => {
           // if data is not for current location just don't do anything
-          if (currentLocation !== nextProps.location) {
+          if (this.props.location !== location) {
+            // should we save this data in prefetcherCache ?
             return  
           }
 
