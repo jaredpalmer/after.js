@@ -19,6 +19,17 @@ In v1, with `asyncComponent` you split part of your application into a new chunk
 
 in After.js 2 this problem is solved and it sends all JS and CSS files needed for current request in the initial server response.
 
+## Update Dependencies
+
+```bash
+yarn upgrade @jaredpalmer/after razzle --latest
+```
+
+or
+```bash
+npm install @jaredpalmer/after@latest razzle@latest --save
+```
+
 ## Breaking Changes
 
 ### `routes.js` config changed
@@ -89,7 +100,7 @@ export default [
 ];
 ```
 
-we call this code block "`/* webpackChunkName: "" */`" a magic comment, with magic comments we have more control over webpack compilation process. as you may already know webpack job is to merge all of our JS files into one file so we can easily send that one file to our users (the same thing applies for CSS files).
+we call this code block "`/* webpackChunkName: "" */`" a magic comment, with magic comments we have more control over webpack compilation process. as you may already know webpack job is to merge all of our JS files into one file so we can easily send that one file to our users (same thing applies for CSS files).
 
 with dynamic import syntax `import()` we can split our CSS and JS files into multiple files and load them whenever we need them, we call these files chunks.
 
@@ -117,7 +128,7 @@ there is one more thing that we have to take care about. if you use the same com
 ];
 ```
 
-✅ The right way to handle the above situation:
+✅ The right way to handle it:
 
 ```jsx
 [
@@ -221,29 +232,9 @@ function myTransformations(route) {
 
 > for more details visit [babel-plugin README](https://github.com/jaredpalmer/after.js/packages/babel-plugin-after#how-its-wokring)
 
-### Add new webpack plugin
-
-We have to add a new webpack plugin to get chunks information from webpack (it's called stats) and save it into a file to use it later in our application.
-
-This is not magic but it's using webpack magic comments.
-
-This will create a file called `manifest.json` in the build directory.
-
-to enable `razzle-plugin-manifest` create a `razzle.config.js` file in the root directory of the project (next to the package.json):
-
-```javascript
-// razzle.config.js
-
-module.exports = {
-  plugins: ['manifest'],
-};
-```
-
-> Check [razzle-plugin-manifest](https://github.com/nimacsoft/razzle-plugin-manifest) repo for more options.
-
 ### Update `server.js`
 
-Import `manifest.json` file that webpack plugin generated for us and pass it as a parameter to render method. (don't panic if there is no `manifest.json` file, it will get generated once you run start or build script)
+Import `chunks.json` file that razzle will generate for us and pass it as a parameter to render method.
 
 From:
 
@@ -289,9 +280,9 @@ import express from 'express';
 import { render } from '@jaredpalmer/after';
 import routes from './routes';
 import MyDocument from './Document';
-import manifest from '../build/manifest.json'; // 👈 import manifest
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST); // 👈 import chunks.json
 
 const server = express();
 server
@@ -304,7 +295,7 @@ server
         req,
         res,
         document: MyDocument,
-        manifest, // 👈 pass it to render method
+        chunks, // 👈 pass it to render method
         routes,
         assets,
       });
@@ -318,7 +309,7 @@ server
 export default server;
 ```
 
-### Update `Document.js`
+### Update `Document.js` (only if you used Custom `Document`)
 
 if you defined custom `document.js` in `server.js` you should get scripts and styles from props and then loop through them
 
@@ -338,7 +329,7 @@ class Document extends React.Component {
 
   render() {
     const { helmet, assets, data } = this.props;
-    // get attributes from React Helmet
+
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
 
@@ -399,7 +390,7 @@ class Document extends React.Component {
   render() {
     // 👇 get scripts, styles, prefix from props
     const { helmet, assets, data, scripts, styles, prefix } = this.props;
-    // get attributes from React Helmet
+
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
 
@@ -448,34 +439,6 @@ class Document extends React.Component {
 
 export default Document;
 ```
-
-### Bonus
-
-#### Enable Gzip and Brotli Compression Algorithm to have faster page loads!
-
-to enable compression just add `compression` to webpack plugins:
-
-```javascript
-// razzle.config.js
-
-module.exports = {
-  plugins: ['compression'],
-};
-```
-
-if you used the `manifest` plugin then `razzle.config.js` should look like:
-
-```javascript
-// razzle.config.js
-
-module.exports = {
-  plugins: ['manifest', 'compression'],
-};
-```
-
-then you must tell your webserver to send compressed files when a request comes for files, check this [gist](https://gist.github.com/nimaa77/0bafa7afe1170003f0c2d8c32ff08175) for more information.
-
-> Check [razzle-plugin-compression](https://github.com/nimacsoft/razzle-plugin-compression) repo for more options.
 
 ### Deprecated Features
 
