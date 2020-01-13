@@ -84,7 +84,7 @@ class About extends React.Component {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>About</h1>
-        {this.props.stuff ? this.props.stuff : 'Loading...'}
+        {this.props.stuff}
       </div>
     );
   }
@@ -163,7 +163,7 @@ class Detail extends React.Component {
     return (
       <div>
         <h1>Detail</h1>
-        {this.props.item ? this.props.item : 'Loading...'}
+        {this.props.item}
         <Route
           path="/detail/:id/more"
           exact
