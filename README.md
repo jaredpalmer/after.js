@@ -31,6 +31,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
     - [Razzle Quickstart](#razzle-quickstart)
   - [Data Fetching](#data-fetching)
     - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+    - [Add Params to `getInitialProps: (ctx) => Data`](#add-params-to-getinitialprops-ctx--data)
     - [Injected Page Props](#injected-page-props)
   - [Routing](#routing)
     - [Parameterized Routing](#parameterized-routing)
@@ -107,6 +108,51 @@ the client and the server:
 - `match`: React Router's `match` object.
 - `history`: React Router's `history` object.
 - `location`: (client-only) React Router's `location` object (you can only use location.pathname on server).
+
+### Add Params to `getInitialProps: (ctx) => Data`
+
+You can extend `ctx`, and pass your custom params to it. this is useful when you want to fetch some data by condition or store fetched data in a global state managment system (like redux) or you may need to pass those params as props to your component from `server.js` (e.g result of user agent parsing).
+
+```js
+// ./src/server.js
+...
+try {
+  const html = await render({
+    req,
+    res,
+    routes,
+    assets,
+    // Anything else you add here will be made available
+    // within getInitialProps(ctx)
+    // e.g a redux store...
+    customThing: 'thing',
+  });
+  res.send(html);
+} catch (error) {
+  console.error(error);
+  res.json({ message: error.message, stack: error.stack });
+}
+...
+```
+Don't forget to pass your custom params to `<After/>` in `client.js`:
+```js
+// ./src/client.js
+...
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      {/*
+        Anything else you pass to <After/> will be made available
+        within getInitialProps(ctx)
+        e.g a redux store...
+      */}
+      <After data={data} routes={routes} customThing="thing" />
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
+);
+...
+```
 
 ### Injected Page Props
 
