@@ -16,7 +16,7 @@ const validImportSources = [
 
 export default function({ types: t }) {
   return {
-    name: 'after-async-component',
+    name: 'after',
     inherits: syntaxDynamicImport,
     visitor: {
       ImportDeclaration(path) {

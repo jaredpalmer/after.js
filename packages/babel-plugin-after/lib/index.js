@@ -73,7 +73,7 @@ var validImportSources = [
 function _default(_ref) {
   var t = _ref.types
   return {
-    name: "after-async-component",
+    name: "after",
     inherits: _pluginSyntaxDynamicImport["default"],
     visitor: {
       ImportDeclaration: function ImportDeclaration(path) {
