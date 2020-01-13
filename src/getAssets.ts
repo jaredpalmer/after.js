@@ -3,7 +3,7 @@ import { isLoadableComponent } from './utils';
 // @ts-ignore
 import logger from 'razzle-dev-utils/logger';
 
-export function getAssets({ route, manifest }: getAssetsParams) {
+export function getAssets({ route, chunks }: getAssetsParams) {
   let scripts: string[] = [];
 	let styles: string[] = [];
 	
@@ -20,20 +20,20 @@ export function getAssets({ route, manifest }: getAssetsParams) {
   }
 
   // if component was LoadableComponent
-  // =we look for it's assets from manifest
+  // we look for it's assets from chunks.json
   if (isLoadableComponent(route.component)) {
     const chunkName = route.component.getChunkName()!;
 
-    if (manifest[chunkName] && manifest[chunkName].js) {
-      scripts = manifest[chunkName].js;
+    if (chunks[chunkName] && chunks[chunkName].js) {
+      scripts = chunks[chunkName].js;
     }
 
-    if (manifest[chunkName] && manifest[chunkName].css) {
-      styles = manifest[chunkName].css;
+    if (chunks[chunkName] && chunks[chunkName].css) {
+      styles = chunks[chunkName].css;
     }
   }
 
   return { scripts, styles };
 }
 
-export const errorMeesage = `all async routes must have a chunkName property with value of /* webpackChunkName: "MyChunkName" */ check your routes config or use babel-plugin-after-async-component`;
+export const errorMeesage = `all async routes must have a chunkName property with value of /* webpackChunkName: "MyChunkName" */ check your routes config or use babel-plugin-after`;

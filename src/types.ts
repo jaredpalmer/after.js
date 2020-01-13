@@ -80,7 +80,7 @@ export interface Assets {
   };
 }
 
-export interface manifest {
+export interface Chunks {
 	[key: string]: {
 		css: string[]
 		js: string[]
@@ -88,6 +88,6 @@ export interface manifest {
 }
 
 export interface getAssetsParams {
-	manifest: manifest
+	chunks: Chunks
 	route?: AsyncRouteProps<any>
 }

@@ -8,7 +8,7 @@ import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
-import { Assets, AsyncRouteProps, manifest } from './types';
+import { Assets, AsyncRouteProps, Chunks } from './types';
 import { StaticRouterContext } from "react-router"
 import { getAssets } from "./getAssets";
 
@@ -29,12 +29,12 @@ export interface AfterRenderOptions<T> {
   assets: Assets;
   routes: AsyncRouteProps[];
 	document?: typeof DefaultDoc;
-	manifest: manifest
+	chunks: Chunks
   customRenderer?: (element: React.ReactElement<T>) => { html: string };
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes: pureRoutes, assets, document: Document, customRenderer, manifest, ...rest } = options;
+  const { req, res, routes: pureRoutes, assets, document: Document, customRenderer, chunks, ...rest } = options;
 	const Doc = Document || DefaultDoc;
 
 	const routes = utils.getAllRoutes(pureRoutes);
@@ -98,7 +98,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 		? "/"
 		: `http://${process.env.HOST || "localhost"}:${parseInt(process.env.PORT!, 10) + 1}/`
 	
-	const { scripts, styles } = getAssets({ route: match, manifest })
+	const { scripts, styles } = getAssets({ route: match, chunks })
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
