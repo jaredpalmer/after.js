@@ -6,11 +6,9 @@ class Home extends React.Component {
   static async getInitialProps({ req, res, match, history, location, ...ctx }) {
     return { stuff: 'home stuffs' };
   }
- 
+
   render() {
-    return (
-      <h1>Home</h1>
-    );
+    return <h1>Home</h1>;
   }
 }
 

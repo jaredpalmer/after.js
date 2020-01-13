@@ -1,4 +1,8 @@
-import { RouteProps, RouteComponentProps, match as Match } from 'react-router-dom';
+import {
+  RouteProps,
+  RouteComponentProps,
+  match as Match,
+} from 'react-router-dom';
 import { HelmetData } from 'react-helmet';
 import { Request, Response } from 'express';
 import { IncomingMessage, ServerResponse } from 'http';
@@ -21,7 +25,7 @@ export interface CtxBase {
   req?: IncomingMessage;
   res?: ServerResponse;
   history?: History;
-  location?: Location; 
+  location?: Location;
 }
 export interface Ctx<P> extends CtxBase {
   match: Match<P>;

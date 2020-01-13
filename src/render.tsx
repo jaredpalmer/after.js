@@ -42,7 +42,9 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const context: StaticRouterContext = {};
   const renderPage = async (fn = modPageFn) => {
     // By default, we keep ReactDOMServer synchronous renderToString function
-    const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
+    const defaultRenderer = (element: React.ReactElement<T>) => ({
+      html: ReactDOMServer.renderToString(element),
+    });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
@@ -50,43 +52,51 @@ export async function render<T>(options: AfterRenderOptions<T>) {
       </StaticRouter>
     );
 
-    const renderedContent = utils.isPromise(asyncOrSyncRender) ? await asyncOrSyncRender : asyncOrSyncRender;
+    const renderedContent = utils.isPromise(asyncOrSyncRender)
+      ? await asyncOrSyncRender
+      : asyncOrSyncRender;
     const helmet = Helmet.renderStatic();
-		
-		const { statusCode, url: redirectTo } = context;
 
-		if (redirectTo) {
-			res.redirect(statusCode || 301, redirectTo);
-		}
-	
-		if (statusCode) {
-			res.status(statusCode);
-		}
+    const { statusCode, url: redirectTo } = context;
+
+    if (redirectTo) {
+      res.redirect(statusCode || 301, redirectTo);
+    }
+
+    if (statusCode) {
+      res.status(statusCode);
+    }
 
     return { helmet, ...renderedContent };
   };
 
-  const { match, data } = await loadInitialProps(routes, url.parse(req.url).pathname as string, {
-    req,
-    res,
-    ...rest
-  });
+  const { match, data } = await loadInitialProps(
+    routes,
+    url.parse(req.url).pathname as string,
+    {
+      req,
+      res,
+      ...rest,
+    }
+  );
 
-	
-	if (data) {
-		const { redirectTo, statusCode} = data as { statusCode?: number, redirectTo?: string };
+  if (data) {
+    const { redirectTo, statusCode } = data as {
+      statusCode?: number;
+      redirectTo?: string;
+    };
 
-		if (statusCode) {
-			context.statusCode = statusCode;
-		}
-		
-		if (redirectTo) {
-			res.redirect(statusCode || 301, redirectTo);
-			return;
-		}
-	}
+    if (statusCode) {
+      context.statusCode = statusCode;
+    }
 
-	if (match && match.redirectTo && match.path) {
+    if (redirectTo) {
+      res.redirect(statusCode || 301, redirectTo);
+      return;
+    }
+  }
+
+  if (match && match.redirectTo && match.path) {
     res.redirect(301, req.originalUrl.replace(match.path, match.redirectTo));
     return;
   }
@@ -114,5 +124,8 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
-  return `<!doctype html>${doc.replace('DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP', html)}`;
+  return `<!doctype html>${doc.replace(
+    'DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP',
+    html
+  )}`;
 }

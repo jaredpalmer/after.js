@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { asyncComponent } from '../asyncComponent';
-import NonDymamicImport  from './components/NonDynamicExport';
+import NonDymamicImport from './components/NonDynamicExport';
 import { NoGetInitialProps } from './components/NoGetInitialProps';
 import NotFoundComponent from '../NotFoundComponent';
 
-const Placeholder = () => <div>...LOADING...</div>
+const Placeholder = () => <div>...LOADING...</div>;
 
 export default [
   {
@@ -29,7 +29,7 @@ export default [
   {
     path: '/non-dynamic-import',
     exact: true,
-    component: NonDymamicImport
+    component: NonDymamicImport,
   },
   {
     path: '/non-default-export',

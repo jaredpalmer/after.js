@@ -103,12 +103,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
   prefetch = (pathname: string) => {
     loadInitialProps(this.props.routes, pathname, {
-      history: this.props.history
+      history: this.props.history,
     })
       .then(({ data }) => {
         this.prefetcherCache = {
           ...this.prefetcherCache,
-          [pathname]: data
+          [pathname]: data,
         };
       })
       .catch(e => console.log(e));
@@ -144,7 +144,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
                 history: props.history,
                 location: previousLocation || location,
                 match: props.match,
-                prefetch: this.prefetch
+                prefetch: this.prefetch,
               })
             }
           />

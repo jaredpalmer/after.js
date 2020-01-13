@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Module, AsyncRouteComponentState, AsyncRouteComponentType, Ctx } from './types';
+import {
+  Module,
+  AsyncRouteComponentState,
+  AsyncRouteComponentType,
+  Ctx,
+} from './types';
 
 /**
  * Returns a new React component, ready to be instantiated.
@@ -18,14 +23,17 @@ export function asyncComponent<Props>({
   // keep Component in a closure to avoid doing this stuff more than once
   let Component: AsyncRouteComponentType<Props> | null = null;
 
-  return class AsyncRouteComponent extends React.Component<Props, AsyncRouteComponentState> {
+  return class AsyncRouteComponent extends React.Component<
+    Props,
+    AsyncRouteComponentState
+  > {
     /**
      * Static so that you can call load against an uninstantiated version of
      * this component. This should only be called one time outside of the
      * normal render path.
      */
     static load() {
-      return loader().then((ResolvedComponent) => {
+      return loader().then(ResolvedComponent => {
         Component = ResolvedComponent!.default || ResolvedComponent;
       });
     }
@@ -37,7 +45,9 @@ export function asyncComponent<Props>({
     static getInitialProps(ctx: Ctx<any>) {
       // Need to call the wrapped components getInitialProps if it exists
       if (Component !== null) {
-        return Component.getInitialProps ? Component.getInitialProps(ctx) : Promise.resolve(null);
+        return Component.getInitialProps
+          ? Component.getInitialProps(ctx)
+          : Promise.resolve(null);
       }
     }
 
@@ -58,7 +68,7 @@ export function asyncComponent<Props>({
       // component, this prevent unnecessary renders.
       if (this.state.Component !== Component) {
         this.setState({
-          Component
+          Component,
         });
       }
     }
