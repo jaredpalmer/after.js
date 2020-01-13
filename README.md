@@ -104,7 +104,7 @@ Within `getInitialProps`, you have access to all you need to fetch data on both
 the client and the server:
 
 - `req?: Request`: (server-only) An Express.js request object
-- `res?: Request`: (server-only) An Express.js response object
+- `res?: Response`: (server-only) An Express.js response object
 - `match`: React Router's `match` object.
 - `history`: React Router's `history` object.
 - `location`: (client-only) React Router's `location` object (you can only use location.pathname on server).
