@@ -35,7 +35,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 	- [Routing](#routing)
 		- [Parameterized Routing](#parameterized-routing)
 		- [Client Only Data and Routing](#client-only-data-and-routing)
-		- [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
+		- [404 Page](#404-page)
 		- [Dynamic 404](#dynamic-404)
 		- [Redirect](#redirect)
 	- [Code Splitting](#code-splitting)
@@ -88,7 +88,7 @@ class About extends React.Component {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>About</h1>
-        {this.props.stuff ? this.props.stuff : 'Loading...'}
+        {this.props.stuff}
       </div>
     );
   }
@@ -167,7 +167,7 @@ class Detail extends React.Component {
     return (
       <div>
         <h1>Detail</h1>
-        {this.props.item ? this.props.item : 'Loading...'}
+        {this.props.item}
         <Route
           path="/detail/:id/more"
           exact
@@ -193,7 +193,7 @@ In some parts of your application, you may not need server data fetching at all
 would in client land: You can fetch data (in componentDidMount) and do routing
 the same exact way.
 
-### Dynamic 404 and Redirects
+### 404 Page
 
 React Router 4 can detect No Match (404) Routes and show a fallback component, you can define your custom fallback component in `routes.js` file.
 
