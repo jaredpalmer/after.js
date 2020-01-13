@@ -1,9 +1,9 @@
 import express from 'express';
 import { render } from '../../../build';
 import routes from './routes';
-import manifest from "../build/manifest.json"
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
 
 const server = express();
 server
@@ -16,7 +16,7 @@ server
         res,
         routes,
 				assets,
-				manifest,
+				chunks,
         // Anything else you add here will be made available
         // within getInitialProps(ctx)
         // e.g a redux store...
