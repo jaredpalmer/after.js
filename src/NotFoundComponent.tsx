@@ -11,7 +11,7 @@ class NotFound extends React.Component {
 			<Route
 				render={({ staticContext }) => {
 					if (staticContext) staticContext.statusCode = 404;
-					return <div>The Page You Were Looking For Was Not Found</div>;
+					return NotFound.data;
 				}}
 			/>
 		)
