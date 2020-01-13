@@ -10,12 +10,14 @@ If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.
 
 Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
 
-* Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
-* Next.js's `getInitialProps` was/is a brilliant idea.
-* Route-based code-splitting should come for free or be easy to opt into.
-* Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
+- Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
+- Next.js's `getInitialProps` was/is a brilliant idea.
+- Route-based code-splitting should come for free or be easy to opt into.
+- Route-based transitions / analytics / data loading / preloading etc. , should either come for free or be trivial to implement on your own.
 
 **Table of Contents**
+
+<!-- prettier-ignore-start -->
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -23,20 +25,28 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-* [Getting Started with After.js](#getting-started-with-afterjs)
-  * [Razzle Quickstart](#razzle-quickstart)
-* [Data Fetching](#data-fetching)
-  * [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-  * [Injected Page Props](#injected-page-props)
-* [Routing](#routing)
-  * [Parameterized Routing](#parameterized-routing)
-  * [Client Only Data and Routing](#client-only-data-and-routing)
-* [Code Splitting](#code-splitting)
-* [Custom `<Document>`](#custom-document)
-* [Author](#author)
-* [Inspiration](#inspiration)
+- [After.js](#afterjs)
+	- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+	- [Getting Started with After.js](#getting-started-with-afterjs)
+		- [Razzle Quickstart](#razzle-quickstart)
+	- [Data Fetching](#data-fetching)
+		- [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+		- [Injected Page Props](#injected-page-props)
+	- [Routing](#routing)
+		- [Parameterized Routing](#parameterized-routing)
+		- [Client Only Data and Routing](#client-only-data-and-routing)
+		- [404 Page](#404-page)
+		- [Dynamic 404](#dynamic-404)
+		- [Redirect](#redirect)
+	- [Code Splitting](#code-splitting)
+	- [Custom `<Document>`](#custom-document)
+	- [Custom/Async Rendering](#customasync-rendering)
+	- [Author](#author)
+	- [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- prettier-ignore-end -->
 
 ## Getting Started with After.js
 
@@ -78,7 +88,7 @@ class About extends React.Component {
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <h1>About</h1>
-        {this.props.stuff ? this.props.stuff : 'Loading...'}
+        {this.props.stuff}
       </div>
     );
   }
@@ -100,9 +110,9 @@ the client and the server:
 
 ### Injected Page Props
 
-* Whatever you have returned in `getInitialProps`
-* `prefetch: (pathname: string) => void` - Imperatively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
-* `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
+- Whatever you have returned in `getInitialProps`
+- `prefetch: (pathname: string) => void` - Imperatively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
+- `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
 
 ## Routing
 
@@ -157,7 +167,7 @@ class Detail extends React.Component {
     return (
       <div>
         <h1>Detail</h1>
-        {this.props.item ? this.props.item : 'Loading...'}
+        {this.props.item}
         <Route
           path="/detail/:id/more"
           exact
@@ -182,6 +192,134 @@ In some parts of your application, you may not need server data fetching at all
 (e.g. settings). With After.js, you just use React Router 4 as you normally
 would in client land: You can fetch data (in componentDidMount) and do routing
 the same exact way.
+
+### 404 Page
+
+React Router 4 can detect No Match (404) Routes and show a fallback component, you can define your custom fallback component in `routes.js` file.
+
+```js
+// ./src/routes.js
+import React from 'react';
+import Home from './Home';
+import Notfound from './Notfound';
+import { asyncComponent } from '@jaredpalmer/after';
+
+export default [
+  // normal route
+  {
+    path: '/',
+    exact: true,
+    component: Home,
+  },
+  // 404 route
+  {
+    // there is no need to declare path variable
+    // react router will pick this component as fallback
+    component: Notfound,
+  },
+];
+```
+
+Notfound component must set `staticContext.statusCode` to 404 so express can set response status code [more info](https://reacttraining.com/react-router/web/guides/server-rendering/404-401-or-any-other-status).
+
+```js
+// ./src/Notfound.js
+import React from 'react';
+import { Route } from 'react-router-dom';
+
+function NotFound() {
+  return (
+    <Route
+      render={({ staticContext }) => {
+        if (staticContext) staticContext.statusCode = 404;
+        return <div>The Page You Were Looking For Was Not Found</div>;
+      }}
+    />
+  );
+}
+
+export default NotFound;
+```
+
+if you don't declare 404 component in `routes.js` After.js will use it's default fallback.
+
+### Dynamic 404
+
+Sometimes you may need to send 404 response based on some api response, in this case react router don't show fallback and you have to check for that in your component.
+
+```js
+import Notfound from './Notfound';
+
+function ProductPage({ product, error }) {
+  if (error) {
+    if (error.response.status === 404) {
+      return <Notfound />;
+    }
+
+    return <p>Something went Wrong !</p>;
+  }
+  {
+    /* if there was no errors we have our data */
+  }
+  return <h1>{product.name}</h1>;
+}
+
+ProductPage.getInitialProps = async ({ match }) => {
+  try {
+    const { data } = await fetchProduct(match.params.slug);
+    return { product: data };
+  } catch (error) {
+    return { error };
+  }
+};
+```
+
+this makes code unreadable and hard to maintain. after.js makes this easy by providing an api for handling Dynamic 404 pages. you can return `{ statusCode: 404 }` from `getInitialProps` and after.js will show 404 fallback component that you defined in `routes.js` for you.
+
+```js
+function ProductPage({ product }) {
+  if (error) {
+    {
+      /* you can ignore error and catch it in ComponentDidCatch too ! */
+    }
+    return <p>Something went Wrong !</p>;
+  }
+
+  return <h1>{product.name}</h1>;
+}
+
+ProductPage.getInitialProps = async ({ match }) => {
+  try {
+    const { data } = await fetchProduct(match.params.slug);
+    return { product: data };
+  } catch (error) {
+    if (error.response.status === 404) return { statusCode: 404 };
+    return { error };
+  }
+};
+```
+
+### Redirect
+
+You can redirect user to other route by using `Redirect` from react router, but it can make your code unreadable and hard to maintain.
+with after.js you can redirect client to other route by returning `{ redirectTo: "/new-location" }` from `getInitialProps`.
+this can become handy for authorization, when user dose not have premissions to access specific route and you can redirect him/her to login page.
+
+```js
+Dashboard.getInitialProps = async ({ match }) => {
+  try {
+    const { data } = await fetchProfile();
+    return { data };
+  } catch (error) {
+    if (error.response.status === 401)
+      return { statusCode: 401, redirectTo: '/login' };
+    return { error };
+  }
+};
+```
+
+Redirect will happen before after.js start render react to string soo it's fast.
+when using `redirectTo` default value for `statusCode` is 301, but you can use any numeric value you want.
 
 ## Code Splitting
 
@@ -270,18 +408,20 @@ If you were using something like `styled-components`, and you need to wrap you e
 ```js
 // ./src/Document.js
 import React from 'react';
-import { ServerStyleSheet } from 'styled-components'
+import { ServerStyleSheet } from 'styled-components';
 import { AfterRoot, AfterData } from '@jaredpalmer/after';
 
 export default class Document extends React.Component {
   static async getInitialProps({ assets, data, renderPage }) {
-    const sheet = new ServerStyleSheet()
-    const page = await renderPage(App => props => sheet.collectStyles(<App {...props} />))
-    const styleTags = sheet.getStyleElement()
-    return { assets, data, ...page, styleTags};
+    const sheet = new ServerStyleSheet();
+    const page = await renderPage(App => props =>
+      sheet.collectStyles(<App {...props} />)
+    );
+    const styleTags = sheet.getStyleElement();
+    return { assets, data, ...page, styleTags };
   }
 
- render() {
+  render() {
     const { helmet, assets, data, styleTags } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
@@ -297,12 +437,12 @@ export default class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {/** here is where we put our Styled Components styleTags... */}
+          {/* here is where we put our Styled Components styleTags... */}
           {styleTags}
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data}/>
+          <AfterData data={data} />
           <script
             type="text/javascript"
             src={assets.client.js}
@@ -414,12 +554,12 @@ export default server;
 
 ## Author
 
-* Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
+- Jared Palmer [@jaredpalmer](https://twitter.com/jaredpalmer)
 
 ## Inspiration
 
-* [Razzle](https://github.com/jaredpalmer/razzle)
-* [Next.js](https://github.com/zeit/next.js)
+- [Razzle](https://github.com/jaredpalmer/razzle)
+- [Next.js](https://github.com/zeit/next.js)
 
 ---
 
