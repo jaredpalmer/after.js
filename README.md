@@ -8,7 +8,7 @@ If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.
 
 ## Project Goals / Philosophy / Requirements
 
-Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
+Next.js is awesome. However, its routing system isn't for me. IMHO React Router is a better foundation upon which such a framework should be built....and that's the goal here:
 
 - Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
 - Next.js's `getInitialProps` was/is a brilliant idea.
@@ -26,23 +26,24 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [After.js](#afterjs)
-	- [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
-	- [Getting Started with After.js](#getting-started-with-afterjs)
-		- [Razzle Quickstart](#razzle-quickstart)
-	- [Data Fetching](#data-fetching)
-		- [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-		- [Injected Page Props](#injected-page-props)
-	- [Routing](#routing)
-		- [Parameterized Routing](#parameterized-routing)
-		- [Client Only Data and Routing](#client-only-data-and-routing)
-		- [404 Page](#404-page)
-		- [Dynamic 404](#dynamic-404)
-		- [Redirect](#redirect)
-	- [Code Splitting](#code-splitting)
-	- [Custom `<Document>`](#custom-document)
-	- [Custom/Async Rendering](#customasync-rendering)
-	- [Author](#author)
-	- [Inspiration](#inspiration)
+  - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
+  - [Getting Started with After.js](#getting-started-with-afterjs)
+    - [Razzle Quickstart](#razzle-quickstart)
+  - [Data Fetching](#data-fetching)
+    - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+    - [Add Params to `getInitialProps: (ctx) => Data`](#add-params-to-getinitialprops-ctx--data)
+    - [Injected Page Props](#injected-page-props)
+  - [Routing](#routing)
+    - [Parameterized Routing](#parameterized-routing)
+    - [Client Only Data and Routing](#client-only-data-and-routing)
+    - [404 Page](#404-page)
+    - [Dynamic 404](#dynamic-404)
+    - [Redirect](#redirect)
+  - [Code Splitting](#code-splitting)
+  - [Custom `<Document>`](#custom-document)
+  - [Custom/Async Rendering](#customasync-rendering)
+  - [Author](#author)
+  - [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -50,7 +51,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 ## Getting Started with After.js
 
-After.js enables Next.js-like data fetching with any React SSR app that uses React Router 4.
+After.js enables Next.js-like data fetching with any React SSR app that uses React Router.
 
 ### Razzle Quickstart
 
@@ -104,9 +105,54 @@ the client and the server:
 
 - `req?: Request`: (server-only) An Express.js request object
 - `res?: Response`: (server-only) An Express.js response object
-- `match`: React Router 4's `match` object.
-- `history`: React Router 4's `history` object.
-- `location`: (client-only) React Router 4's `location` object.
+- `match`: React Router's `match` object.
+- `history`: React Router's `history` object.
+- `location`: (client-only) React Router's `location` object (you can only use location.pathname on server).
+
+### Add Params to `getInitialProps: (ctx) => Data`
+
+You can extend `ctx`, and pass your custom params to it. this is useful when you want to fetch some data by condition or store fetched data in a global state managment system (like redux) or you may need to pass those params as props to your component from `server.js` (e.g result of user agent parsing).
+
+```js
+// ./src/server.js
+...
+try {
+  const html = await render({
+    req,
+    res,
+    routes,
+    assets,
+    // Anything else you add here will be made available
+    // within getInitialProps(ctx)
+    // e.g a redux store...
+    customThing: 'thing',
+  });
+  res.send(html);
+} catch (error) {
+  console.error(error);
+  res.json({ message: error.message, stack: error.stack });
+}
+...
+```
+Don't forget to pass your custom params to `<After/>` in `client.js`:
+```js
+// ./src/client.js
+...
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      {/*
+        Anything else you pass to <After/> will be made available
+        within getInitialProps(ctx)
+        e.g a redux store...
+      */}
+      <After data={data} routes={routes} customThing="thing" />
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
+);
+...
+```
 
 ### Injected Page Props
 
@@ -116,8 +162,8 @@ the client and the server:
 
 ## Routing
 
-As you have probably figured out, React Router 4 powers all of After.js's
-routing. You can use any and all parts of RR4.
+As you have probably figured out, React Router powers all of After.js's
+routing. You can use any and all parts of RR.
 
 ### Parameterized Routing
 
@@ -195,7 +241,7 @@ the same exact way.
 
 ### 404 Page
 
-React Router 4 can detect No Match (404) Routes and show a fallback component, you can define your custom fallback component in `routes.js` file.
+React Router can detect No Match (404) Routes and show a fallback component, you can define your custom fallback component in `routes.js` file.
 
 ```js
 // ./src/routes.js
@@ -483,8 +529,8 @@ server
       });
       res.send(html);
     } catch (error) {
-      console.log(error);
-      res.json(error);
+      console.error(error);
+      res.json({ message: error.message, stack: error.stack });
     }
   });
 
@@ -545,7 +591,8 @@ server
       });
       res.send(html);
     } catch (error) {
-      res.json(error);
+      console.error(error);
+      res.json({ message: error.message, stack: error.stack });
     }
   });
 
