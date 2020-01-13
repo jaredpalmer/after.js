@@ -8,7 +8,7 @@ If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.
 
 ## Project Goals / Philosophy / Requirements
 
-Next.js is awesome. However, its routing system isn't for me. IMHO React Router 4 is a better foundation upon which such a framework should be built....and that's the goal here:
+Next.js is awesome. However, its routing system isn't for me. IMHO React Router is a better foundation upon which such a framework should be built....and that's the goal here:
 
 - Routes are just components and don't / should not have anything to do with folder structure. Static route configs are fine.
 - Next.js's `getInitialProps` was/is a brilliant idea.
@@ -31,6 +31,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
     - [Razzle Quickstart](#razzle-quickstart)
   - [Data Fetching](#data-fetching)
     - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+    - [Add Params to `getInitialProps: (ctx) => Data`](#add-params-to-getinitialprops-ctx--data)
     - [Injected Page Props](#injected-page-props)
   - [Routing](#routing)
     - [Parameterized Routing](#parameterized-routing)
@@ -50,7 +51,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 ## Getting Started with After.js
 
-After.js enables Next.js-like data fetching with any React SSR app that uses React Router 4.
+After.js enables Next.js-like data fetching with any React SSR app that uses React Router.
 
 ### Razzle Quickstart
 
@@ -103,10 +104,55 @@ Within `getInitialProps`, you have access to all you need to fetch data on both
 the client and the server:
 
 - `req?: Request`: (server-only) An Express.js request object
-- `res?: Request`: (server-only) An Express.js response object
-- `match`: React Router 4's `match` object.
-- `history`: React Router 4's `history` object.
-- `location`: (client-only) React Router 4's `location` object.
+- `res?: Response`: (server-only) An Express.js response object
+- `match`: React Router's `match` object.
+- `history`: React Router's `history` object.
+- `location`: (client-only) React Router's `location` object (you can only use location.pathname on server).
+
+### Add Params to `getInitialProps: (ctx) => Data`
+
+You can extend `ctx`, and pass your custom params to it. this is useful when you want to fetch some data by condition or store fetched data in a global state managment system (like redux) or you may need to pass those params as props to your component from `server.js` (e.g result of user agent parsing).
+
+```js
+// ./src/server.js
+...
+try {
+  const html = await render({
+    req,
+    res,
+    routes,
+    assets,
+    // Anything else you add here will be made available
+    // within getInitialProps(ctx)
+    // e.g a redux store...
+    customThing: 'thing',
+  });
+  res.send(html);
+} catch (error) {
+  console.error(error);
+  res.json({ message: error.message, stack: error.stack });
+}
+...
+```
+Don't forget to pass your custom params to `<After/>` in `client.js`:
+```js
+// ./src/client.js
+...
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      {/*
+        Anything else you pass to <After/> will be made available
+        within getInitialProps(ctx)
+        e.g a redux store...
+      */}
+      <After data={data} routes={routes} customThing="thing" />
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
+);
+...
+```
 
 ### Injected Page Props
 
@@ -116,8 +162,8 @@ the client and the server:
 
 ## Routing
 
-As you have probably figured out, React Router 4 powers all of After.js's
-routing. You can use any and all parts of RR4.
+As you have probably figured out, React Router powers all of After.js's
+routing. You can use any and all parts of RR.
 
 ### Parameterized Routing
 
@@ -195,7 +241,7 @@ the same exact way.
 
 ### 404 Page
 
-React Router 4 can detect No Match (404) Routes and show a fallback component, you can define your custom fallback component in `routes.js` file.
+React Router can detect No Match (404) Routes and show a fallback component, you can define your custom fallback component in `routes.js` file.
 
 ```js
 // ./src/routes.js
@@ -504,8 +550,8 @@ server
       });
       res.send(html);
     } catch (error) {
-      console.log(error);
-      res.json(error);
+      console.error(error);
+      res.json({ message: error.message, stack: error.stack });
     }
   });
 
@@ -568,7 +614,8 @@ server
       });
       res.send(html);
     } catch (error) {
-      res.json(error);
+      console.error(error);
+      res.json({ message: error.message, stack: error.stack });
     }
   });
 
