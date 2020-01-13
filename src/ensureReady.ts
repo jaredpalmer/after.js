@@ -26,7 +26,7 @@ export async function ensureReady(
   );
 
   let data;
-  if (typeof window !== undefined && !!document) {
+  if (typeof window !== 'undefined' && !!document) {
     // deserialize state from 'serialize-javascript' format
     data = eval(
       '(' +
