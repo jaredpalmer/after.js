@@ -1,6 +1,8 @@
-import * as React from 'react';
-import serialize from 'serialize-javascript';
-import { DocumentProps } from './types';
+import * as React from "react";
+import serialize from "serialize-javascript";
+import { DocumentProps } from "./types";
+
+export const __AfterContext = React.createContext({} as DocumentProps);
 
 export class Document extends React.Component<DocumentProps> {
   static async getInitialProps({ assets, data, renderPage }: DocumentProps) {
@@ -10,7 +12,7 @@ export class Document extends React.Component<DocumentProps> {
   }
 
   render() {
-    const { helmet, assets, data } = this.props;
+    const { helmet, data } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -25,19 +27,12 @@ export class Document extends React.Component<DocumentProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {assets.client.css && (
-            <link rel="stylesheet" href={assets.client.css} />
-          )}
+          <AfterStyles />
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
-          <script
-            type="text/javascript"
-            src={assets.client.js}
-            defer
-            crossOrigin="anonymous"
-          />
+          <AfterScripts />
         </body>
       </html>
     );
@@ -54,8 +49,35 @@ export function AfterData({ data }: any) {
       id="server-app-state"
       type="application/json"
       dangerouslySetInnerHTML={{
-        __html: serialize({ ...data }),
+        __html: serialize({ ...data })
       }}
     />
+  );
+}
+
+export function AfterStyles() {
+  return (
+    <__AfterContext.Consumer>
+      {({ assets }) =>
+        assets.client.css && <link rel="stylesheet" href={assets.client.css} />
+      }
+    </__AfterContext.Consumer>
+  );
+}
+
+export function AfterStyles() {
+  return (
+    <__AfterContext.Consumer>
+      {({ assets }) =>
+        assets.client.js && (
+          <script
+            type="text/javascript"
+            src={assets.client.js}
+            defer
+            crossOrigin="anonymous"
+          />
+        )
+      }
+    </__AfterContext.Consumer>
   );
 }

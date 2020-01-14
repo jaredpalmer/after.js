@@ -1,15 +1,15 @@
-import * as React from 'react';
-import * as ReactDOMServer from 'react-dom/server';
-import Helmet from 'react-helmet';
-import { matchPath, StaticRouter, RouteProps } from 'react-router-dom';
-import { Document as DefaultDoc } from './Document';
-import { After } from './After';
-import { loadInitialProps } from './loadInitialProps';
-import * as utils from './utils';
-import * as url from 'url';
-import { Request, Response } from 'express';
-import { Assets, AsyncRouteProps } from './types';
-import { StaticRouterContext } from 'react-router';
+import * as React from "react";
+import * as ReactDOMServer from "react-dom/server";
+import Helmet from "react-helmet";
+import { matchPath, StaticRouter, RouteProps } from "react-router-dom";
+import { Document as DefaultDoc, __AfterContext } from "./Document";
+import { After } from "./After";
+import { loadInitialProps } from "./loadInitialProps";
+import * as utils from "./utils";
+import * as url from "url";
+import { Request, Response } from "express";
+import { Assets, AsyncRouteProps } from "./types";
+import { StaticRouterContext } from "react-router";
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -47,7 +47,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const renderPage = async (fn = modPageFn) => {
     // By default, we keep ReactDOMServer synchronous renderToString function
     const defaultRenderer = (element: React.ReactElement<T>) => ({
-      html: ReactDOMServer.renderToString(element),
+      html: ReactDOMServer.renderToString(element)
     });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
@@ -80,7 +80,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     {
       req,
       res,
-      ...rest,
+      ...rest
     }
   );
 
@@ -115,12 +115,16 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     data,
     helmet: Helmet.renderStatic(),
     match: reactRouterMatch,
-    ...rest,
+    ...rest
   });
 
-  const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
+  const doc = ReactDOMServer.renderToStaticMarkup(
+    <__AfterContext.Provider value={docProps}>
+      <Doc {...docProps} />
+    </__AfterContext.Provider>
+  );
   return `<!doctype html>${doc.replace(
-    'DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP',
+    "DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP",
     html
   )}`;
 }
