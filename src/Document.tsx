@@ -1,6 +1,6 @@
-import * as React from "react";
-import serialize from "serialize-javascript";
-import { DocumentProps } from "./types";
+import * as React from 'react';
+import serialize from 'serialize-javascript';
+import { DocumentProps } from './types';
 
 export const __AfterContext = React.createContext({} as DocumentProps);
 
@@ -49,7 +49,7 @@ export function AfterData({ data }: any) {
       id="server-app-state"
       type="application/json"
       dangerouslySetInnerHTML={{
-        __html: serialize({ ...data })
+        __html: serialize({ ...data }),
       }}
     />
   );
@@ -65,7 +65,7 @@ export function AfterStyles() {
   );
 }
 
-export function AfterStyles() {
+export function AfterScripts() {
   return (
     <__AfterContext.Consumer>
       {({ assets }) =>
