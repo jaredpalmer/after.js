@@ -134,7 +134,9 @@ try {
 }
 ...
 ```
+
 Don't forget to pass your custom params to `<After/>` in `client.js`:
+
 ```js
 // ./src/client.js
 ...
