@@ -119,7 +119,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(
-    <__AfterContext.Provider value={docProps}>
+    <__AfterContext.Provider value={{ assets, data, ...rest, ...docProps }}>
       <Doc {...docProps} />
     </__AfterContext.Provider>
   );

@@ -5,14 +5,13 @@ import { DocumentProps } from './types';
 export const __AfterContext = React.createContext({} as DocumentProps);
 
 export class Document extends React.Component<DocumentProps> {
-  static async getInitialProps({ assets, data, renderPage }: DocumentProps) {
+  static async getInitialProps({ renderPage }: DocumentProps) {
     const page = await renderPage();
-
-    return { assets, data, ...page };
+    return { ...page };
   }
 
   render() {
-    const { helmet, data } = this.props;
+    const { helmet } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -31,7 +30,7 @@ export class Document extends React.Component<DocumentProps> {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data} />
+          <AfterData />
           <AfterScripts />
         </body>
       </html>
@@ -39,23 +38,27 @@ export class Document extends React.Component<DocumentProps> {
   }
 }
 
-export function AfterRoot() {
+export const AfterRoot = () => {
   return <div id="root">DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP</div>;
-}
+};
 
-export function AfterData({ data }: any) {
+export const AfterData: React.FC<{ data?: any }> = ({ data }) => {
   return (
-    <script
-      id="server-app-state"
-      type="application/json"
-      dangerouslySetInnerHTML={{
-        __html: serialize({ ...data }),
-      }}
-    />
+    <__AfterContext.Consumer>
+      {({ data: contextData }) => (
+        <script
+          id="server-app-state"
+          type="application/json"
+          dangerouslySetInnerHTML={{
+            __html: serialize({ ...(data || contextData) }),
+          }}
+        />
+      )}
+    </__AfterContext.Consumer>
   );
-}
+};
 
-export function AfterStyles() {
+export const AfterStyles = () => {
   return (
     <__AfterContext.Consumer>
       {({ assets }) =>
@@ -63,9 +66,9 @@ export function AfterStyles() {
       }
     </__AfterContext.Consumer>
   );
-}
+};
 
-export function AfterScripts() {
+export const AfterScripts = () => {
   return (
     <__AfterContext.Consumer>
       {({ assets }) =>
@@ -80,4 +83,4 @@ export function AfterScripts() {
       }
     </__AfterContext.Consumer>
   );
-}
+};
