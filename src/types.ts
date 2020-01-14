@@ -42,8 +42,8 @@ export interface AsyncRouteComponent<Props = {}>
     React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
 
 export type AsyncRouteComponentType<Props> =
-  | React.ComponentClass<Props> & AsyncComponent
-  | React.StatelessComponent<Props> & AsyncComponent;
+  | (React.ComponentClass<Props> & AsyncComponent)
+  | (React.StatelessComponent<Props> & AsyncComponent);
 
 export type AsyncRouteableComponent<Props = any> =
   | AsyncRouteComponentType<RouteComponentProps<Props>>

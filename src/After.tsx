@@ -50,10 +50,18 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       // save the location and data so we can render the old screen
       // first we try to use previousLocation and then location from props
       this.setState(prevState => ({
-        previousLocation: prevState.previousLocation || this.props.location
+        previousLocation: prevState.previousLocation || this.props.location,
       }));
 
-      const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
+      const {
+        data,
+        match,
+        routes,
+        history,
+        location,
+        staticContext,
+        ...rest
+      } = nextProps;
 
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
         location: nextProps.location,
@@ -64,7 +72,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           // if data is not for current location just don't do anything
           if (this.props.location !== location) {
             // should we save this data in prefetcherCache ?
-            return  
+            return;
           }
 
           // Only for page changes, prevent scroll up for anchor links
@@ -100,18 +108,28 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   render() {
     const { previousLocation, data } = this.state;
     const { location } = this.props;
-     const initialData = this.prefetcherCache[(previousLocation || location).pathname] || data;
+    const initialData =
+      this.prefetcherCache[(previousLocation || location).pathname] || data;
 
     return (
       <Switch location={previousLocation || location}>
-				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
-				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
+        {initialData &&
+          initialData.statusCode &&
+          initialData.statusCode === 404 && (
+            <Route
+              component={this.NotfoundComponent}
+              path={location.pathname}
+            />
+          )}
+        {initialData && initialData.redirectTo && initialData.redirectTo && (
+          <Redirect to={initialData.redirectTo} />
+        )}
         {getAllRoutes(this.props.routes).map((r, i) => (
           <Route
             key={`route--${i}`}
             path={r.path}
             exact={r.exact}
-            render={(props) =>
+            render={props =>
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
