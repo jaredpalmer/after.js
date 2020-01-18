@@ -51,7 +51,12 @@
     ],
     "collectCoverageFrom": [
       "**/*.js"
-    ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
   },
   "peerDependencies": {
     "express": ">=4",
