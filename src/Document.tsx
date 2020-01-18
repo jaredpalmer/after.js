@@ -2,15 +2,18 @@ import * as React from 'react';
 import serialize from 'serialize-javascript';
 import { DocumentProps } from './types';
 
-export class Document extends React.Component<DocumentProps> {
-  static async getInitialProps({ assets, data, renderPage, scripts, styles, prefix }: DocumentProps) {
-    const page = await renderPage();
+export const __AfterContext = React.createContext(
+  {} as DocumentProps & { html: string }
+);
 
-    return { assets, data, scripts, styles, prefix, ...page };
+export class Document extends React.Component<DocumentProps> {
+  static async getInitialProps({ renderPage }: DocumentProps) {
+    const page = await renderPage();
+    return { ...page };
   }
 
   render() {
-    const { helmet, assets, data, scripts, styles, prefix } = this.props;
+    const { helmet } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -25,15 +28,68 @@ export class Document extends React.Component<DocumentProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-					{assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
-					{styles.map((path) => (
-            <link key={path} rel="stylesheet" href={path} />
-          ))}
+          <AfterStyles />
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data} />
-					{scripts.map((path) => (
+          <AfterData />
+          <AfterScripts />
+        </body>
+      </html>
+    );
+  }
+}
+
+export const AfterRoot = () => {
+  return (
+    <__AfterContext.Consumer>
+      {({ html }) => (
+        <div id="root" dangerouslySetInnerHTML={{ __html: html }} />
+      )}
+    </__AfterContext.Consumer>
+  );
+};
+
+export const AfterData: React.FC<{ data?: any }> = ({ data }) => {
+  return (
+    <__AfterContext.Consumer>
+      {({ data: contextData }) => (
+        <script
+          defer
+          dangerouslySetInnerHTML={{
+            __html: `window.__SERVER_APP_STATE__ =  ${serialize({
+              ...(data || contextData),
+            })}`,
+          }}
+        />
+      )}
+    </__AfterContext.Consumer>
+  );
+};
+
+export const AfterStyles = () => {
+  return (
+    <__AfterContext.Consumer>
+      {({ assets, styles }) => (
+        <>
+          {assets.client.css && (
+            <link rel="stylesheet" href={assets.client.css} />
+          )}
+          {styles.map(path => (
+            <link key={path} rel="stylesheet" href={path} />
+          ))}
+        </>
+      )}
+    </__AfterContext.Consumer>
+  );
+};
+
+export const AfterScripts = () => {
+  return (
+    <__AfterContext.Consumer>
+      {({ assets, scripts, prefix }) => (
+        <>
+          {scripts.map(path => (
             <script
               key={path}
               defer
@@ -42,24 +98,16 @@ export class Document extends React.Component<DocumentProps> {
               crossOrigin="anonymous"
             />
           ))}
-          <script type="text/javascript" src={assets.client.js} defer crossOrigin="anonymous" />
-        </body>
-      </html>
-    );
-  }
-}
-
-export function AfterRoot() {
-  return <div id="root">DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP</div>;
-}
-
-export function AfterData({ data }: any) {
-  return (
-    <script
-			defer
-      dangerouslySetInnerHTML={{
-        __html: `window.__SERVER_APP_STATE__ = ${serialize({ ...data })}`
-      }}
-    />
+          {assets.client.js && (
+            <script
+              type="text/javascript"
+              src={assets.client.js}
+              defer
+              crossOrigin="anonymous"
+            />
+          )}
+        </>
+      )}
+    </__AfterContext.Consumer>
   );
-}
+};

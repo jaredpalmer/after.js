@@ -2,15 +2,15 @@ import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { matchPath, StaticRouter, RouteProps } from 'react-router-dom';
-import { Document as DefaultDoc } from './Document';
+import { Document as DefaultDoc, __AfterContext } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
 import { Assets, AsyncRouteProps, Chunks } from './types';
-import { StaticRouterContext } from "react-router"
-import { getAssets } from "./getAssets";
+import { StaticRouterContext } from 'react-router';
+import { getAssets } from './getAssets';
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -28,16 +28,25 @@ export interface AfterRenderOptions<T> {
   res: Response;
   assets: Assets;
   routes: AsyncRouteProps[];
-	document?: typeof DefaultDoc;
-	chunks: Chunks
+  document?: typeof DefaultDoc;
+  chunks: Chunks;
   customRenderer?: (element: React.ReactElement<T>) => { html: string };
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
-  const { req, res, routes: pureRoutes, assets, document: Document, customRenderer, chunks, ...rest } = options;
-	const Doc = Document || DefaultDoc;
+  const {
+    req,
+    res,
+    routes: pureRoutes,
+    assets,
+    document: Document,
+    customRenderer,
+    chunks,
+    ...rest
+  } = options;
+  const Doc = Document || DefaultDoc;
 
-	const routes = utils.getAllRoutes(pureRoutes);
+  const routes = utils.getAllRoutes(pureRoutes);
 
   const context: StaticRouterContext = {};
   const renderPage = async (fn = modPageFn) => {
@@ -101,14 +110,17 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     return;
   }
 
-	const reactRouterMatch = matchPath(req.url, match as RouteProps);
+  const reactRouterMatch = matchPath(req.url, match as RouteProps);
 
-	const prefix =
-	process.env.NODE_ENV === "production"
-		? "/"
-		: `http://${process.env.HOST || "localhost"}:${parseInt(process.env.PORT!, 10) + 1}/`
-	
-	const { scripts, styles } = getAssets({ route: match, chunks })
+  const prefix =
+    process.env.NODE_ENV === 'production'
+      ? '/'
+      : `http://${process.env.HOST || 'localhost'}:${parseInt(
+          process.env.PORT!,
+          10
+        ) + 1}/`;
+
+  const { scripts, styles } = getAssets({ route: match, chunks });
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
@@ -120,12 +132,15 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     scripts,
     styles,
     prefix,
-    ...rest
+    ...rest,
   });
 
-  const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
-  return `<!doctype html>${doc.replace(
-    'DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP',
-    html
-  )}`;
+  const doc = ReactDOMServer.renderToStaticMarkup(
+    <__AfterContext.Provider
+      value={{ assets, data, ...rest, ...docProps, html }}
+    >
+      <Doc {...docProps} />
+    </__AfterContext.Provider>
+  );
+  return `<!doctype html>${doc}`;
 }

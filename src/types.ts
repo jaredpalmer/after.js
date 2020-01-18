@@ -15,10 +15,10 @@ export interface DocumentProps {
   assets: Assets;
   data: Promise<any>[];
   renderPage: () => Promise<any>;
-	match: Match<any> | null;
-	scripts: string[]
-	styles: string[]
-	prefix: string
+  match: Match<any> | null;
+  scripts: string[];
+  styles: string[];
+  prefix: string;
 }
 
 export interface CtxBase {
@@ -46,8 +46,8 @@ export interface AsyncRouteComponent<Props = {}>
     React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
 
 export type AsyncRouteComponentType<Props> =
-  | React.ComponentClass<Props> & AsyncComponent
-  | React.StatelessComponent<Props> & AsyncComponent;
+  | (React.ComponentClass<Props> & AsyncComponent)
+  | (React.StatelessComponent<Props> & AsyncComponent);
 
 export type AsyncRouteableComponent<Props = any> =
   | AsyncRouteComponentType<RouteComponentProps<Props>>
@@ -58,7 +58,7 @@ export type AsyncRouteableComponent<Props = any> =
 // all routes must have a name
 // but redirectTo don't need it!
 export interface AsyncRouteProps<Props = any> extends RouteProps {
-	Placeholder?: React.ComponentType<any>
+  Placeholder?: React.ComponentType<any>;
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
 }
@@ -85,13 +85,13 @@ export interface Assets {
 }
 
 export interface Chunks {
-	[key: string]: {
-		css: string[]
-		js: string[]
-	}
+  [key: string]: {
+    css: string[];
+    js: string[];
+  };
 }
 
 export interface getAssetsParams {
-	chunks: Chunks
-	route?: AsyncRouteProps<any>
+  chunks: Chunks;
+  route?: AsyncRouteProps<any>;
 }
