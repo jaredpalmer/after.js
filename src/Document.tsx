@@ -2,7 +2,9 @@ import * as React from 'react';
 import serialize from 'serialize-javascript';
 import { DocumentProps } from './types';
 
-export const __AfterContext = React.createContext({} as DocumentProps);
+export const __AfterContext = React.createContext(
+  {} as DocumentProps & { html: string }
+);
 
 export class Document extends React.Component<DocumentProps> {
   static async getInitialProps({ renderPage }: DocumentProps) {
@@ -39,7 +41,13 @@ export class Document extends React.Component<DocumentProps> {
 }
 
 export const AfterRoot = () => {
-  return <div id="root">DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP</div>;
+  return (
+    <__AfterContext.Consumer>
+      {({ html }) => (
+        <div id="root" dangerouslySetInnerHTML={{ __html: html }} />
+      )}
+    </__AfterContext.Consumer>
+  );
 };
 
 export const AfterData: React.FC<{ data?: any }> = ({ data }) => {

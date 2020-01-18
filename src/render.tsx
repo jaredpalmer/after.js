@@ -119,12 +119,11 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(
-    <__AfterContext.Provider value={{ assets, data, ...rest, ...docProps }}>
+    <__AfterContext.Provider
+      value={{ assets, data, ...rest, ...docProps, html }}
+    >
       <Doc {...docProps} />
     </__AfterContext.Provider>
   );
-  return `<!doctype html>${doc.replace(
-    'DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP',
-    html
-  )}`;
+  return `<!doctype html>${doc}`;
 }
