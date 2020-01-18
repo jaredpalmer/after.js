@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { matchPath, StaticRouter, RouteProps } from 'react-router-dom';
-import { Document as DefaultDoc } from './Document';
+import { Document as DefaultDoc, __AfterContext } from './Document';
 import { After } from './After';
 import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
@@ -118,9 +118,12 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     ...rest,
   });
 
-  const doc = ReactDOMServer.renderToStaticMarkup(<Doc {...docProps} />);
-  return `<!doctype html>${doc.replace(
-    'DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP',
-    html
-  )}`;
+  const doc = ReactDOMServer.renderToStaticMarkup(
+    <__AfterContext.Provider
+      value={{ assets, data, ...rest, ...docProps, html }}
+    >
+      <Doc {...docProps} />
+    </__AfterContext.Provider>
+  );
+  return `<!doctype html>${doc}`;
 }

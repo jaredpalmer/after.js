@@ -134,7 +134,9 @@ try {
 }
 ...
 ```
+
 Don't forget to pass your custom params to `<After/>` in `client.js`:
+
 ```js
 // ./src/client.js
 ...
@@ -403,16 +405,21 @@ After.js works similarly to Next.js with respect to overriding HTML document str
 ```js
 // ./src/Document.js
 import React from 'react';
-import { AfterRoot, AfterData } from '@jaredpalmer/after';
+import {
+  AfterRoot,
+  AfterData,
+  AfterScripts,
+  AfterStyles,
+} from '@jaredpalmer/after';
 
 class Document extends React.Component {
-  static async getInitialProps({ assets, data, renderPage }) {
+  static async getInitialProps({ renderPage }) {
     const page = await renderPage();
-    return { assets, data, ...page };
+    return { ...page };
   }
 
   render() {
-    const { helmet, assets, data } = this.props;
+    const { helmet } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -427,19 +434,12 @@ class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {assets.client.css && (
-            <link rel="stylesheet" href={assets.client.css} />
-          )}
+          <AfterStyles />
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data} />
-          <script
-            type="text/javascript"
-            src={assets.client.js}
-            defer
-            crossOrigin="anonymous"
-          />
+          <AfterData />
+          <AfterScripts />
         </body>
       </html>
     );
@@ -455,20 +455,20 @@ If you were using something like `styled-components`, and you need to wrap you e
 // ./src/Document.js
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
-import { AfterRoot, AfterData } from '@jaredpalmer/after';
+import { AfterRoot, AfterData, AfterScripts } from '@jaredpalmer/after';
 
 export default class Document extends React.Component {
-  static async getInitialProps({ assets, data, renderPage }) {
+  static async getInitialProps({ renderPage }) {
     const sheet = new ServerStyleSheet();
     const page = await renderPage(App => props =>
       sheet.collectStyles(<App {...props} />)
     );
     const styleTags = sheet.getStyleElement();
-    return { assets, data, ...page, styleTags };
+    return { ...page, styleTags };
   }
 
   render() {
-    const { helmet, assets, data, styleTags } = this.props;
+    const { helmet, styleTags } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -488,13 +488,8 @@ export default class Document extends React.Component {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data} />
-          <script
-            type="text/javascript"
-            src={assets.client.js}
-            defer
-            crossOrigin="anonymous"
-          />
+          <AfterData />
+          <AfterScripts />
         </body>
       </html>
     );

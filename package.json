@@ -20,10 +20,14 @@
   "scripts": {
     "prepare": "tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json -w",
-    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
-    "precommit": "lint-staged",
+    "format": "prettier --trailing-comma es5 --single-quote --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
     "test": "razzle test --env=jsdom --no-cache",
     "test:ci": "CI=true yarn test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)": [
@@ -51,7 +55,7 @@
   },
   "peerDependencies": {
     "express": ">=4",
-    "react": ">=16",
+    "react": ">=16.3.2",
     "react-helmet": ">=5.2.0",
     "react-router-dom": ">=4.2.2",
     "serialize-javascript": ">=1.5.0"
@@ -67,9 +71,10 @@
     "@types/react-router-dom": "^4.3.4",
     "@types/serialize-javascript": "^1.3.2",
     "express": "^4.16.2",
-    "husky": "^0.14.3",
+    "husky": ">=1",
     "jest": "^23.6.0",
-    "lint-staged": "^6.1.0",
+    "lint-staged": ">=8",
+    "prettier": "^1.19.1",
     "razzle": "^2.4.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",

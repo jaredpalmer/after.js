@@ -2,15 +2,18 @@ import * as React from 'react';
 import serialize from 'serialize-javascript';
 import { DocumentProps } from './types';
 
-export class Document extends React.Component<DocumentProps> {
-  static async getInitialProps({ assets, data, renderPage }: DocumentProps) {
-    const page = await renderPage();
+export const __AfterContext = React.createContext(
+  {} as DocumentProps & { html: string }
+);
 
-    return { assets, data, ...page };
+export class Document extends React.Component<DocumentProps> {
+  static async getInitialProps({ renderPage }: DocumentProps) {
+    const page = await renderPage();
+    return { ...page };
   }
 
   render() {
-    const { helmet, assets, data } = this.props;
+    const { helmet } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -25,37 +28,67 @@ export class Document extends React.Component<DocumentProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {assets.client.css && (
-            <link rel="stylesheet" href={assets.client.css} />
-          )}
+          <AfterStyles />
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data} />
-          <script
-            type="text/javascript"
-            src={assets.client.js}
-            defer
-            crossOrigin="anonymous"
-          />
+          <AfterData />
+          <AfterScripts />
         </body>
       </html>
     );
   }
 }
 
-export function AfterRoot() {
-  return <div id="root">DO_NOT_DELETE_THIS_YOU_WILL_BREAK_YOUR_APP</div>;
-}
-
-export function AfterData({ data }: any) {
+export const AfterRoot = () => {
   return (
-    <script
-      id="server-app-state"
-      type="application/json"
-      dangerouslySetInnerHTML={{
-        __html: serialize({ ...data }),
-      }}
-    />
+    <__AfterContext.Consumer>
+      {({ html }) => (
+        <div id="root" dangerouslySetInnerHTML={{ __html: html }} />
+      )}
+    </__AfterContext.Consumer>
   );
-}
+};
+
+export const AfterData: React.FC<{ data?: any }> = ({ data }) => {
+  return (
+    <__AfterContext.Consumer>
+      {({ data: contextData }) => (
+        <script
+          id="server-app-state"
+          type="application/json"
+          dangerouslySetInnerHTML={{
+            __html: serialize({ ...(data || contextData) }),
+          }}
+        />
+      )}
+    </__AfterContext.Consumer>
+  );
+};
+
+export const AfterStyles = () => {
+  return (
+    <__AfterContext.Consumer>
+      {({ assets }) =>
+        assets.client.css && <link rel="stylesheet" href={assets.client.css} />
+      }
+    </__AfterContext.Consumer>
+  );
+};
+
+export const AfterScripts = () => {
+  return (
+    <__AfterContext.Consumer>
+      {({ assets }) =>
+        assets.client.js && (
+          <script
+            type="text/javascript"
+            src={assets.client.js}
+            defer
+            crossOrigin="anonymous"
+          />
+        )
+      }
+    </__AfterContext.Consumer>
+  );
+};
