@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: 12
       - run: yarn install
+      - run: yarn test:ci
 
   publish-npm:
     needs: build
