@@ -23,6 +23,7 @@ export interface CtxBase {
   res?: ServerResponse;
   history?: History;
   location?: Location;
+  scrollToTop?: React.RefObject<boolean>;
 }
 export interface Ctx<P> extends CtxBase {
   match: Match<P>;

@@ -40,6 +40,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
     - [Dynamic 404](#dynamic-404)
     - [Redirect](#redirect)
   - [Code Splitting](#code-splitting)
+  - [Disable Auto Scroll Globally](#disable-auto-scroll-globally)
   - [Custom `<Document>`](#custom-document)
   - [Custom/Async Rendering](#customasync-rendering)
   - [Author](#author)
@@ -108,6 +109,7 @@ the client and the server:
 - `match`: React Router's `match` object.
 - `history`: React Router's `history` object.
 - `location`: (client-only) React Router's `location` object (you can only use location.pathname on server).
+- `scrollToTop`: (client-only) React Ref object that controls scroll behavior when URL changes.
 
 ### Add Params to `getInitialProps: (ctx) => Data`
 
@@ -396,6 +398,38 @@ export default [
     }),
   },
 ];
+```
+
+## Disable Auto Scroll Globally
+
+By default after.js will scroll to top when url changes, you can change that by passing a ref object to <After />.
+
+```js
+// ./src/client.js
+
+const scrollToTop = React.createRef();
+scrollToTop.current = false; // this will disable scroll-to-top
+
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      <After data={data} routes={routes} scrollToTop={scrollToTop} />
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
+);
+```
+
+We are using a ref object to minimize unnecessary re-renders, you can mutate ref.current and component will not re-rendered but its scroll behavior will change immediately.
+You can also control auto scroll behavior from `getInitialProps`.
+
+```js
+  static async getInitialProps({ req, res, match, history, location, scrollToTop, ...ctx }) {
+    if (scrollToTop) {
+      scrollToTop.current = false; // or true
+    }
+    return { stuff: 'whatevs' };
+  }
 ```
 
 ## Custom `<Document>`
