@@ -402,7 +402,7 @@ export default [
 
 ## Disable Auto Scroll Globally
 
-By default after.js will scroll to top when url changes, you can change that by passing a ref object to <After />.
+By default After.js will scroll to top when url changes, you can change that by passing a ref object to `<After />`.
 
 ```js
 // ./src/client.js
