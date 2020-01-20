@@ -424,12 +424,12 @@ We are using a ref object to minimize unnecessary re-renders, you can mutate ref
 You can also control auto scroll behavior from `getInitialProps`.
 
 ```js
-  static async getInitialProps({ req, res, match, history, location, scrollToTop, ...ctx }) {
-    if (scrollToTop) {
-      scrollToTop.current = false; // or true
-    }
-    return { stuff: 'whatevs' };
+static async getInitialProps({ req, res, match, history, location, scrollToTop, ...ctx }) {
+  if (scrollToTop) {
+    scrollToTop.current = false; // or true
   }
+  return { scrollToTop, stuff: 'whatevs' }; // you can return scrollToTop and use it in your component
+}
 ```
 
 ## Custom `<Document>`
