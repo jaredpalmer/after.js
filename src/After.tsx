@@ -45,7 +45,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   static defaultProps = {
-    scrollToTop: { current: false } as React.RefObject<boolean>,
+    scrollToTop: { current: true } as React.RefObject<boolean>,
   };
 
   // only runs clizzient
@@ -65,7 +65,6 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         history,
         location,
         staticContext,
-        scrollToTop,
         ...rest
       } = nextProps;
 
