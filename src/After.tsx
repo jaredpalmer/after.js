@@ -18,7 +18,7 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
   data?: Promise<any>[];
   routes: AsyncRouteProps[];
   match: Match<any>;
-  scrollToTop?: boolean;
+  scrollToTop?: React.RefObject<boolean>;
 }
 
 export interface AfterpartyState {
@@ -45,7 +45,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   static defaultProps = {
-    scrollToTop: true,
+    scrollToTop: { current: false } as React.RefObject<boolean>,
   };
 
   // only runs clizzient
@@ -87,7 +87,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
               this.state.previousLocation.pathname) !==
               nextProps.location.pathname &&
             // Only Scroll if scrollToTop is not false
-            nextProps.scrollToTop
+            nextProps.scrollToTop!.current
           ) {
             window.scrollTo(0, 0);
           }
