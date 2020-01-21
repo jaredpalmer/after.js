@@ -1,15 +1,24 @@
 import React from 'react';
-import { AfterRoot, AfterData } from '@jaredpalmer/after';
+import { AfterRoot, AfterData, AfterScripts } from '@jaredpalmer/after';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 
 export default class Document extends React.Component {
-  static async getInitialProps({ assets, data, renderPage }) {
-    const page = await renderPage();
-    return { assets, data, ...page };
+  static async getInitialProps({ renderPage }) {
+    const sheets = new ServerStyleSheets();
+    const page = await renderPage(App => props =>
+      sheets.collect(
+        <ThemeProvider theme={theme}>
+          <App {...props} />
+        </ThemeProvider>
+      )
+    );
+    const css = sheets.getStyleElement();
+    return { css, ...page };
   }
 
   render() {
-    const { helmet, assets, data, css } = this.props;
+    const { helmet, css } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -26,20 +35,12 @@ export default class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          <style
-            id="jss-server-side"
-            dangerouslySetInnerHTML={{ __html: css }}
-          />
+          {css}
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
           <AfterData data={data} />
-          <script
-            type="text/javascript"
-            src={assets.client.js}
-            defer
-            crossOrigin="anonymous"
-          />
+          <AfterScripts />
         </body>
       </html>
     );
