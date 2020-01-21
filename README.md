@@ -28,7 +28,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 - [After.js](#afterjs)
   - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
   - [Getting Started with After.js](#getting-started-with-afterjs)
-    - [Razzle Quickstart](#razzle-quickstart)
+    - [Quickstart](#quickstart)
   - [Data Fetching](#data-fetching)
     - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
     - [Add Params to `getInitialProps: (ctx) => Data`](#add-params-to-getinitialprops-ctx--data)
@@ -53,13 +53,13 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 
 After.js enables Next.js-like data fetching with any React SSR app that uses React Router.
 
-### Razzle Quickstart
+### Quickstart
 
 You can quickly bootstrap an SSR React app with After.js using Razzle. While Razzle is not required, this documentation assumes you have the tooling setup for an isomorphic React application.
 
 ```bash
-yarn global add create-razzle-app
-create-razzle-app --example with-afterjs myapp
+yarn global add create-after-app
+create-after-app myapp
 cd myapp
 yarn start
 ```
