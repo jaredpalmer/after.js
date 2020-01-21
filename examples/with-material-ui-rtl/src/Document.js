@@ -1,5 +1,10 @@
 import React from 'react';
-import { AfterRoot, AfterData, AfterScripts } from '@jaredpalmer/after';
+import {
+  AfterRoot,
+  AfterData,
+  AfterScripts,
+  AfterStyles,
+} from '@jaredpalmer/after';
 import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 import { jss } from './RTL';
 import theme from './theme';
@@ -36,6 +41,7 @@ export default class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
+          <AfterStyles />
           {css}
         </head>
         <body dir="rtl" {...bodyAttrs}>
