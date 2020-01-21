@@ -426,15 +426,7 @@ You can control auto-scroll behavior from `getInitialProps`.
 
 ```js
 class MyComponent extends React.Component {
-  static async getInitialProps({
-    req,
-    res,
-    match,
-    history,
-    location,
-    scrollToTop,
-    ...ctx
-  }) {
+  static async getInitialProps({ scrollToTop }) {
     scrollToTop.current = false;
     return { scrollToTop, stuff: 'whatevs' };
   }
