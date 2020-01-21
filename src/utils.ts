@@ -36,7 +36,7 @@ export function is404ComponentAvailable(
   routes: AsyncRouteProps<any>[]
 ): AsyncRouteProps<any> | false {
   return (
-    routes.find(route => ['**', '*', undefined].includes(route.path)) || false
+    routes.find(route => ['**', '*', undefined].includes(route.path as string)) || false
   );
 }
 
