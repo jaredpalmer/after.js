@@ -24,7 +24,7 @@
 - Razzle Version:
 - React Version:
 - TypeScript Version:
-- OS: 
+- OS:
 - Node Version:
 - Package Manager and Version:
 - Demo Repo or Link:

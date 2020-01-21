@@ -1,6 +1,7 @@
 {
   "name": "@jaredpalmer/after",
-  "version": "1.4.0",
+  "private": false,
+  "version": "1.5.0",
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
@@ -33,7 +34,7 @@
   },
   "peerDependencies": {
     "express": ">=4",
-    "react": ">=16",
+    "react": ">=16.3.2",
     "react-helmet": ">=5.2.0",
     "react-router-dom": ">=4.2.2",
     "serialize-javascript": ">=1.5.0"
@@ -54,7 +55,7 @@
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^4.2.2",
-    "serialize-javascript": "^1.5.0",
+    "serialize-javascript": "^2.1.1",
     "tsdx": "^0.11.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.3"
