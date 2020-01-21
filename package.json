@@ -56,7 +56,7 @@
     "react-helmet": "^5.2.0",
     "react-router-dom": "^4.2.2",
     "serialize-javascript": "^2.1.1",
-    "tsdx": "^0.11.0",
+    "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
     "typescript": "^3.7.3"
   }
