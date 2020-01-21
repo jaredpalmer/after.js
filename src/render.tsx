@@ -100,7 +100,10 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   }
 
   if (match && match.redirectTo && match.path) {
-    res.redirect(301, req.originalUrl.replace(match.path as string, match.redirectTo));
+    res.redirect(
+      301,
+      req.originalUrl.replace(match.path as string, match.redirectTo)
+    );
     return;
   }
 
