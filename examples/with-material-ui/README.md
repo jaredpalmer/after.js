@@ -2,7 +2,7 @@
 
 ## How to use
 
-### Using `create-next-app`
+### Using `create-after-app`
 
 Execute [`create-after-app`](https://github.com/jaredpalmer/after.js/tree/master/packages/create-after-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
