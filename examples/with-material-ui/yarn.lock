@@ -820,10 +820,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.7.4.tgz#f14932887422c9056b15a8d222a9074a7dfa2831"
   integrity sha512-fxfMSBMX3tlIbKUdtGKxqB1fyrH6gVrX39Gsv3y8lRYKUqlgDt3UMqQyGnR1bQMa2B8aGnhLZokZgg8vT0Le+A==
 
-"@jaredpalmer/after@latest":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@jaredpalmer/after/-/after-1.4.0.tgz#a5b96fc45e0b117e02b55aaf72fd3ea2fd837bbb"
-  integrity sha512-w8d++YXRzinSdvf6wPkXZvttOZQ0b5DAb1APycc2D6/lSGLtZclz0dW6FvDkQq1yESceAO6onAWyyow3qiASZg==
+"@jaredpalmer/after@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@jaredpalmer/after/-/after-1.5.0.tgz#507420e6fcf8b7f7dc398bec2699e26de6469d92"
+  integrity sha512-BCZMtFplTLGbl4TZtPEvqiABo//EKS07eohVPE7KinA2q9YnG/Xq6gCK1UTEQm/kLy8vyTnfpERHzLAaguNS8Q==
 
 "@material-ui/core@^4.8.3":
   version "4.8.3"

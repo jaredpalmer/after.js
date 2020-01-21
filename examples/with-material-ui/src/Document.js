@@ -39,7 +39,7 @@ export default class Document extends React.Component {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data} />
+          <AfterData />
           <AfterScripts />
         </body>
       </html>

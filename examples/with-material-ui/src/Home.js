@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Typography, Box, Link as MuiLink } from '@material-ui/core';
-import ProTip from './ProTip';
 import { Link } from 'react-router-dom';
+import ProTip from './ProTip';
 
 function Copyright() {
   return (
