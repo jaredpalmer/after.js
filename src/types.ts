@@ -8,14 +8,27 @@ import { Request, Response } from 'express';
 import { IncomingMessage, ServerResponse } from 'http';
 import { History, Location } from 'history';
 
+export type InitialData = Promise<any>[];
+export type ScrollToTop = React.RefObject<boolean>;
+
+export interface ServerAppState {
+  afterData: AfterClientData;
+  initialData: InitialData;
+}
+
+export interface AfterClientData {
+  scrollToTop: ScrollToTop;
+}
+
 export interface DocumentProps {
   req: Request;
   res: Response;
   helmet: HelmetData;
   assets: Assets;
-  data: Promise<any>[];
+  data: ServerAppState;
   renderPage: () => Promise<any>;
   match: Match<any> | null;
+  scrollToTop: ScrollToTop;
 }
 
 export interface CtxBase {
@@ -23,6 +36,7 @@ export interface CtxBase {
   res?: ServerResponse;
   history?: History;
   location?: Location;
+  scrollToTop?: ScrollToTop;
 }
 export interface Ctx<P> extends CtxBase {
   match: Match<P>;
@@ -57,7 +71,7 @@ export interface AsyncRouteProps<Props = any> extends RouteProps {
 
 export interface InitialProps {
   match?: AsyncRouteProps;
-  data: Promise<any>[];
+  data: InitialData;
 }
 
 export type Module<P> =

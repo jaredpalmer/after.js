@@ -9,19 +9,19 @@ import {
 } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
-import { AsyncRouteProps } from './types';
+import { AsyncRouteProps, ServerAppState, InitialData } from './types';
 import { get404Component, getAllRoutes } from './utils';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
   location: Location;
-  data?: Promise<any>[];
+  data: ServerAppState;
   routes: AsyncRouteProps[];
   match: Match<any>;
 }
 
 export interface AfterpartyState {
-  data?: Promise<any>[];
+  data?: InitialData;
   previousLocation: Location | null;
 }
 
@@ -35,7 +35,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     super(props);
 
     this.state = {
-      data: props.data,
+      data: props.data.initialData,
       previousLocation: null,
     };
 
@@ -63,9 +63,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       } = nextProps;
 
+      const { scrollToTop } = data.afterData;
+
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
         location: nextProps.location,
         history: nextProps.history,
+        scrollToTop,
         ...rest,
       })
         .then(({ data }) => {
@@ -79,7 +82,9 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           if (
             (this.state.previousLocation &&
               this.state.previousLocation.pathname) !==
-            nextProps.location.pathname
+              nextProps.location.pathname &&
+            // Only Scroll if scrollToTop is not false
+            nextProps.data.afterData.scrollToTop.current
           ) {
             window.scrollTo(0, 0);
           }

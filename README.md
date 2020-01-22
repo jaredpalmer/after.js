@@ -40,6 +40,8 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
     - [Dynamic 404](#dynamic-404)
     - [Redirect](#redirect)
   - [Code Splitting](#code-splitting)
+  - [Disable Auto-Scroll Globally](#disable-auto-scroll-globally)
+  - [Disable Auto-Scroll for a Specific Page](#disable-auto-scroll-for-a-specific-page)
   - [Custom `<Document>`](#custom-document)
   - [Custom/Async Rendering](#customasync-rendering)
   - [Author](#author)
@@ -103,11 +105,12 @@ export default About;
 Within `getInitialProps`, you have access to all you need to fetch data on both
 the client and the server:
 
-- `req?: Request`: (server-only) An Express.js request object
-- `res?: Response`: (server-only) An Express.js response object
+- `req?: Request`: (server-only) An Express.js request object.
+- `res?: Response`: (server-only) An Express.js response object.
 - `match`: React Router's `match` object.
 - `history`: React Router's `history` object.
 - `location`: (client-only) React Router's `location` object (you can only use location.pathname on server).
+- `scrollToTop`: React Ref object that controls scroll behavior when URL changes.
 
 ### Add Params to `getInitialProps: (ctx) => Data`
 
@@ -396,6 +399,46 @@ export default [
     }),
   },
 ];
+```
+
+## Disable Auto-Scroll Globally
+
+By default, After.js will scroll to top when URL changes, you can change that by passing `scrollToTop: false` to render().
+
+```js
+// ./src/server.js
+
+const scrollToTop = false;
+
+const html = await render({
+  req,
+  res,
+  routes,
+  assets,
+  scrollToTop,
+});
+```
+
+## Disable Auto-Scroll for a Specific Page
+
+We are using a ref object to minimize unnecessary re-renders, you can mutate scrollToTop.current and component will not re-rendered but its scroll behavior will change immediately.
+You can control auto-scroll behavior from `getInitialProps`.
+
+```js
+class MyComponent extends React.Component {
+  static async getInitialProps({ scrollToTop }) {
+    scrollToTop.current = false;
+    return { scrollToTop, stuff: 'whatevs' };
+  }
+
+  render() {
+    return <h1>Hello, World!</h1>;
+  }
+
+  componentWillUnmount() {
+    this.props.scrollToTop.current = true; // at the end restore scroll behavior
+  }
+}
 ```
 
 ## Custom `<Document>`

@@ -8,7 +8,7 @@ import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
-import { Assets, AsyncRouteProps } from './types';
+import { Assets, AsyncRouteProps, AfterClientData } from './types';
 import { StaticRouterContext } from 'react-router';
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
@@ -28,6 +28,7 @@ export interface AfterRenderOptions<T> {
   assets: Assets;
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
+  scrollToTop?: boolean;
   customRenderer?: (element: React.ReactElement<T>) => { html: string };
 }
 
@@ -39,6 +40,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     assets,
     document: Document,
     customRenderer,
+    scrollToTop = true,
     ...rest
   } = options;
   const Doc = Document || DefaultDoc;
@@ -74,18 +76,20 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     return { helmet, ...renderedContent };
   };
 
-  const { match, data } = await loadInitialProps(
+  const autoScrollRef = { current: scrollToTop };
+  const { match, data: initialData } = await loadInitialProps(
     routes,
     url.parse(req.url).pathname as string,
     {
       req,
       res,
+      scrollToTop: autoScrollRef,
       ...rest,
     }
   );
 
-  if (data) {
-    const { redirectTo, statusCode } = data as {
+  if (initialData) {
+    const { redirectTo, statusCode } = initialData as {
       statusCode?: number;
       redirectTo?: string;
     };
@@ -107,6 +111,15 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 
   const reactRouterMatch = matchPath(req.url, match as RouteProps);
 
+  const afterData: AfterClientData = {
+    scrollToTop: autoScrollRef,
+  };
+
+  const data = {
+    initialData,
+    afterData,
+  };
+
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
@@ -115,6 +128,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     data,
     helmet: Helmet.renderStatic(),
     match: reactRouterMatch,
+    scrollToTop: autoScrollRef,
     ...rest,
   });
 
