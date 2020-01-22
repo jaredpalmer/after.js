@@ -2,11 +2,13 @@
   "name": "afterjs-examples-basic",
   "version": "0.1.0",
   "license": "MIT",
+  "sideEffects": ["*.css"],
   "scripts": {
-    "dev": "razzle start",
+    "start": "razzle start",
     "build": "razzle build",
+    "analyze": "BUNDLE_ANALYZE=true razzle build",
     "test": "razzle test --env=jsdom",
-    "start": "NODE_ENV=production node build/server.js"
+    "start:prod": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
     "@jaredpalmer/after": "^1.0.0",
@@ -17,5 +19,8 @@
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "razzle-plugin-bundle-analyzer": "^1.1.3"
   }
 }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { render } from '../../../dist';
+import { render } from '../../../dist/after.esm';
 import routes from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);

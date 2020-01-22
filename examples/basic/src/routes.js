@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { asyncComponent } from '../../../dist';
+import { asyncComponent } from '../../../dist/after.esm';
 
 export default [
   {
