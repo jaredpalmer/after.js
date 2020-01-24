@@ -244,12 +244,15 @@ In some parts of your application, you may not need server data fetching at all
 would in client land: You can fetch data (in componentDidMount) and do routing
 the same exact way.
 
+## Dynamic 404 and Redirects
+
 ### 404 Page
 
 React Router can detect No Match (404) Routes and show a fallback component, you can define your custom fallback component in `routes.js` file.
 
 ```js
 // ./src/routes.js
+
 import React from 'react';
 import Home from './Home';
 import Notfound from './Notfound';
@@ -275,6 +278,7 @@ Notfound component must set `staticContext.statusCode` to 404 so express can set
 
 ```js
 // ./src/Notfound.js
+
 import React from 'react';
 import { Route } from 'react-router-dom';
 
@@ -292,11 +296,11 @@ function NotFound() {
 export default NotFound;
 ```
 
-if you don't declare 404 component in `routes.js` After.js will use it's default fallback.
+if you don't declare 404 component in `routes.js` After.js will use its default fallback.
 
 ### Dynamic 404
 
-Sometimes you may need to send 404 response based on some api response, in this case react router don't show fallback and you have to check for that in your component.
+Sometimes you may need to send a 404 response based on some API response, in this case, react-router don't show fallback and you have to check for that in your component.
 
 ```js
 import Notfound from './Notfound';
@@ -309,9 +313,7 @@ function ProductPage({ product, error }) {
 
     return <p>Something went Wrong !</p>;
   }
-  {
-    /* if there was no errors we have our data */
-  }
+  { /* if there were no errors we have our data */ }
   return <h1>{product.name}</h1>;
 }
 
@@ -325,17 +327,10 @@ ProductPage.getInitialProps = async ({ match }) => {
 };
 ```
 
-this makes code unreadable and hard to maintain. after.js makes this easy by providing an api for handling Dynamic 404 pages. you can return `{ statusCode: 404 }` from `getInitialProps` and after.js will show 404 fallback component that you defined in `routes.js` for you.
+this makes code unreadable and hard to maintain. after.js makes this easy by providing an API for handling Dynamic 404 pages. you can return `{ statusCode: 404 }` from `getInitialProps` and after.js will show 404 fallback components that you defined in `routes.js` for you.
 
 ```js
 function ProductPage({ product }) {
-  if (error) {
-    {
-      /* you can ignore error and catch it in ComponentDidCatch too ! */
-    }
-    return <p>Something went Wrong !</p>;
-  }
-
   return <h1>{product.name}</h1>;
 }
 
@@ -352,9 +347,9 @@ ProductPage.getInitialProps = async ({ match }) => {
 
 ### Redirect
 
-You can redirect user to other route by using `Redirect` from react router, but it can make your code unreadable and hard to maintain.
+You can redirect the user to another route by using `Redirect` from react-router, but it can make your code unreadable and hard to maintain.
 with after.js you can redirect client to other route by returning `{ redirectTo: "/new-location" }` from `getInitialProps`.
-this can become handy for authorization, when user dose not have premissions to access specific route and you can redirect him/her to login page.
+this can become handy for authorization when user does not have permission to access a specific route and you can redirect him/her to the login page.
 
 ```js
 Dashboard.getInitialProps = async ({ match }) => {
@@ -369,8 +364,9 @@ Dashboard.getInitialProps = async ({ match }) => {
 };
 ```
 
-Redirect will happen before after.js start render react to string soo it's fast.
+The redirect will happen before after.js start renders react to string soo it's fast.
 when using `redirectTo` default value for `statusCode` is 301, but you can use any numeric value you want.
+
 
 ## Code Splitting
 
