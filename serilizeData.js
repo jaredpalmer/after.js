@@ -1,2 +1,2 @@
-module.exports = require('./build/cjs/SerilizeData').SerilizeData;
-exports.getSerilizedData = require('./build/cjs/SerilizeData').getSerilizedData;
+module.exports = require('./build/cjs/serilizeData').SerilizeData;
+exports.getSerilizedData = require('./build/cjs/serilizeData').getSerilizedData;
