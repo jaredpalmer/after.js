@@ -1,15 +1,24 @@
 import React from 'react';
 import serialize from 'serialize-javascript';
 
-interface SerilizeData {
+interface SerilizeData
+  extends React.DetailedHTMLProps<
+    React.ScriptHTMLAttributes<HTMLScriptElement>,
+    HTMLScriptElement
+  > {
   name: string;
   data: any;
 }
 
-export const SerilizeData: React.FC<SerilizeData> = ({ data, name }) => {
+export const SerilizeData: React.FC<SerilizeData> = ({
+  data,
+  name,
+  ...props
+}) => {
   return (
     <script
       defer
+      {...props}
       dangerouslySetInnerHTML={{
         __html: `window._${name.toUpperCase()}_ = ${serialize(data)}`,
       }}
