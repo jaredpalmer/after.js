@@ -1,14 +1,13 @@
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { ensureReady, After } from '@jaredpalmer/after';
+import { ensureReady, After, getSerilizedData } from '@jaredpalmer/after';
 import routes from './routes';
 import './client.css';
 import { Provider } from 'react-redux';
 import configureStore from './common/store/configureStore';
 
-const preloadedState = window.__PRELOADED_STATE__;
-delete window.__PRELOADED_STATE__;
+const preloadedState = getSerilizedData('preloaded_state');
 const store = configureStore(preloadedState);
 
 function renderApp() {
