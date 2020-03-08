@@ -6,8 +6,10 @@
   "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
   "license": "MIT",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "sideEffects": false,
+  "module": "build/esm/index.js",
+  "main": "build/cjs/index.js",
+  "types": "build/cjs/index.d.ts",
   "files": [
     "build",
     "after.js",
@@ -18,8 +20,10 @@
     "loadInitialProps.js"
   ],
   "scripts": {
-    "prepare": "tsc -p tsconfig.build.json",
-    "start": "tsc -p tsconfig.build.json -w",
+    "prepare": "rm -rf build && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p tsconfig.build.json --module es2015 --outDir build/esm",
+    "build:cjs": "tsc -p tsconfig.build.json --module commonjs --outDir build/cjs",
+    "start": "tsc -p tsconfig.build.json --module commonjs --outDir build -w",
     "format": "prettier --trailing-comma es5 --single-quote --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
     "test": "razzle test --env=jsdom --no-cache",
     "test:ci": "CI=true yarn test"
