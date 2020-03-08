@@ -1,1 +1,1 @@
-module.exports = require('./build/After').After;
+module.exports = require('./build/cjs/After').After;
