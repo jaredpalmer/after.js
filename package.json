@@ -17,7 +17,8 @@
     "asyncComponent.js",
     "ensureReady.js",
     "render.js",
-    "loadInitialProps.js"
+    "loadInitialProps.js",
+    "serilizeData.js"
   ],
   "scripts": {
     "prepare": "rm -rf build && npm run build:esm && npm run build:cjs",
