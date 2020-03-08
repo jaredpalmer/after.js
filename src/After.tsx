@@ -112,12 +112,13 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
   render() {
     const { previousLocation, data } = this.state;
-    const { location } = this.props;
-    const initialData =
-      this.prefetcherCache[(previousLocation || location).pathname] || data;
+    const { location: currentLocation } = this.props;
+    const initialData = this.prefetcherCache[currentLocation.pathname] || data;
+
+    const location = previousLocation || currentLocation;
 
     return (
-      <Switch location={previousLocation || location}>
+      <Switch location={location}>
         {initialData &&
           initialData.statusCode &&
           initialData.statusCode === 404 && (
@@ -138,9 +139,9 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
-                location: previousLocation || location,
                 match: props.match,
                 prefetch: this.prefetch,
+                location,
               })
             }
           />
