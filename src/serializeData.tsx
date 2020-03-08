@@ -1,7 +1,7 @@
 import React from 'react';
 import serialize from 'serialize-javascript';
 
-interface SerilizeData
+interface SerializeData
   extends React.DetailedHTMLProps<
     React.ScriptHTMLAttributes<HTMLScriptElement>,
     HTMLScriptElement
@@ -10,7 +10,7 @@ interface SerilizeData
   data: any;
 }
 
-export const SerilizeData: React.FC<SerilizeData> = ({
+export const SerializeData: React.FC<SerializeData> = ({
   data,
   name,
   ...props
@@ -26,7 +26,10 @@ export const SerilizeData: React.FC<SerilizeData> = ({
   );
 };
 
-export const getSerilizedData = (name: string, remove: boolean = true): any => {
+export const getSerializedData = (
+  name: string,
+  remove: boolean = true
+): any => {
   const data = window[`_${name.toUpperCase()}_`];
   if (remove) {
     delete window[`_${name.toUpperCase()}_`];
