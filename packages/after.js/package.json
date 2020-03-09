@@ -25,20 +25,8 @@
     "build:esm": "tsc -p tsconfig.build.json --module es2015 --outDir build/esm",
     "build:cjs": "tsc -p tsconfig.build.json --module commonjs --outDir build/cjs",
     "start": "tsc -p tsconfig.build.json --module commonjs --outDir build -w",
-    "format": "prettier --trailing-comma es5 --single-quote --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
     "test": "razzle test --env=jsdom --no-cache",
     "test:ci": "CI=true yarn test"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)": [
-      "prettier --trailing-comma es5 --single-quote --write",
-      "git add"
-    ]
   },
   "jest": {
     "transform": {
@@ -81,10 +69,7 @@
     "@types/react-router-dom": "^4.3.5",
     "@types/serialize-javascript": "^1.3.2",
     "express": "^4.16.2",
-    "husky": ">=1",
     "jest": "^23.6.0",
-    "lint-staged": ">=8",
-    "prettier": "^1.19.1",
     "razzle": "^2.4.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
