@@ -54,7 +54,7 @@ describe('ErrorPage', () => {
       assets,
       chunks,
     });
-    expect(res.redirect).toBeCalledWith(301, '/new-location');
+    expect(res.redirect).toBeCalledWith(302, '/new-location');
     expect(html).toBeUndefined();
   });
 
@@ -67,7 +67,7 @@ describe('ErrorPage', () => {
       assets,
       chunks,
     });
-    expect(res.redirect).toBeCalledWith(301, '/new-location');
+    expect(res.redirect).toBeCalledWith(302, '/new-location');
     expect(html).toContain(NonAsyncRedirect.data);
   });
 
