@@ -1,6 +1,6 @@
 import React from 'react';
 
-// babel-plugin-after will not work with this file 
+// babel-plugin-after will not work with this file
 // the import statment should be "@jaredpalmer/after" or "@jaredpalmer/after/asyncComponent"
 import { asyncComponent } from '../../../build/asyncComponent';
 

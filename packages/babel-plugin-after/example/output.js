@@ -1,4 +1,4 @@
-import { asyncComponent } from '@jaredpalmer/after'
+import { asyncComponent } from '@jaredpalmer/after';
 const routes = [
   {
     path: '/foo',
@@ -50,4 +50,4 @@ const routes = [
       chunkName: 'NotfoundPage',
     }),
   },
-]
+];

@@ -9,26 +9,26 @@ Babel plugin to add additional chunk info to asyncComponent() in Afterjs.
 
 ```javascript
 // example1.js
-import { asyncComponent } from "@jaredpalmer/after" // localname is asyncComponent
+import { asyncComponent } from '@jaredpalmer/after'; // localname is asyncComponent
 
 // example2.js
-import { asyncComponent as foo } from "@jaredpalmer/after" // localname is foo
+import { asyncComponent as foo } from '@jaredpalmer/after'; // localname is foo
 
 // example3.js
-import asyncComponent from "@jaredpalmer/after/asyncComponent" // localname is asyncComponent
+import asyncComponent from '@jaredpalmer/after/asyncComponent'; // localname is asyncComponent
 
 // example4.js
-import foo from "@jaredpalmer/after/asyncComponent" // localname is foo
+import foo from '@jaredpalmer/after/asyncComponent'; // localname is foo
 
 // example5.js
-import { asyncComponent as foo, After } from "@jaredpalmer/after" // localname is foo
+import { asyncComponent as foo, After } from '@jaredpalmer/after'; // localname is foo
 
 // example6.js
-import { After } from "@jaredpalmer/after" // there is no `asyncComponent` import so babel plugin skips this file
+import { After } from '@jaredpalmer/after'; // there is no `asyncComponent` import so babel plugin skips this file
 
 // example7.js
-import loader from "@jaredpalmer/after/asyncComponent" // localname is loader
-import { asyncComponent, After } from "@jaredpalmer/after" // localname is asyncComponent
+import loader from '@jaredpalmer/after/asyncComponent'; // localname is loader
+import { asyncComponent, After } from '@jaredpalmer/after'; // localname is asyncComponent
 
 // localname = [`loader`, `asyncComponent`] :)
 ```
@@ -273,7 +273,7 @@ $ babel --plugins after script.js
 ### Via Node API
 
 ```javascript
-require("babel-core").transform("code", {
-  plugins: ["after"],
-})
+require('babel-core').transform('code', {
+  plugins: ['after'],
+});
 ```

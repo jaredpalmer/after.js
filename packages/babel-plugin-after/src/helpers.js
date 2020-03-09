@@ -9,14 +9,14 @@ export const validMagicStrings = [
   'webpackIgnore',
   'webpackPreload',
   'webpackPrefetch',
-]
+];
 
 export function getImportArgPath(p) {
-  return p.parentPath.get('arguments')[0]
+  return p.parentPath.get('arguments')[0];
 }
 
 export function existingMagicCommentChunkName(importArgNode) {
-  const { leadingComments } = importArgNode
+  const { leadingComments } = importArgNode;
   if (
     leadingComments &&
     leadingComments.length &&
@@ -26,62 +26,64 @@ export function existingMagicCommentChunkName(importArgNode) {
       return leadingComments[0].value
         .split('webpackChunkName:')[1]
         .replace(/["']/g, '')
-        .trim()
+        .trim();
     } catch (e) {
-      return null
+      return null;
     }
   }
-  return null
+  return null;
 }
 
 export function trimChunkNameBaseDir(baseDir) {
-  return baseDir.replace(/^[./]+|(\.js$)/g, '')
+  return baseDir.replace(/^[./]+|(\.js$)/g, '');
 }
 
 export function getMagicCommentChunkName(importArgNode) {
-  const { quasis, expressions } = importArgNode
-  if (!quasis) return trimChunkNameBaseDir(importArgNode.value)
+  const { quasis, expressions } = importArgNode;
+  if (!quasis) return trimChunkNameBaseDir(importArgNode.value);
 
-  const baseDir = quasis[0].value.cooked
-  const hasExpressions = expressions.length > 0
-  const chunkName = hasExpressions ? '[request]' : trimChunkNameBaseDir(baseDir)
-  return chunkName
+  const baseDir = quasis[0].value.cooked;
+  const hasExpressions = expressions.length > 0;
+  const chunkName = hasExpressions
+    ? '[request]'
+    : trimChunkNameBaseDir(baseDir);
+  return chunkName;
 }
 
 export function getMagicWebpackComments(importArgNode) {
-  const { leadingComments } = importArgNode
-  const results = []
+  const { leadingComments } = importArgNode;
+  const results = [];
   if (leadingComments && leadingComments.length) {
-    leadingComments.forEach((comment) => {
+    leadingComments.forEach(comment => {
       try {
-        const validMagicString = validMagicStrings.filter((str) =>
+        const validMagicString = validMagicStrings.filter(str =>
           new RegExp(`${str}\\w*:`).test(comment.value)
-        )
+        );
         // keep this comment if we found a match
         if (validMagicString && validMagicString.length === 1) {
-          results.push(comment)
+          results.push(comment);
         }
       } catch (e) {
         // eat the error, but don't give up
       }
-    })
+    });
   }
-  return results
+  return results;
 }
 
 export function addChunkNameToNode(argPath, chunkName) {
-  const otherValidMagicComments = getMagicWebpackComments(argPath.node)
+  const otherValidMagicComments = getMagicWebpackComments(argPath.node);
 
-  delete argPath.node.leadingComments
-  argPath.addComment('leading', ` webpackChunkName: '${chunkName}' `)
-  otherValidMagicComments.forEach((validLeadingComment) =>
+  delete argPath.node.leadingComments;
+  argPath.addComment('leading', ` webpackChunkName: '${chunkName}' `);
+  otherValidMagicComments.forEach(validLeadingComment =>
     argPath.addComment('leading', validLeadingComment.value)
-  )
+  );
 }
 
 export function getAsyncComponentParamter(loaderArguments, name, t) {
-  const index = loaderArguments.findIndex((property) =>
+  const index = loaderArguments.findIndex(property =>
     t.isIdentifier(property.node.key, { name })
-  )
-  return [index, index === -1 ? null : loaderArguments[index].node.value.value]
+  );
+  return [index, index === -1 ? null : loaderArguments[index].node.value.value];
 }

@@ -10,20 +10,24 @@ const Placeholder = () => <div>...LOADING...</div>;
 export default [
   {
     path: '/',
-		exact: true,
+    exact: true,
     component: asyncComponent({
-      loader: () => import(/* webpackChunkName: 'components-Home' */ './components/Home'),
+      loader: () =>
+        import(/* webpackChunkName: 'components-Home' */ './components/Home'),
       Placeholder,
-      chunkName: "components-Home",
+      chunkName: 'components-Home',
     }),
   },
   {
     path: '/async-get-initial-props',
-		exact: true,
+    exact: true,
     component: asyncComponent({
-      loader: () => import(/* webpackChunkName: 'components-AsyncGetInitialProps' */ './components/AsyncGetInitialProps'),
+      loader: () =>
+        import(
+          /* webpackChunkName: 'components-AsyncGetInitialProps' */ './components/AsyncGetInitialProps'
+        ),
       Placeholder,
-      chunkName: "components-AsyncGetInitialProps",
+      chunkName: 'components-AsyncGetInitialProps',
     }),
   },
   {
@@ -33,20 +37,23 @@ export default [
   },
   {
     path: '/non-default-export',
-		exact: true,
+    exact: true,
     component: asyncComponent({
-      loader: () => import(/* webpackChunkName: 'components-NoNDefaultExport' */'./components/NoNDefaultExport').then((module) => module.NonDefaultExport),
+      loader: () =>
+        import(
+          /* webpackChunkName: 'components-NoNDefaultExport' */ './components/NoNDefaultExport'
+        ).then(module => module.NonDefaultExport),
       Placeholder,
-      chunkName: "components-NoNDefaultExport",
+      chunkName: 'components-NoNDefaultExport',
     }),
   },
   {
     path: '/no-get-initial-props',
     exact: true,
-    component: NoGetInitialProps
-	},
-	{
-		path: '*',
-		component:  NotFoundComponent
-	},
+    component: NoGetInitialProps,
+  },
+  {
+    path: '*',
+    component: NotFoundComponent,
+  },
 ];
