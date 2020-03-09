@@ -6,11 +6,11 @@ import './client.css';
 import routes from './routes';
 
 hydrate(
-	<BrowserRouter>
-		<After data={data} routes={routes} />
-	</BrowserRouter>,
-	document.getElementById('root')
-)
+  <BrowserRouter>
+    <After data={data} routes={routes} />
+  </BrowserRouter>,
+  document.getElementById('root')
+);
 
 if (module.hot) {
   module.hot.accept();

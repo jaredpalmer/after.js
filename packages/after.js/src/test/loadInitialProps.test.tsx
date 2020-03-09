@@ -1,7 +1,7 @@
 import { loadInitialProps } from '../loadInitialProps';
 import routes from './routes';
 import { createMemoryHistory } from 'history';
-import { History } from 'history'
+import { History } from 'history';
 
 describe('loadInitialProps', () => {
   let history: History;

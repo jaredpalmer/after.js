@@ -26,6 +26,7 @@ yarn upgrade @jaredpalmer/after razzle --latest
 ```
 
 or
+
 ```bash
 npm install @jaredpalmer/after@latest razzle@latest --save
 ```

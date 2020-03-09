@@ -1,4 +1,4 @@
-import { asyncComponent } from '@jaredpalmer/after'
+import { asyncComponent } from '@jaredpalmer/after';
 
 const routes = [
   {
@@ -34,4 +34,4 @@ const routes = [
         import(/* webpackChunkName: "NotfoundPage" */ `./pages/Notfound`),
     }),
   },
-]
+];

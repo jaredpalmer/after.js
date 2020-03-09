@@ -25,5 +25,7 @@ export async function ensureReady(
     })
   );
 
-  return Promise.resolve((window as any).__SERVER_APP_STATE__ as Promise<any>[]);
+  return Promise.resolve(
+    (window as any).__SERVER_APP_STATE__ as Promise<any>[]
+  );
 }

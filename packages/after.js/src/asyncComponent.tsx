@@ -40,7 +40,7 @@ export function asyncComponent<Props>({
 
     static getChunkName() {
       return chunkName;
-    } 
+    }
 
     static getInitialProps(ctx: Ctx<any>) {
       // Need to call the wrapped components getInitialProps if it exists
@@ -55,13 +55,13 @@ export function asyncComponent<Props>({
       super(props);
       this.updateState = this.updateState.bind(this);
       this.state = {
-        Component
-			};
-		}
-		
-		componentDidMount() {
-			AsyncRouteComponent.load().then(this.updateState);
-		}
+        Component,
+      };
+    }
+
+    componentDidMount() {
+      AsyncRouteComponent.load().then(this.updateState);
+    }
 
     updateState() {
       // Only update state if we don't already have a reference to the

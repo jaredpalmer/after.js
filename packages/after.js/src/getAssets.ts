@@ -5,16 +5,19 @@ import logger from 'razzle-dev-utils/logger';
 
 export function getAssets({ route, chunks }: getAssetsParams) {
   let scripts: string[] = [];
-	let styles: string[] = [];
-	
-	if (!route) {
-		return { scripts, styles };
-	}
+  let styles: string[] = [];
+
+  if (!route) {
+    return { scripts, styles };
+  }
 
   // if component was LoadableComponent and chunkName was undefined
   // print an error message to console so Developer can fix it
   // @todo add link to documentation or show more useful error message
-  if (isLoadableComponent(route.component) && route.component.getChunkName() === undefined) {
+  if (
+    isLoadableComponent(route.component) &&
+    route.component.getChunkName() === undefined
+  ) {
     logger.error(errorMeesage);
     throw new Error();
   }

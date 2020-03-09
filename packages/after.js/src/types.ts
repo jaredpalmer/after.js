@@ -72,6 +72,7 @@ export type AsyncRouteableComponent<Props = any> =
 // all routes must have a name
 // but redirectTo don't need it!
 export interface AsyncRouteProps<Props = any> extends RouteProps {
+  path?: string;
   Placeholder?: React.ComponentType<any>;
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
