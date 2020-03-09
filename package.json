@@ -7,6 +7,9 @@
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "format": "prettier --trailing-comma es5 --single-quote --semi --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
     "precommit": "lint-staged"
