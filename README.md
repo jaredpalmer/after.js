@@ -36,6 +36,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
   - [Routing](#routing)
     - [Parameterized Routing](#parameterized-routing)
     - [Client Only Data and Routing](#client-only-data-and-routing)
+  - [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
     - [404 Page](#404-page)
     - [Dynamic 404](#dynamic-404)
     - [Redirect](#redirect)
@@ -545,9 +546,8 @@ import express from 'express';
 import { render } from '@jaredpalmer/after';
 import routes from './routes';
 import MyDocument from './Document';
-import manifest from '../build/manifest.json';
 
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
 
 const server = express();
 server
@@ -560,9 +560,8 @@ server
         req,
         res,
         document: MyDocument,
-        manifest,
+        chunks,
         routes,
-        assets,
       });
       res.send(html);
     } catch (error) {
@@ -598,9 +597,8 @@ import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import routes from './routes';
 import createApolloClient from './createApolloClient';
 import Document from './Document';
-import manifest from '../build/manifest.json';
 
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
 
 const server = express();
 server
@@ -623,8 +621,7 @@ server
         req,
         res,
         routes,
-        assets,
-        manifest,
+        chunks,
         customRenderer,
         document: Document,
       });
