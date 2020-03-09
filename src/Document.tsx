@@ -55,10 +55,11 @@ export const AfterData: React.FC<{ data?: any }> = ({ data }) => {
     <__AfterContext.Consumer>
       {({ data: contextData }) => (
         <script
-          id="server-app-state"
-          type="application/json"
+          defer
           dangerouslySetInnerHTML={{
-            __html: serialize({ ...(data || contextData) }),
+            __html: `window.__SERVER_APP_STATE__ =  ${serialize({
+              ...(data || contextData),
+            })}`,
           }}
         />
       )}
@@ -69,9 +70,16 @@ export const AfterData: React.FC<{ data?: any }> = ({ data }) => {
 export const AfterStyles = () => {
   return (
     <__AfterContext.Consumer>
-      {({ assets }) =>
-        assets.client.css && <link rel="stylesheet" href={assets.client.css} />
-      }
+      {({ assets, styles }) => (
+        <>
+          {assets.client.css && (
+            <link rel="stylesheet" href={assets.client.css} />
+          )}
+          {styles.map(path => (
+            <link key={path} rel="stylesheet" href={path} />
+          ))}
+        </>
+      )}
     </__AfterContext.Consumer>
   );
 };
@@ -79,16 +87,27 @@ export const AfterStyles = () => {
 export const AfterScripts = () => {
   return (
     <__AfterContext.Consumer>
-      {({ assets }) =>
-        assets.client.js && (
-          <script
-            type="text/javascript"
-            src={assets.client.js}
-            defer
-            crossOrigin="anonymous"
-          />
-        )
-      }
+      {({ assets, scripts, prefix }) => (
+        <>
+          {scripts.map(path => (
+            <script
+              key={path}
+              defer
+              type="text/javascript"
+              src={prefix + path}
+              crossOrigin="anonymous"
+            />
+          ))}
+          {assets.client.js && (
+            <script
+              type="text/javascript"
+              src={assets.client.js}
+              defer
+              crossOrigin="anonymous"
+            />
+          )}
+        </>
+      )}
     </__AfterContext.Consumer>
   );
 };

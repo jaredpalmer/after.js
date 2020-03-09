@@ -23,6 +23,7 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
 export interface AfterpartyState {
   data?: InitialData;
   previousLocation: Location | null;
+  currentLocation: Location | null;
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
@@ -37,54 +38,63 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     this.state = {
       data: props.data.initialData,
       previousLocation: null,
+      currentLocation: props.location,
     };
 
     this.prefetcherCache = {};
-    this.NotfoundComponent = get404Component(this.props.routes);
+    this.NotfoundComponent = get404Component(props.routes);
   }
 
-  // only runs clizzient
-  componentWillReceiveProps(nextProps: AfterpartyProps) {
-    const navigated = nextProps.location !== this.props.location;
-    if (navigated) {
-      // save the location and data so we can render the old screen
-      // first we try to use previousLocation and then location from props
-      this.setState(prevState => ({
-        previousLocation: prevState.previousLocation || this.props.location,
-      }));
+  // i know it's little confusing but you will get used to it
+  static getDerivedStateFromProps(
+    props: AfterpartyProps,
+    state: AfterpartyState
+  ) {
+    const currentLocation = props.location;
+    const previousLocation = state.currentLocation;
 
+    const navigated = currentLocation !== previousLocation;
+    if (navigated) {
+      return {
+        previousLocation: state.previousLocation || previousLocation,
+        currentLocation,
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(_prevProps: AfterpartyProps, prevState: AfterpartyState) {
+    const navigated = prevState.currentLocation !== this.state.currentLocation;
+    if (navigated) {
       const {
+        location,
+        history,
+        routes,
         data,
         match,
-        routes,
-        history,
-        location,
         staticContext,
+        children,
         ...rest
-      } = nextProps;
+      } = this.props;
 
       const { scrollToTop } = data.afterData;
 
-      loadInitialProps(this.props.routes, nextProps.location.pathname, {
-        location: nextProps.location,
-        history: nextProps.history,
+      loadInitialProps(routes, location.pathname, {
+        location: location,
+        history: history,
         scrollToTop,
         ...rest,
       })
         .then(({ data }) => {
-          // if data is not for current location just don't do anything
-          if (this.props.location !== location) {
-            // should we save this data in prefetcherCache ?
-            return;
-          }
+          if (this.state.currentLocation !== location) return;
 
           // Only for page changes, prevent scroll up for anchor links
           if (
-            (this.state.previousLocation &&
-              this.state.previousLocation.pathname) !==
-              nextProps.location.pathname &&
+            (prevState.previousLocation &&
+              prevState.previousLocation.pathname) !== location.pathname &&
             // Only Scroll if scrollToTop is not false
-            nextProps.data.afterData.scrollToTop.current
+            this.props.data.afterData.scrollToTop.current
           ) {
             window.scrollTo(0, 0);
           }

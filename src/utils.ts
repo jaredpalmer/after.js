@@ -15,6 +15,14 @@ export const isObject = (obj: any) => obj !== null && typeof obj === 'object';
 export const isPromise = (value: any): boolean =>
   isObject(value) && isFunction(value.then);
 
+/** @private we render on client? */
+export const isDOM = (): boolean =>
+	typeof window === "object" && typeof window.document === "object";
+
+/** @private we render on server? */
+export const isServer = (): boolean =>
+	!isDOM()
+
 /** @private Guard cluase to narrow the AsyncRouteableComponent union type on getInitialProps */
 export function isAsyncComponent(
   Component: AsyncRouteableComponent
@@ -32,12 +40,8 @@ export function isLoadableComponent(
 }
 
 /** @private is given routes have 404 page?  */
-export function is404ComponentAvailable(
-  routes: AsyncRouteProps<any>[]
-): AsyncRouteProps<any> | false {
-  return (
-    routes.find(route => ['**', '*', undefined].includes(route.path)) || false
-  );
+export function is404ComponentAvailable(routes: AsyncRouteProps<any>[]): AsyncRouteProps<any> | false {
+  return routes.find(route => ["**", "*", ,"" , undefined].includes(route.path)) || false
 }
 
 /** @private Returns 404Component from given routes if component was not avaliable returns default 404component */

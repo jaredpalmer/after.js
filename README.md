@@ -313,7 +313,9 @@ function ProductPage({ product, error }) {
 
     return <p>Something went Wrong !</p>;
   }
-  { /* if there were no errors we have our data */ }
+  {
+    /* if there were no errors we have our data */
+  }
   return <h1>{product.name}</h1>;
 }
 
@@ -366,7 +368,6 @@ Dashboard.getInitialProps = async ({ match }) => {
 
 The redirect will happen before after.js start renders react to string soo it's fast.
 when using `redirectTo` default value for `statusCode` is 301, but you can use any numeric value you want.
-
 
 ## Code Splitting
 
@@ -544,6 +545,7 @@ import express from 'express';
 import { render } from '@jaredpalmer/after';
 import routes from './routes';
 import MyDocument from './Document';
+import manifest from '../build/manifest.json';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -558,6 +560,7 @@ server
         req,
         res,
         document: MyDocument,
+        manifest,
         routes,
         assets,
       });
@@ -595,6 +598,7 @@ import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import routes from './routes';
 import createApolloClient from './createApolloClient';
 import Document from './Document';
+import manifest from '../build/manifest.json';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -620,6 +624,7 @@ server
         res,
         routes,
         assets,
+        manifest,
         customRenderer,
         document: Document,
       });

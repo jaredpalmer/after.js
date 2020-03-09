@@ -28,6 +28,9 @@ export interface DocumentProps {
   data: ServerAppState;
   renderPage: () => Promise<any>;
   match: Match<any> | null;
+  scripts: string[];
+  styles: string[];
+  prefix: string;
   scrollToTop: ScrollToTop;
 }
 
@@ -49,6 +52,7 @@ export interface AsyncRouteComponentState {
 export interface AsyncComponent {
   getInitialProps: (props: Ctx<any>) => any;
   load?: () => Promise<React.ReactNode>;
+  getChunkName: () => string | undefined;
 }
 
 export interface AsyncRouteComponent<Props = {}>
@@ -64,7 +68,11 @@ export type AsyncRouteableComponent<Props = any> =
   | React.ComponentType<RouteComponentProps<Props>>
   | React.ComponentType<Props>;
 
+// @todo: fix typings
+// all routes must have a name
+// but redirectTo don't need it!
 export interface AsyncRouteProps<Props = any> extends RouteProps {
+  Placeholder?: React.ComponentType<any>;
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
 }
@@ -88,4 +96,16 @@ export interface Assets {
   [name: string]: {
     [ext: string]: string;
   };
+}
+
+export interface Chunks {
+  [key: string]: {
+    css: string[];
+    js: string[];
+  };
+}
+
+export interface getAssetsParams {
+  chunks: Chunks;
+  route?: AsyncRouteProps<any>;
 }
