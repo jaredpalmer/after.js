@@ -1,5 +1,5 @@
 import { getAssets as getRouteChunks, errorMeesage } from '../getAssets';
-import manifest from './manifest';
+import chunks from './chunks';
 import routes from './routes';
 import { matchPath } from 'react-router-dom';
 import { AsyncRouteProps } from '../types';
@@ -20,7 +20,7 @@ function getRoute(url): AsyncRouteProps {
 }
 
 function getAssets(url, route = getRoute(url)) {
-  return getRouteChunks({ route, manifest });
+  return getRouteChunks({ route, chunks });
 }
 
 jest.mock('razzle-dev-utils/logger');
@@ -37,8 +37,8 @@ describe('getAssets', () => {
     const requestUrl = '/';
     const chunkNameForRequestedUrl = 'components-Home';
     const { scripts, styles } = getAssets(requestUrl);
-    expect(scripts).toEqual(manifest[chunkNameForRequestedUrl].js);
-    expect(styles).toEqual(manifest[chunkNameForRequestedUrl].css);
+    expect(scripts).toEqual(chunks[chunkNameForRequestedUrl].js);
+    expect(styles).toEqual(chunks[chunkNameForRequestedUrl].css);
   });
 
   test('should log and then throw error when chunkName is undefined and component is async', () => {

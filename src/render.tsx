@@ -151,7 +151,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 
   const doc = ReactDOMServer.renderToStaticMarkup(
     <__AfterContext.Provider
-      value={{ assets, data, ...rest, ...docProps, html }}
+      value={{ assets, data, scripts, styles, ...rest, ...docProps, html }}
     >
       <Doc {...docProps} />
     </__AfterContext.Provider>
