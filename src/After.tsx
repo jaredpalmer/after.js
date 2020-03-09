@@ -1,27 +1,27 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Switch,
   Route,
   withRouter,
   Redirect,
   match as Match,
-  RouteComponentProps
-} from "react-router-dom";
-import { loadInitialProps } from "./loadInitialProps";
-import { History, Location } from "history";
-import { AsyncRouteProps } from "./types";
-import { get404Component, getAllRoutes } from "./utils";
+  RouteComponentProps,
+} from 'react-router-dom';
+import { loadInitialProps } from './loadInitialProps';
+import { History, Location } from 'history';
+import { AsyncRouteProps, ServerAppState, InitialData } from './types';
+import { get404Component, getAllRoutes } from './utils';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
   location: Location;
-  data?: Promise<any>[];
+  data: ServerAppState;
   routes: AsyncRouteProps[];
   match: Match<any>;
 }
 
 export interface AfterpartyState {
-  data?: Promise<any>[];
+  data?: InitialData;
   previousLocation: Location | null;
   currentLocation: Location | null;
 }
@@ -36,9 +36,9 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     super(props);
 
     this.state = {
-      data: props.data,
+      data: props.data.initialData,
       previousLocation: null,
-      currentLocation: props.location
+      currentLocation: props.location,
     };
 
     this.prefetcherCache = {};
@@ -57,7 +57,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     if (navigated) {
       return {
         previousLocation: state.previousLocation || previousLocation,
-        currentLocation
+        currentLocation,
       };
     }
 
@@ -77,10 +77,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         children,
         ...rest
       } = this.props;
+
+      const { scrollToTop } = data.afterData;
+
       loadInitialProps(routes, location.pathname, {
         location: location,
         history: history,
-        ...rest
+        scrollToTop,
+        ...rest,
       })
         .then(({ data }) => {
           if (this.state.currentLocation !== location) return;
@@ -88,7 +92,9 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           // Only for page changes, prevent scroll up for anchor links
           if (
             (prevState.previousLocation &&
-              prevState.previousLocation.pathname) !== location.pathname
+              prevState.previousLocation.pathname) !== location.pathname &&
+            // Only Scroll if scrollToTop is not false
+            this.props.data.afterData.scrollToTop.current
           ) {
             window.scrollTo(0, 0);
           }

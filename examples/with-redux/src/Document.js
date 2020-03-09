@@ -4,6 +4,7 @@ import {
   AfterData,
   AfterScripts,
   AfterStyles,
+  SerializeData,
   __AfterContext,
 } from '@jaredpalmer/after';
 import { Provider } from 'react-redux';
@@ -49,19 +50,8 @@ class Document extends React.Component {
 }
 
 function ReduxData() {
-  return (
-    <__AfterContext.Consumer>
-      {({ store }) => (
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__PRELOADED_STATE__ = ${serialize(
-              store.getState()
-            )}`,
-          }}
-        />
-      )}
-    </__AfterContext.Consumer>
-  );
+  const { store } = React.useContext(__AfterContext);
+  return <SerializeData name="preloaded_state" data={store.getState()} />;
 }
 
 export default Document;

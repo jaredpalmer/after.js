@@ -1,1 +1,1 @@
-module.exports = require('./build/render');
+module.exports = require('./build/cjs/render').render;
