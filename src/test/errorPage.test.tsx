@@ -47,14 +47,14 @@ describe('ErrorPage', () => {
       { component: AsyncRedirectComponent, path: '/old-location' },
     ];
     const html = await render({ url: '/old-location', res, routes, assets });
-    expect(res.redirect).toBeCalledWith(301, '/new-location');
+    expect(res.redirect).toBeCalledWith(302, '/new-location');
     expect(html).toBeUndefined();
   });
 
   it("should redirect to '/new-location' after react render", async () => {
     const routes = [{ component: NonAsyncRedirect, path: '/old-location' }];
     const html = await render({ url: '/old-location', res, routes, assets });
-    expect(res.redirect).toBeCalledWith(301, '/new-location');
+    expect(res.redirect).toBeCalledWith(302, '/new-location');
     expect(html).toContain(NonAsyncRedirect.data);
   });
 

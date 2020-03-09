@@ -99,7 +99,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     }
 
     if (redirectTo) {
-      res.redirect(statusCode || 301, redirectTo);
+      res.redirect(statusCode || 302, redirectTo);
       return;
     }
   }
