@@ -1,14 +1,21 @@
+import { RouteComponentProps, match as Match } from 'react-router-dom';
 import {
-  RouteProps,
-  RouteComponentProps,
-  match as Match,
-} from 'react-router-dom';
+  RouteConfig,
+  MatchedRoute,
+  RouteConfigComponentProps,
+} from 'react-router-config';
 import { HelmetData } from 'react-helmet';
 import { Request, Response } from 'express';
-import { IncomingMessage, ServerResponse } from 'http';
 import { History, Location } from 'history';
 
-export type InitialData = Promise<any>[];
+export interface Redirect {
+  redirectTo: string;
+}
+export interface StatusCode {
+  statusCode: number;
+}
+
+export type InitialData = any[];
 export type ScrollToTop = React.RefObject<boolean>;
 
 export interface ServerAppState {
@@ -20,23 +27,34 @@ export interface AfterClientData {
   scrollToTop: ScrollToTop;
 }
 
-export interface DocumentProps {
-  req: Request;
-  res: Response;
+export interface renderPageResult {
+  html: string;
   helmet: HelmetData;
-  assets: Assets;
-  data: ServerAppState;
-  renderPage: () => Promise<any>;
-  match: Match<any> | null;
-  scripts: string[];
-  styles: string[];
-  prefix: string;
-  scrollToTop: ScrollToTop;
 }
 
+export interface DocumentgetInitialProps<T = renderPageResult> {
+  req: Request;
+  res: Response;
+  data: ServerAppState;
+  renderPage: () => Promise<T>;
+  branch: MatchedRoute<any>[];
+  scripts: string[];
+  styles: string[];
+  scrollToTop: ScrollToTop;
+  chunks: Chunks;
+}
+
+export type DocumentProps<T = renderPageResult> = Omit<
+  DocumentgetInitialProps<T>,
+  'req' | 'res' | 'renderPage' | 'scrollToTop'
+> &
+  T;
+
+export type AfterContext = DocumentProps;
+
 export interface CtxBase {
-  req?: IncomingMessage;
-  res?: ServerResponse;
+  req?: Request;
+  res?: Response;
   history?: History;
   location?: Location;
   scrollToTop?: ScrollToTop;
@@ -45,42 +63,38 @@ export interface Ctx<P> extends CtxBase {
   match: Match<P>;
 }
 
-export interface AsyncRouteComponentState {
-  Component: AsyncRouteableComponent | null;
-}
-
 export interface AsyncComponent {
   getInitialProps: (props: Ctx<any>) => any;
   load?: () => Promise<React.ReactNode>;
   getChunkName: () => string | undefined;
 }
 
-export interface AsyncRouteComponent<Props = {}>
-  extends AsyncComponent,
-    React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
-
-export type AsyncRouteComponentType<Props> =
-  | (React.ComponentClass<Props> & AsyncComponent)
-  | (React.StatelessComponent<Props> & AsyncComponent);
+export type AsyncRouteComponentType<Props> = React.ComponentType<Props> &
+  AsyncComponent;
 
 export type AsyncRouteableComponent<Props = any> =
   | AsyncRouteComponentType<RouteComponentProps<Props>>
   | React.ComponentType<RouteComponentProps<Props>>
   | React.ComponentType<Props>;
 
-// @todo: fix typings
-// all routes must have a name
-// but redirectTo don't need it!
-export interface AsyncRouteProps<Props = any> extends RouteProps {
-  path?: string;
+export interface AsyncRouteComponentState {
+  Component: AsyncRouteableComponent | null;
+}
+
+export interface AsyncRouteComponent<Props = {}>
+  extends AsyncComponent,
+    React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
+
+export type AfterRouteConfig = Omit<RouteConfig, 'routes'> & { routes?: AsyncRouteConfig[] };
+
+export interface AsyncRouteConfig<Props = any> extends AfterRouteConfig {
   Placeholder?: React.ComponentType<any>;
-  component: AsyncRouteableComponent<Props>;
-  redirectTo?: string;
+  component: AsyncRouteableComponent<RouteConfigComponentProps<Props>>;
 }
 
 export interface InitialProps {
-  match?: AsyncRouteProps;
   data: InitialData;
+  branch: MatchedRoute<any>[];
 }
 
 export type Module<P> =
@@ -93,12 +107,6 @@ export type Module<P> =
       [x: string]: any;
     };
 
-export interface Assets {
-  [name: string]: {
-    [ext: string]: string;
-  };
-}
-
 export interface Chunks {
   [key: string]: {
     css: string[];
@@ -108,5 +116,5 @@ export interface Chunks {
 
 export interface getAssetsParams {
   chunks: Chunks;
-  route?: AsyncRouteProps<any>;
+  branch: MatchedRoute<any>[];
 }
