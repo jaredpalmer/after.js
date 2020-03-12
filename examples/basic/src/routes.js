@@ -1,24 +1,41 @@
-import React from 'react';
+import { asyncComponent } from '@jaredpalmer/after';
+import App from './App';
 
-// babel-plugin-after will not work with this file
-// the import statment should be "@jaredpalmer/after" or "@jaredpalmer/after/asyncComponent"
-import { asyncComponent } from '../../../build/asyncComponent';
-
-export default [
+const routes = [
   {
-    path: '/',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import('./Home'), // required
-      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
-    }),
-  },
-  {
-    path: '/about',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import('./About'), // required
-      Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
-    }),
+    component: App,
+    routes: [
+      {
+        path: '/',
+        exact: true,
+        component: asyncComponent({ loader: () => import('./pages/home') }),
+      },
+      {
+        path: '/about',
+        component: asyncComponent({ loader: () => import('./pages/about') }),
+      },
+      {
+        path: '/dashboard',
+        component: asyncComponent({
+          loader: () => import('./pages/dashboard'),
+        }),
+        routes: [
+          {
+            path: '/dashboard/user',
+            component: asyncComponent({
+              loader: () => import('./pages/dashboard/user'),
+            }),
+          },
+          {
+            path: '/dashboard/changepassword',
+            component: asyncComponent({
+              loader: () => import('./pages/dashboard/changepassword'),
+            }),
+          },
+        ],
+      },
+    ],
   },
 ];
+
+export default routes;
