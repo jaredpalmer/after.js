@@ -12,14 +12,15 @@ function Home() {
       </div>
       <p className="Home-intro">
         To get started, edit
-        <code>src/pages/Home.js</code> or <code>src/About.js</code>and save to reload.
+        <code>src/pages/Home.js</code> or <code>src/About.js</code>and save to
+        reload.
       </p>
       <Link to="/about">About -></Link>
       <br />
       <Link to="/dashboard">Dashboard -></Link>
-      <br/>
+      <br />
       <Link to="/dashboard/user">User -></Link>
-      <br/>
+      <br />
       <Link to="/dashboard/changepassword">Change Password -></Link>
     </div>
   );
