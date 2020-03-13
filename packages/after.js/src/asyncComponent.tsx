@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   Module,
   AsyncRouteComponentState,
@@ -51,19 +51,15 @@ export function asyncComponent<Props>({
       }
     }
 
-    constructor(props: Props) {
-      super(props);
-      this.updateState = this.updateState.bind(this);
-      this.state = {
-        Component,
-      };
-    }
+    state = {
+      Component,
+    };
 
     componentDidMount() {
       AsyncRouteComponent.load().then(this.updateState);
     }
 
-    updateState() {
+    updateState = () => {
       // Only update state if we don't already have a reference to the
       // component, this prevent unnecessary renders.
       if (this.state.Component !== Component) {
@@ -71,7 +67,7 @@ export function asyncComponent<Props>({
           Component,
         });
       }
-    }
+    };
 
     render() {
       const { Component: ComponentFromState } = this.state;

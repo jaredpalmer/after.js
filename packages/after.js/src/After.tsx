@@ -1,51 +1,19 @@
-import * as React from 'react';
-import {
-  Switch,
-  Route,
-  withRouter,
-  Redirect,
-  match as Match,
-  RouteComponentProps,
-} from 'react-router-dom';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
+
 import { loadInitialProps } from './loadInitialProps';
-import { History, Location } from 'history';
-import { AsyncRouteProps, ServerAppState, InitialData } from './types';
-import { get404Component, getAllRoutes } from './utils';
 
-export interface AfterpartyProps extends RouteComponentProps<any> {
-  history: History;
-  location: Location;
-  data: ServerAppState;
-  routes: AsyncRouteProps[];
-  match: Match<any>;
-}
-
-export interface AfterpartyState {
-  data?: InitialData;
-  previousLocation: Location | null;
-  currentLocation: Location | null;
-}
+import { AfterpartyProps, AfterpartyState } from './types';
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
-  prefetcherCache: any;
-  NotfoundComponent:
-    | React.ComponentType<RouteComponentProps<any>>
-    | React.ComponentType<any>;
+  state = {
+    data: this.props.data.initialData,
+    previousLocation: null,
+    currentLocation: this.props.location,
+  };
+  prefetcherCache: any = {};
 
-  constructor(props: AfterpartyProps) {
-    super(props);
-
-    this.state = {
-      data: props.data.initialData,
-      previousLocation: null,
-      currentLocation: props.location,
-    };
-
-    this.prefetcherCache = {};
-    this.NotfoundComponent = get404Component(props.routes);
-  }
-
-  // i know it's little confusing but you will get used to it
   static getDerivedStateFromProps(
     props: AfterpartyProps,
     state: AfterpartyState
@@ -127,36 +95,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
     const location = previousLocation || currentLocation;
 
-    return (
-      <Switch location={location}>
-        {initialData &&
-          initialData.statusCode &&
-          initialData.statusCode === 404 && (
-            <Route
-              component={this.NotfoundComponent}
-              path={location.pathname}
-            />
-          )}
-        {initialData && initialData.redirectTo && initialData.redirectTo && (
-          <Redirect to={initialData.redirectTo} />
-        )}
-        {getAllRoutes(this.props.routes).map((r, i) => (
-          <Route
-            key={`route--${i}`}
-            path={r.path}
-            exact={r.exact}
-            render={props =>
-              React.createElement(r.component, {
-                ...initialData,
-                history: props.history,
-                match: props.match,
-                prefetch: this.prefetch,
-                location,
-              })
-            }
-          />
-        ))}
-      </Switch>
+    return renderRoutes(
+      this.props.routes,
+      {
+        ...initialData,
+        prefetch: this.prefetch,
+        location,
+      },
+      { location }
     );
   }
 }

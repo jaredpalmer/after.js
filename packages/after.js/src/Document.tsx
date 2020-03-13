@@ -1,13 +1,11 @@
-import * as React from 'react';
-import serialize from 'serialize-javascript';
-import { DocumentProps } from './types';
+import React from 'react';
+import { DocumentProps, AfterContext, DocumentgetInitialProps } from './types';
+import { SerializeData } from './serializeData';
 
-export const __AfterContext = React.createContext(
-  {} as DocumentProps & { html: string }
-);
+export const __AfterContext = React.createContext({} as AfterContext);
 
 export class Document extends React.Component<DocumentProps> {
-  static async getInitialProps({ renderPage }: DocumentProps) {
+  static async getInitialProps({ renderPage }: DocumentgetInitialProps) {
     const page = await renderPage();
     return { ...page };
   }
@@ -40,74 +38,74 @@ export class Document extends React.Component<DocumentProps> {
   }
 }
 
-export const AfterRoot = () => {
+/**
+ * renders <div id="root">SSR HTML RESULT</div>
+ */
+export const AfterRoot: React.FC = () => {
+  const { html } = useAfter();
+  return <div id="root" dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
+/**
+ * sends getInitialProps data to the client
+ * and when react starts rehydation
+ * we don't get any errors
+ */
+export const AfterData: React.FC = () => {
+  const { data } = useAfter();
+  return <SerializeData name="server_app_state" data={data} />;
+};
+
+/**
+ * renders <link rel="stylesheet"> tags
+ */
+export const AfterStyles: React.FC = () => {
+  const { chunks, styles } = useAfter();
   return (
-    <__AfterContext.Consumer>
-      {({ html }) => (
-        <div id="root" dangerouslySetInnerHTML={{ __html: html }} />
-      )}
-    </__AfterContext.Consumer>
+    <>
+      {chunks.client.css.map(path => (
+        <link key={path} rel="stylesheet" href={path} />
+      ))}
+      {styles.map(path => (
+        <link key={path} rel="stylesheet" href={path} />
+      ))}
+    </>
   );
 };
 
-export const AfterData: React.FC<{ data?: any }> = ({ data }) => {
+/**
+ * renders <script> tags on the so client can
+ * download files and do rehydration
+ */
+export const AfterScripts: React.FC = () => {
+  const { scripts, chunks } = useAfter();
   return (
-    <__AfterContext.Consumer>
-      {({ data: contextData }) => (
+    <>
+      {scripts.map(path => (
         <script
+          key={path}
           defer
-          dangerouslySetInnerHTML={{
-            __html: `window.__SERVER_APP_STATE__ =  ${serialize({
-              ...(data || contextData),
-            })}`,
-          }}
+          type="text/javascript"
+          src={path}
+          crossOrigin="anonymous"
         />
-      )}
-    </__AfterContext.Consumer>
+      ))}
+      {chunks.client.js.map(path => (
+        <script
+          key={path}
+          type="text/javascript"
+          src={path}
+          defer
+          crossOrigin="anonymous"
+        />
+      ))}
+    </>
   );
 };
 
-export const AfterStyles = () => {
-  return (
-    <__AfterContext.Consumer>
-      {({ assets, styles }) => (
-        <>
-          {assets.client.css && (
-            <link rel="stylesheet" href={assets.client.css} />
-          )}
-          {styles.map(path => (
-            <link key={path} rel="stylesheet" href={path} />
-          ))}
-        </>
-      )}
-    </__AfterContext.Consumer>
-  );
-};
-
-export const AfterScripts = () => {
-  return (
-    <__AfterContext.Consumer>
-      {({ assets, scripts, prefix }) => (
-        <>
-          {scripts.map(path => (
-            <script
-              key={path}
-              defer
-              type="text/javascript"
-              src={prefix + path}
-              crossOrigin="anonymous"
-            />
-          ))}
-          {assets.client.js && (
-            <script
-              type="text/javascript"
-              src={assets.client.js}
-              defer
-              crossOrigin="anonymous"
-            />
-          )}
-        </>
-      )}
-    </__AfterContext.Consumer>
-  );
+/**
+ * reads data from AfterContext
+ */
+const useAfter = () => {
+  return React.useContext(__AfterContext);
 };

@@ -1,20 +1,19 @@
-import * as React from 'react';
-import * as ReactDOMServer from 'react-dom/server';
-import Helmet from 'react-helmet';
-import { matchPath, StaticRouter, RouteProps } from 'react-router-dom';
-import { Document as DefaultDoc, __AfterContext } from './Document';
-import { After } from './After';
-import { loadInitialProps } from './loadInitialProps';
-import * as utils from './utils';
-import * as url from 'url';
-import { Request, Response } from 'express';
-import { Assets, AsyncRouteProps, Chunks, AfterClientData } from './types';
-import { StaticRouterContext } from 'react-router';
-import { getAssets } from './getAssets';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 
-const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
-  return (props: Props) => <Page {...props} />;
-};
+import { Request, Response } from 'express';
+import { parse as parseUrl } from 'url';
+
+import { StaticRouterContext } from 'react-router';
+import { AsyncRouteConfig, Chunks, AfterClientData } from './types';
+
+import { Document as DefaultDoc } from './Document';
+
+import { loadInitialProps } from './loadInitialProps';
+import { getAssets } from './getAssets';
+import { createRenderer } from './createRenderer';
+import { redirectOrSetStatusCode } from './redirectOrSetStatusCode';
+import { renderDocument } from './renderDocument';
 
 /*
  The customRenderer parameter is a (potentially async) function that can be set to return 
@@ -26,8 +25,7 @@ const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
 export interface AfterRenderOptions<T> {
   req: Request;
   res: Response;
-  assets: Assets;
-  routes: AsyncRouteProps[];
+  routes: AsyncRouteConfig[];
   document?: typeof DefaultDoc;
   chunks: Chunks;
   scrollToTop?: boolean;
@@ -38,123 +36,89 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const {
     req,
     res,
-    routes: pureRoutes,
-    assets,
+    routes,
     document: Document,
     customRenderer,
     chunks,
     scrollToTop = true,
     ...rest
   } = options;
+  // make all variables ready
   const Doc = Document || DefaultDoc;
-
-  const routes = utils.getAllRoutes(pureRoutes);
-
   const context: StaticRouterContext = {};
-  const renderPage = async (fn = modPageFn) => {
-    // By default, we keep ReactDOMServer synchronous renderToString function
-    const defaultRenderer = (element: React.ReactElement<T>) => ({
-      html: ReactDOMServer.renderToString(element),
-    });
-    const renderer = customRenderer || defaultRenderer;
-    const asyncOrSyncRender = renderer(
-      <StaticRouter location={req.url} context={context}>
-        {fn(After)({ routes, data })}
-      </StaticRouter>
-    );
-
-    const renderedContent = utils.isPromise(asyncOrSyncRender)
-      ? await asyncOrSyncRender
-      : asyncOrSyncRender;
-    const helmet = Helmet.renderStatic();
-
-    const { statusCode, url: redirectTo } = context;
-
-    if (redirectTo) {
-      res.redirect(statusCode || 302, redirectTo);
-    }
-
-    if (statusCode) {
-      res.status(statusCode);
-    }
-
-    return { helmet, ...renderedContent };
-  };
-
   const autoScrollRef = { current: scrollToTop };
-  const { match, data: initialData } = await loadInitialProps(
-    routes,
-    url.parse(req.url).pathname as string,
-    {
-      req,
-      res,
-      scrollToTop: autoScrollRef,
-      ...rest,
-    }
-  );
-
-  if (initialData) {
-    const { redirectTo, statusCode } = initialData as {
-      statusCode?: number;
-      redirectTo?: string;
-    };
-
-    if (statusCode) {
-      context.statusCode = statusCode;
-    }
-
-    if (redirectTo) {
-      res.redirect(statusCode || 302, redirectTo);
-      return;
-    }
-  }
-
-  if (match && match.redirectTo && match.path) {
-    res.redirect(301, req.originalUrl.replace(match.path, match.redirectTo));
-    return;
-  }
-
-  const reactRouterMatch = matchPath(req.url, match as RouteProps);
-
-  const prefix =
-    process.env.NODE_ENV === 'production'
-      ? '/'
-      : `http://${process.env.HOST || 'localhost'}:${parseInt(
-          process.env.PORT!,
-          10
-        ) + 1}/`;
-
-  const { scripts, styles } = getAssets({ route: match, chunks });
+  const ctx = {
+    req,
+    res,
+    scrollToTop: autoScrollRef,
+    ...rest,
+  };
+  const pathname = parseUrl(req.url).pathname as string;
   const afterData: AfterClientData = {
     scrollToTop: autoScrollRef,
   };
+
+  // get data from getInitialProps
+  const { data: initialData, branch } = await loadInitialProps(
+    routes,
+    pathname,
+    ctx
+  );
+
+  // if there was a redirectTo in response just redirect user and don't continue
+  const { redirectTo, statusCode } = redirectOrSetStatusCode({
+    initialData,
+    context,
+  });
+  if (redirectTo) {
+    res.redirect(redirectTo, statusCode);
+    return;
+  }
 
   const data = {
     initialData,
     afterData,
   };
 
+  const { scripts, styles } = getAssets({ branch, chunks });
+
+  const renderPage = createRenderer({
+    res,
+    req,
+    routes,
+    data,
+    context,
+    renderer: customRenderer || defaultRenderer,
+  });
+
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
-    assets,
-    renderPage,
     data,
-    helmet: Helmet.renderStatic(),
-    match: reactRouterMatch,
+    renderPage,
     scripts,
     styles,
-    prefix,
+    branch,
+    chunks,
     scrollToTop: autoScrollRef,
     ...rest,
   });
 
-  const doc = ReactDOMServer.renderToStaticMarkup(
-    <__AfterContext.Provider
-      value={{ assets, data, scripts, styles, ...rest, ...docProps, html }}
-    >
-      <Doc {...docProps} />
-    </__AfterContext.Provider>
-  );
-  return `<!doctype html>${doc}`;
+  const page = renderDocument({
+    Doc,
+    data,
+    scripts,
+    styles,
+    chunks,
+    html,
+    branch,
+    ...docProps,
+    ...rest,
+  });
+  return `<!doctype html>${page}`;
 }
+
+// By default, we keep ReactDOMServer synchronous renderToString function
+const defaultRenderer = (element: React.ReactElement) => ({
+  html: ReactDOMServer.renderToString(element),
+});

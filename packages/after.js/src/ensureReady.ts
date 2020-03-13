@@ -1,17 +1,18 @@
-import { matchPath } from 'react-router-dom';
-import { AsyncRouteProps } from './types';
+import { matchRoutes } from 'react-router-config';
+import { AsyncRouteConfig } from './types';
 import { isLoadableComponent } from './utils';
+import { getSerializedData } from './serializeData';
 
 /**
  * This helps us to make sure all the async code is loaded before rendering.
  */
 export async function ensureReady(
-  routes: AsyncRouteProps[],
+  routes: AsyncRouteConfig[],
   pathname?: string
 ) {
+  const branches = matchRoutes(routes, pathname || window.location.pathname);
   await Promise.all(
-    routes.map(route => {
-      const match = matchPath(pathname || window.location.pathname, route);
+    branches.map(({ route, match }) => {
       if (
         match &&
         route &&
@@ -25,7 +26,5 @@ export async function ensureReady(
     })
   );
 
-  return Promise.resolve(
-    (window as any).__SERVER_APP_STATE__ as Promise<any>[]
-  );
+  return Promise.resolve(getSerializedData('server_app_state'));
 }

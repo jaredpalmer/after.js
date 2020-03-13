@@ -85,7 +85,9 @@ export interface AsyncRouteComponent<Props = {}>
   extends AsyncComponent,
     React.Component<DocumentProps & Props, AsyncRouteComponentState> {}
 
-export type AfterRouteConfig = Omit<RouteConfig, 'routes'> & { routes?: AsyncRouteConfig[] };
+export type AfterRouteConfig = Omit<RouteConfig, 'routes'> & {
+  routes?: AsyncRouteConfig[];
+};
 
 export interface AsyncRouteConfig<Props = any> extends AfterRouteConfig {
   Placeholder?: React.ComponentType<any>;
@@ -117,4 +119,18 @@ export interface Chunks {
 export interface getAssetsParams {
   chunks: Chunks;
   branch: MatchedRoute<any>[];
+}
+
+export interface AfterpartyProps extends RouteComponentProps<any> {
+  history: History;
+  location: Location;
+  data: ServerAppState;
+  routes: AsyncRouteConfig[];
+  match: Match<any>;
+}
+
+export interface AfterpartyState {
+  data?: InitialData;
+  previousLocation: Location | null;
+  currentLocation: Location | null;
 }
