@@ -29,7 +29,9 @@ export interface AfterRenderOptions<T> {
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
   scrollToTop?: boolean;
-  customRenderer?: (element: React.ReactElement<T>) => { html: string };
+  customRenderer?: (
+    element: React.ReactElement<T>
+  ) => { html: string } | Promise<{ html: string }>;
 }
 
 export async function render<T>(options: AfterRenderOptions<T>) {
