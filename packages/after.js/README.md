@@ -125,7 +125,7 @@ try {
     req,
     res,
     routes,
-    assets,
+    chunks,
     // Anything else you add here will be made available
     // within getInitialProps(ctx)
     // e.g a redux store...
@@ -412,7 +412,7 @@ const html = await render({
   req,
   res,
   routes,
-  assets,
+  chunks,
   scrollToTop,
 });
 ```
