@@ -1,36 +1,33 @@
 import React from "react";
-import { useAppState, useAppDispatch } from "./context/AppContext";
-import {
-  INCREMENT_COUNTER,
-  DECREMENT_COUNTER,
-  RESET_COUNTER
-} from "./context/Actions/ActionTypes";
+import { useCount, useDispatchCount } from "./context/AppContext";
 import "./Home.css";
 
 const Counter = () => {
-  const { count, changeStatus } = useAppState();
-  const dispatch = useAppDispatch();
+  const count = useCount();
+  const dispatch = useDispatchCount();
+
+  const handleIncrease = (event) => dispatch({ type: "INCREASE" });
+  const handleDecrease = (event) => dispatch({ type: "DECREASE" });
+  const handleIncrease15 = (event) =>
+    dispatch({
+      type: "INCREASE_BY",
+      payload: 15,
+    });
+
   return (
     <div>
       <p>
         <strong>Count is : {count}</strong>
       </p>
-      <h2>Action Status is: {changeStatus}</h2>
       <div className="btn-container">
-        <span
-          className="btn"
-          onClick={() => dispatch({ type: INCREMENT_COUNTER })}
-        >
+        <span className="btn" onClick={handleIncrease}>
           Add
         </span>
-        <span
-          className="btn"
-          onClick={() => dispatch({ type: DECREMENT_COUNTER })}
-        >
+        <span className="btn" onClick={handleDecrease}>
           Subtract
         </span>
-        <span className="btn" onClick={() => dispatch({ type: RESET_COUNTER })}>
-          Reset
+        <span className="btn" onClick={handleIncrease15}>
+          Increase By 15
         </span>
       </div>
     </div>

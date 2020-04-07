@@ -4,18 +4,18 @@ import {
   AfterData,
   AfterScripts,
   AfterStyles,
-  __AfterContext
+  __AfterContext,
 } from "@jaredpalmer/after";
-import { AppProvider as Store } from "./context/AppContext";
+import { CounterProvider } from "./context/AppContext";
 
 class Document extends React.Component {
   static async getInitialProps({ renderPage }) {
-    const page = await renderPage(App => props => (
+    const page = await renderPage((App) => (props) => (
       //making sure our context provider is returned
       //from the server when refreshing
-      <Store>
+      <CounterProvider>
         <App {...props} />
-      </Store>
+      </CounterProvider>
     ));
     return { ...page };
   }

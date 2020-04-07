@@ -4,14 +4,14 @@ import { BrowserRouter } from "react-router-dom";
 import { ensureReady, After } from "@jaredpalmer/after";
 import "./client.css";
 import routes from "./routes";
-import { AppProvider as Store } from "./context/AppContext";
+import { CounterProvider } from "./context/AppContext";
 
-ensureReady(routes).then(data =>
+ensureReady(routes).then((data) =>
   hydrate(
     <BrowserRouter>
-      <Store>
+      <CounterProvider>
         <After data={data} routes={routes} />
-      </Store>
+      </CounterProvider>
     </BrowserRouter>,
     document.getElementById("root")
   )
