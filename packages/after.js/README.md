@@ -36,6 +36,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
   - [Routing](#routing)
     - [Parameterized Routing](#parameterized-routing)
     - [Client Only Data and Routing](#client-only-data-and-routing)
+  - [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
     - [404 Page](#404-page)
     - [Dynamic 404](#dynamic-404)
     - [Redirect](#redirect)
@@ -313,7 +314,9 @@ function ProductPage({ product, error }) {
 
     return <p>Something went Wrong !</p>;
   }
-  { /* if there were no errors we have our data */ }
+  {
+    /* if there were no errors we have our data */
+  }
   return <h1>{product.name}</h1>;
 }
 
@@ -366,7 +369,6 @@ Dashboard.getInitialProps = async ({ match }) => {
 
 The redirect will happen before after.js start renders react to string soo it's fast.
 when using `redirectTo` default value for `statusCode` is 301, but you can use any numeric value you want.
-
 
 ## Code Splitting
 
@@ -545,7 +547,7 @@ import { render } from '@jaredpalmer/after';
 import routes from './routes';
 import MyDocument from './Document';
 
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
 
 const server = express();
 server
@@ -558,8 +560,8 @@ server
         req,
         res,
         document: MyDocument,
+        chunks,
         routes,
-        assets,
       });
       res.send(html);
     } catch (error) {
@@ -596,7 +598,7 @@ import routes from './routes';
 import createApolloClient from './createApolloClient';
 import Document from './Document';
 
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
 
 const server = express();
 server
@@ -619,7 +621,7 @@ server
         req,
         res,
         routes,
-        assets,
+        chunks,
         customRenderer,
         document: Document,
       });

@@ -14,9 +14,11 @@ import {
 export function asyncComponent<Props>({
   loader,
   Placeholder,
+  chunkName,
 }: {
   loader: () => Promise<Module<React.ComponentType<Props>>>;
   Placeholder?: React.ComponentType<Props>;
+  chunkName?: string;
 }) {
   // keep Component in a closure to avoid doing this stuff more than once
   let Component: AsyncRouteComponentType<Props> | null = null;
@@ -36,6 +38,10 @@ export function asyncComponent<Props>({
       });
     }
 
+    static getChunkName() {
+      return chunkName;
+    }
+
     static getInitialProps(ctx: Ctx<any>) {
       // Need to call the wrapped components getInitialProps if it exists
       if (Component !== null) {
@@ -53,7 +59,7 @@ export function asyncComponent<Props>({
       };
     }
 
-    componentWillMount() {
+    componentDidMount() {
       AsyncRouteComponent.load().then(this.updateState);
     }
 

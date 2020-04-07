@@ -3,6 +3,7 @@ import React from 'react';
 import { asyncComponent } from '../asyncComponent';
 import NonDymamicImport from './components/NonDynamicExport';
 import { NoGetInitialProps } from './components/NoGetInitialProps';
+import NotFoundComponent from '../NotFoundComponent';
 
 const Placeholder = () => <div>...LOADING...</div>;
 
@@ -11,16 +12,22 @@ export default [
     path: '/',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./components/Home'),
+      loader: () =>
+        import(/* webpackChunkName: 'components-Home' */ './components/Home'),
       Placeholder,
+      chunkName: 'components-Home',
     }),
   },
   {
     path: '/async-get-initial-props',
     exact: true,
     component: asyncComponent({
-      loader: () => import('./components/AsyncGetInitialProps'),
+      loader: () =>
+        import(
+          /* webpackChunkName: 'components-AsyncGetInitialProps' */ './components/AsyncGetInitialProps'
+        ),
       Placeholder,
+      chunkName: 'components-AsyncGetInitialProps',
     }),
   },
   {
@@ -33,15 +40,20 @@ export default [
     exact: true,
     component: asyncComponent({
       loader: () =>
-        import('./components/NoNDefaultExport').then(
-          module => module.NonDefaultExport
-        ),
+        import(
+          /* webpackChunkName: 'components-NoNDefaultExport' */ './components/NoNDefaultExport'
+        ).then(module => module.NonDefaultExport),
       Placeholder,
+      chunkName: 'components-NoNDefaultExport',
     }),
   },
   {
     path: '/no-get-initial-props',
     exact: true,
     component: NoGetInitialProps,
+  },
+  {
+    path: '*',
+    component: NotFoundComponent,
   },
 ];

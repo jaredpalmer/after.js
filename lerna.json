@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "bugs": "https://github.com/jaredpalmer/after.js/issues",
+  "homepage": "https://github.com/jaredpalmer/after.js/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaredpalmer/after.js.git"
+  },
+  "packages": ["packages/*"],
+  "version": "independent",
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}

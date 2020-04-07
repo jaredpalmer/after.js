@@ -8,8 +8,9 @@ import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import { Request, Response } from 'express';
-import { Assets, AsyncRouteProps, AfterClientData } from './types';
+import { Assets, AsyncRouteProps, Chunks, AfterClientData } from './types';
 import { StaticRouterContext } from 'react-router';
+import { getAssets } from './getAssets';
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
   return (props: Props) => <Page {...props} />;
@@ -28,6 +29,7 @@ export interface AfterRenderOptions<T> {
   assets: Assets;
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
+  chunks: Chunks;
   scrollToTop?: boolean;
   customRenderer?: (
     element: React.ReactElement<T>
@@ -38,14 +40,17 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const {
     req,
     res,
-    routes,
+    routes: pureRoutes,
     assets,
     document: Document,
     customRenderer,
+    chunks,
     scrollToTop = true,
     ...rest
   } = options;
   const Doc = Document || DefaultDoc;
+
+  const routes = utils.getAllRoutes(pureRoutes);
 
   const context: StaticRouterContext = {};
   const renderPage = async (fn = modPageFn) => {
@@ -56,7 +61,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
-        {fn(After)({ routes: utils.getAllRoutes(routes), data })}
+        {fn(After)({ routes, data })}
       </StaticRouter>
     );
 
@@ -68,7 +73,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     const { statusCode, url: redirectTo } = context;
 
     if (redirectTo) {
-      res.redirect(statusCode || 301, redirectTo);
+      res.redirect(statusCode || 302, redirectTo);
     }
 
     if (statusCode) {
@@ -101,7 +106,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     }
 
     if (redirectTo) {
-      res.redirect(statusCode || 301, redirectTo);
+      res.redirect(statusCode || 302, redirectTo);
       return;
     }
   }
@@ -113,6 +118,15 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 
   const reactRouterMatch = matchPath(req.url, match as RouteProps);
 
+  const prefix =
+    process.env.NODE_ENV === 'production'
+      ? '/'
+      : `http://${process.env.HOST || 'localhost'}:${parseInt(
+          process.env.PORT!,
+          10
+        ) + 1}/`;
+
+  const { scripts, styles } = getAssets({ route: match, chunks });
   const afterData: AfterClientData = {
     scrollToTop: autoScrollRef,
   };
@@ -130,13 +144,16 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     data,
     helmet: Helmet.renderStatic(),
     match: reactRouterMatch,
+    scripts,
+    styles,
+    prefix,
     scrollToTop: autoScrollRef,
     ...rest,
   });
 
   const doc = ReactDOMServer.renderToStaticMarkup(
     <__AfterContext.Provider
-      value={{ assets, data, ...rest, ...docProps, html }}
+      value={{ assets, data, scripts, styles, ...rest, ...docProps, html }}
     >
       <Doc {...docProps} />
     </__AfterContext.Provider>

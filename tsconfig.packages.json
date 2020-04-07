@@ -15,8 +15,7 @@
     "strict": true,
     "pretty": true,
     "jsx": "react",
-    "lib": ["es2016", "dom"],
-    "suppressImplicitAnyIndexErrors": true
-  },
-  "exclude": ["src/test"]
+    "suppressImplicitAnyIndexErrors": true,
+    "skipLibCheck": true
+  }
 }
