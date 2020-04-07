@@ -14,11 +14,11 @@ jobs:
           node-version: 12
 
       - name: install depenecies for test
-        working-directory: ./packages/after.js
+        working-directory: packages/after.js
         run: yarn install
 
       - name: run the tests
-        working-directory: ./packages/after.js
+        working-directory: packages/after.js
         run: yarn test:ci
 
   publish-npm:
@@ -32,11 +32,11 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: install depenecies for publish
-        working-directory: ./packages/after.js
+        working-directory: packages/after.js
         run: yarn install
 
       - name: deploy to npm
-        working-directory: ./packages/after.js
+        working-directory: packages/after.js
         run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
