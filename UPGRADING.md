@@ -372,25 +372,21 @@ To:
 // Document.js
 
 import React from 'react';
-import { AfterRoot, AfterData } from '@jaredpalmer/after';
+import {
+  AfterRoot,
+  AfterData,
+  AfterScripts,
+  AfterStyles,
+} from '@jaredpalmer/after';
 
 class Document extends React.Component {
-  static async getInitialProps({
-    assets,
-    data,
-    renderPage,
-    scripts,
-    styles,
-    prefix,
-  }) {
-    // ☝️ get scripts, styles, prefix
+  static async getInitialProps({ renderPage }) {
     const page = await renderPage();
-    return { assets, data, scripts, styles, prefix, ...page }; // 👈 return scripts, styles, prefix
+    return { ...page };
   }
 
   render() {
-    // 👇 get scripts, styles, prefix from props
-    const { helmet, assets, data, scripts, styles, prefix } = this.props;
+    const { helmet } = this.props;
 
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -405,33 +401,12 @@ class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
-          {assets.client.css && (
-            <link rel="stylesheet" href={assets.client.css} />
-          )}
-          {/* 👇 loop through styles 👇 */}
-          {styles.map(path => (
-            <link key={path} rel="stylesheet" href={path} />
-          ))}
+          <AfterStyles />
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          <AfterData data={data} />
-          {/* 👇 loop through scripts 👇 */}
-          {scripts.map(path => (
-            <script
-              key={path}
-              defer
-              type="text/javascript"
-              src={prefix + path}
-              crossOrigin="anonymous"
-            />
-          ))}
-          <script // ⚠️ NOTE: order should not change
-            type="text/javascript" // first load chunks (scripts) then client.js
-            src={assets.client.js}
-            defer
-            crossOrigin="anonymous"
-          />
+          <AfterData />
+          <AfterScripts />
         </body>
       </html>
     );
