@@ -87,14 +87,14 @@ export const AfterStyles = () => {
 export const AfterScripts = () => {
   return (
     <__AfterContext.Consumer>
-      {({ assets, scripts, prefix }) => (
+      {({ assets, scripts }) => (
         <>
           {scripts.map(path => (
             <script
               key={path}
               defer
               type="text/javascript"
-              src={prefix + path}
+              src={path}
               crossOrigin="anonymous"
             />
           ))}

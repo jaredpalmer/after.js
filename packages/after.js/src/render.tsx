@@ -118,14 +118,6 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 
   const reactRouterMatch = matchPath(req.url, match as RouteProps);
 
-  const prefix =
-    process.env.NODE_ENV === 'production'
-      ? '/'
-      : `http://${process.env.HOST || 'localhost'}:${parseInt(
-          process.env.PORT!,
-          10
-        ) + 1}/`;
-
   const { scripts, styles } = getAssets({ route: match, chunks });
   const afterData: AfterClientData = {
     scrollToTop: autoScrollRef,
@@ -146,7 +138,6 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     match: reactRouterMatch,
     scripts,
     styles,
-    prefix,
     scrollToTop: autoScrollRef,
     ...rest,
   });
