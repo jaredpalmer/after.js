@@ -81,5 +81,8 @@
     "tslint-config-prettier": "^1.7.0",
     "tslint-react": "^3.4.0",
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "babel-plugin-after": "^0.0.1"
   }
 }
