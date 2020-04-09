@@ -18,7 +18,8 @@
     "ensureReady.js",
     "render.js",
     "loadInitialProps.js",
-    "serializeData.js"
+    "serializeData.js",
+    "getAssets.js"
   ],
   "scripts": {
     "prepare": "rm -rf build && npm run build:esm && npm run build:cjs",
