@@ -30,7 +30,6 @@ export interface DocumentProps {
   match: Match<any> | null;
   scripts: string[];
   styles: string[];
-  prefix: string;
   scrollToTop: ScrollToTop;
 }
 
