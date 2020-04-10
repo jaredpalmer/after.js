@@ -19,4 +19,4 @@ yarn start
 ## Idea behind the example
 
 This is a basic, bare-bones example of how to use After.js and Razzle with context Api.
-take a look at Document.js and client.js and how we render our context in server/
+take a look at Document.js and client.js and how we render our context in server.
