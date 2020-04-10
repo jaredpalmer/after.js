@@ -14,7 +14,6 @@ server
       const html = await render({
         req,
         res,
-        //added Document.js to server
         document: Document,
         routes,
         assets
