@@ -1,11 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-class About extends React.Component {
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
-    return { stuff: 'more stuffs' };
-  }
+class About extends Component {
   render() {
-    console.log(this.props);
     return <div>about</div>;
   }
 }

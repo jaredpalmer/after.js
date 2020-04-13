@@ -1,15 +1,17 @@
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { After } from '../../../build';
+import { ensureReady, After } from '@jaredpalmer/after';
 import './client.css';
 import routes from './routes';
 
-hydrate(
-  <BrowserRouter>
-    <After data={data} routes={routes} />
-  </BrowserRouter>,
-  document.getElementById('root')
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      <After data={data} routes={routes} />
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
 );
 
 if (module.hot) {
