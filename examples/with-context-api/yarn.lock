@@ -862,7 +862,7 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@jaredpalmer/after@latest":
+"@jaredpalmer/after@1.6.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@jaredpalmer/after/-/after-1.6.1.tgz#24c3fb8df6d95af1522a0e13fd1026253a91228d"
   integrity sha512-vkqwl73PcXHh0y3BmLR1DhE4k094hUKhY4I49THyzvv4FDrQqJb/3hh5MVRENr0vaLAkHbMR4f4XcxUj2T+OIQ==
@@ -1114,11 +1114,6 @@ address@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
   integrity sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==
-
-after@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
-  integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
 ajv-errors@^1.0.0:
   version "1.0.1"

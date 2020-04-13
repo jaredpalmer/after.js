@@ -815,10 +815,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@jaredpalmer/after@latest":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@jaredpalmer/after/-/after-1.5.0.tgz#507420e6fcf8b7f7dc398bec2699e26de6469d92"
-  integrity sha512-BCZMtFplTLGbl4TZtPEvqiABo//EKS07eohVPE7KinA2q9YnG/Xq6gCK1UTEQm/kLy8vyTnfpERHzLAaguNS8Q==
+"@jaredpalmer/after@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@jaredpalmer/after/-/after-1.6.1.tgz#24c3fb8df6d95af1522a0e13fd1026253a91228d"
+  integrity sha512-vkqwl73PcXHh0y3BmLR1DhE4k094hUKhY4I49THyzvv4FDrQqJb/3hh5MVRENr0vaLAkHbMR4f4XcxUj2T+OIQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
