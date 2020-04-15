@@ -1,5 +1,5 @@
 {
-  "name": "after-examples-layout-components",
+  "name": "after-examples-with-scss",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
@@ -16,5 +16,8 @@
     "react-dom": "^16.13.1",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "razzle-plugin-scss": "^3.0.0"
   }
 }

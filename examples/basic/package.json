@@ -1,21 +1,20 @@
 {
-  "name": "afterjs-examples-basic",
+  "name": "after-examples-basic",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "dev": "razzle start",
+    "start": "razzle start",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
-    "start": "NODE_ENV=production node build/server.js"
+    "start:prod": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
-    "@jaredpalmer/after": "^1.0.0",
-    "express": "^4.16.2",
-    "raf": "^3.4.0",
+    "@jaredpalmer/after": "^1.6.1",
+    "express": "^4.17.1",
     "razzle": "^3.0.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-helmet": "^5.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^5.1.2"
   }
 }
