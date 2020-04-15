@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@jaredpalmer/after": "^1.6.1",
-    "after": "^0.8.2",
     "express": "^4.17.1",
     "razzle": "^3.0.0",
     "react": "^16.13.1",
