@@ -12,7 +12,9 @@
   ],
   "scripts": {
     "format": "prettier --trailing-comma es5 --single-quote --semi --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "publish-canary": "lerna version prerelease --preid canary --force-publish && release --pre",
+    "publish-stable": "lerna version --force-publish && release && node ./scripts/release-notes.js"
   },
   "husky": {
     "hooks": {
