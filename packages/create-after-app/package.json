@@ -5,6 +5,9 @@
   "main": "index.js",
   "license": "MIT",
   "author": "Jared Palmer <jared@palmer.net> (http://jaredpalmer.com)",
+  "scripts": {
+    "test:ci": "echo \"no test specified for create-after-app\" && exit 0"
+  },
   "engines": {
     "node": ">=10"
   },

@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jaredpalmer/after.js/packages/babel-plugin-after#readme",
   "scripts": {
+    "test:ci": "echo \"no test specified for babel-plugin-after\" && exit 0",
     "clean": "rm -rf lib",
     "build": "babel src -d lib",
     "example": "npm run build && babel example/input.js -o example/output.js",
