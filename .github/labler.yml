@@ -1,0 +1,18 @@
+examples:
+  - examples/*
+  - examples/**/*
+
+after.js:
+  - packages/after.js/*
+  - packages/after.js/**/*
+
+create-after-app:
+  - packages/create-after-app/*
+  - packages/create-after-app/**/*
+
+babel-plugin-after:
+  - packages/babel-plugin-after/*
+  - packages/babel-plugin-after/**/*
+
+repo:
+  - ./*
