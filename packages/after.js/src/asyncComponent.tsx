@@ -51,13 +51,9 @@ export function asyncComponent<Props>({
       }
     }
 
-    constructor(props: Props) {
-      super(props);
-      this.updateState = this.updateState.bind(this);
-      this.state = {
-        Component,
-      };
-    }
+    state = {
+      Component,
+    };
 
     componentDidMount() {
       AsyncRouteComponent.load().then(this.updateState);
