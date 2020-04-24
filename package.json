@@ -1,6 +1,7 @@
 {
   "name": "root",
   "private": true,
+  "version": "independent",
   "devDependencies": {
     "got": "^11.0.2",
     "husky": "^4.2.3",
