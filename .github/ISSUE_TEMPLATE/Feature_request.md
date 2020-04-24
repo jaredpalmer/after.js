@@ -1,6 +1,6 @@
 ---
 name: "\U0001F680Feature request"
-about: Suggest an idea for Razzle
+about: Suggest an idea for After.js
 ---
 
 ## 🚀 Feature request
