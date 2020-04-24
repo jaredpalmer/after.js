@@ -1,7 +1,7 @@
 {
   "name": "@jaredpalmer/after",
   "private": false,
-  "version": "2.0.0-canary.4",
+  "version": "2.0.0-canary.5",
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
