@@ -4,6 +4,8 @@
 
 [![Known Vulnerabilities](https://snyk.io/test/github/jaredpalmer/after.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jaredpalmer/after.js?targetFile=package.json)
 
+![](https://github.com/jaredpalmer/after.js/workflows/Release/badge.svg)
+
 If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.com/reacttraining/react-router) had a baby...
 
 ## Project Goals / Philosophy / Requirements
