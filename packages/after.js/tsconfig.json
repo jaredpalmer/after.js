@@ -3,5 +3,5 @@
   "compilerOptions": {
     "lib": ["es2016", "dom"],
   },
-  "exclude": ["src/test"]
+  "exclude": ["src/test", "build", "node_modules"]
 }
