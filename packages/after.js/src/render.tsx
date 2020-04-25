@@ -143,31 +143,20 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     ...rest,
   });
 
+  const props = {
+    assets,
+    data,
+    scripts,
+    styles,
+    match: reactRouterMatch,
+    ...rest,
+    ...docProps,
+    html,
+  };
+
   const doc = ReactDOMServer.renderToStaticMarkup(
-    <__AfterContext.Provider
-      value={{
-        assets,
-        data,
-        scripts,
-        styles,
-        match: reactRouterMatch,
-        ...rest,
-        ...docProps,
-        html,
-      }}
-    >
-      <Doc
-        {...{
-          assets,
-          data,
-          scripts,
-          styles,
-          match: reactRouterMatch,
-          ...rest,
-          ...docProps,
-          html,
-        }}
-      />
+    <__AfterContext.Provider value={props}>
+      <Doc {...props} />
     </__AfterContext.Provider>
   );
   return `<!doctype html>${doc}`;
