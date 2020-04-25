@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-after",
   "private": false,
-  "version": "0.0.2-canary.4",
+  "version": "3.0.0",
   "description": "Babel plugin for After.js",
   "main": "lib/index.js",
   "repository": {
