@@ -11,8 +11,7 @@
     "release": "^6.1.0"
   },
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "scripts": {
     "test:ci": "lerna run test:ci --stream",
