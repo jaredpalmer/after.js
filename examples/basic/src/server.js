@@ -3,6 +3,7 @@ import { render } from '@jaredpalmer/after';
 import routes from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
 
 const server = express();
 server
@@ -15,6 +16,7 @@ server
         res,
         routes,
         assets,
+        chunks,
       });
       res.send(html);
     } catch (error) {
