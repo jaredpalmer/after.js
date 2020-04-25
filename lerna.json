@@ -7,7 +7,6 @@
     "url": "git+https://github.com/jaredpalmer/after.js.git"
   },
   "packages": ["packages/*"],
-  "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true
 }
