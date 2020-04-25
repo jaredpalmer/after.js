@@ -28,7 +28,7 @@ export const SerializeData: React.FC<SerializeData> = ({
 
 export const getSerializedData = (
   name: string,
-  remove: boolean = true
+  remove = true
 ): any => {
   const data = window[`_${name.toUpperCase()}_`];
   if (remove) {

@@ -45,7 +45,6 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     this.NotfoundComponent = get404Component(props.routes);
   }
 
-  // i know it's little confusing but you will get used to it
   static getDerivedStateFromProps(
     props: AfterpartyProps,
     state: AfterpartyState
@@ -67,16 +66,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   componentDidUpdate(_prevProps: AfterpartyProps, prevState: AfterpartyState) {
     const navigated = prevState.currentLocation !== this.state.currentLocation;
     if (navigated) {
-      const {
-        location,
-        history,
-        routes,
-        data,
-        match,
-        staticContext,
-        children,
-        ...rest
-      } = this.props;
+      const { location, history, routes, data, ...rest } = this.props;
 
       const { scrollToTop } = data.afterData;
 

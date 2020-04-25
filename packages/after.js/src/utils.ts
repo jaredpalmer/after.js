@@ -27,7 +27,7 @@ export function isAsyncComponent(
   Component: AsyncRouteableComponent
 ): Component is AsyncRouteComponentType<any> {
   return (
-    (<AsyncRouteComponentType<any>>Component).getInitialProps !== undefined
+    (Component as AsyncRouteComponentType<any>).getInitialProps !== undefined
   );
 }
 
@@ -35,15 +35,15 @@ export function isAsyncComponent(
 export function isLoadableComponent(
   Component: AsyncRouteableComponent
 ): Component is AsyncRouteComponentType<any> {
-  return (<AsyncRouteComponentType<any>>Component).load !== undefined;
+  return (Component as AsyncRouteComponentType<any>).load !== undefined;
 }
 
-/** @private is given routes have 404 page?  */
+/** @private is given routes array have a 404 page?  */
 export function is404ComponentAvailable(
   routes: AsyncRouteProps<any>[]
 ): AsyncRouteProps<any> | false {
   return (
-    routes.find(route => ['**', '*', , '', undefined].includes(route.path)) ||
+    routes.find(route => ['**', '*', '', undefined].includes(route.path)) ||
     false
   );
 }

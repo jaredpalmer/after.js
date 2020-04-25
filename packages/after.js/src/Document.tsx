@@ -1,16 +1,14 @@
 import * as React from 'react';
 import serialize from 'serialize-javascript';
-import { DocumentProps } from './types';
+import { DocumentProps, AfterContext, DocumentgetInitialProps } from './types';
 
-export const __AfterContext = React.createContext(
-  {} as DocumentProps & { html: string }
-);
+export const __AfterContext = React.createContext({} as AfterContext);
 
 export class Document extends React.Component<DocumentProps> {
-  static async getInitialProps({ renderPage }: DocumentProps) {
+  static getInitialProps = async ({ renderPage }: DocumentgetInitialProps) => {
     const page = await renderPage();
     return { ...page };
-  }
+  };
 
   render() {
     const { helmet } = this.props;
@@ -40,74 +38,62 @@ export class Document extends React.Component<DocumentProps> {
   }
 }
 
-export const AfterRoot = () => {
+export const useAfterContext = () => {
+  return React.useContext(__AfterContext);
+};
+
+export const AfterRoot: React.FC = () => {
+  const { html } = useAfterContext();
+  return <div id="root" dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
+export const AfterData: React.FC<{ data?: object }> = ({ data }) => {
+  const { data: contextData } = useAfterContext();
   return (
-    <__AfterContext.Consumer>
-      {({ html }) => (
-        <div id="root" dangerouslySetInnerHTML={{ __html: html }} />
-      )}
-    </__AfterContext.Consumer>
+    <script
+      defer
+      dangerouslySetInnerHTML={{
+        __html: `window.__SERVER_APP_STATE__ =  ${serialize({
+          ...(data || contextData),
+        })}`,
+      }}
+    />
   );
 };
 
-export const AfterData: React.FC<{ data?: any }> = ({ data }) => {
+export const AfterStyles: React.FC = () => {
+  const { assets, styles } = useAfterContext();
   return (
-    <__AfterContext.Consumer>
-      {({ data: contextData }) => (
+    <>
+      {assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
+      {styles.map(path => (
+        <link key={path} rel="stylesheet" href={path} />
+      ))}
+    </>
+  );
+};
+
+export const AfterScripts: React.FC = () => {
+  const { scripts, assets } = useAfterContext();
+  return (
+    <>
+      {scripts.map(path => (
         <script
+          key={path}
           defer
-          dangerouslySetInnerHTML={{
-            __html: `window.__SERVER_APP_STATE__ =  ${serialize({
-              ...(data || contextData),
-            })}`,
-          }}
+          type="text/javascript"
+          src={path}
+          crossOrigin="anonymous"
+        />
+      ))}
+      {assets.client.js && (
+        <script
+          type="text/javascript"
+          src={assets.client.js}
+          defer
+          crossOrigin="anonymous"
         />
       )}
-    </__AfterContext.Consumer>
-  );
-};
-
-export const AfterStyles = () => {
-  return (
-    <__AfterContext.Consumer>
-      {({ assets, styles }) => (
-        <>
-          {assets.client.css && (
-            <link rel="stylesheet" href={assets.client.css} />
-          )}
-          {styles.map(path => (
-            <link key={path} rel="stylesheet" href={path} />
-          ))}
-        </>
-      )}
-    </__AfterContext.Consumer>
-  );
-};
-
-export const AfterScripts = () => {
-  return (
-    <__AfterContext.Consumer>
-      {({ assets, scripts }) => (
-        <>
-          {scripts.map(path => (
-            <script
-              key={path}
-              defer
-              type="text/javascript"
-              src={path}
-              crossOrigin="anonymous"
-            />
-          ))}
-          {assets.client.js && (
-            <script
-              type="text/javascript"
-              src={assets.client.js}
-              defer
-              crossOrigin="anonymous"
-            />
-          )}
-        </>
-      )}
-    </__AfterContext.Consumer>
+    </>
   );
 };
