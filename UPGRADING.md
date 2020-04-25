@@ -1,3 +1,36 @@
+# Migrating from v2 to v3
+
+Upgraded react-helmet from version 5 to 6
+
+## Update Dependencies
+
+```bash
+yarn upgrade @jaredpalmer/after react-helmet --latest
+```
+
+or
+
+```bash
+npm install @jaredpalmer/after@latest react-helmet@latest --save
+```
+
+## Breaking Changes
+
+there is no breaking change with after.js itself.
+but one of the dependencies (`react-helmet`) released a new version and they changed default export to a named export.
+
+from:
+
+```js
+import Helmet from 'react-helmet';
+```
+
+to:
+
+```js
+import { Helmet } from "react-helmet;
+```
+
 # Migrating from v1 to v2
 
 ## Preamble
