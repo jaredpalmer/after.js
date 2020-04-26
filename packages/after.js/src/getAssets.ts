@@ -20,7 +20,7 @@ export function getAssets({ route, chunks }: GetAssetsParams) {
 
   // if component was LoadableComponent and chunkName was undefined
   // print an error message to console so Developer can fix it
-  // @todo add link to documentation or show more useful error message
+  // todo add link to documentation or show more useful error message
   if (chunkName === undefined) {
     logger.error(errorMeesage);
     throw new Error();

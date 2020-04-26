@@ -66,13 +66,24 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   componentDidUpdate(_prevProps: AfterpartyProps, prevState: AfterpartyState) {
     const navigated = prevState.currentLocation !== this.state.currentLocation;
     if (navigated) {
-      const { location, history, routes, data, ...rest } = this.props;
+      const {
+        location,
+        history,
+        routes,
+        data,
+        // we don't want to pass these
+        // to loadInitialProps()
+        match,
+        staticContext,
+        children,
+        ...rest
+      } = this.props;
 
       const { scrollToTop } = data.afterData;
 
       loadInitialProps(routes, location.pathname, {
-        location: location,
-        history: history,
+        location,
+        history,
         scrollToTop,
         ...rest,
       })
