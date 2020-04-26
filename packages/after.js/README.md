@@ -2,7 +2,7 @@
 
 # After.js
 
-![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@jaredpalmer/after) ![npm](https://img.shields.io/npm/dm/@jaredpalmer/after) [![Known Vulnerabilities](https://snyk.io/test/github/jaredpalmer/after.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jaredpalmer/after.js?targetFile=package.json) ![Github Actions](https://github.com/jaredpalmer/after.js/workflows/Release/badge.svg) [![GitHub version](https://badge.fury.io/gh/jaredpalmer%2Fafter.js.svg)](https://badge.fury.io/gh/jaredpalmer%2Fafter.js) ![After-status](https://david-dm.org/jaredpalmer/after.js.svg?path=packages/after.js) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
+[![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@jaredpalmer/after)](https://bundlephobia.com/result?p=@jaredpalmer/after) [![npm](https://img.shields.io/npm/dm/@jaredpalmer/after)](https://www.npmjs.com/package/@jaredpalmer/after) [![Known Vulnerabilities](https://snyk.io/test/github/jaredpalmer/after.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jaredpalmer/after.js?targetFile=package.json) ![Github Actions](https://github.com/jaredpalmer/after.js/workflows/Release/badge.svg) [![GitHub version](https://badge.fury.io/gh/jaredpalmer%2Fafter.js.svg)](https://badge.fury.io/gh/jaredpalmer%2Fafter.js) ![After-status](https://david-dm.org/jaredpalmer/after.js.svg?path=packages/after.js) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
 If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.com/reacttraining/react-router) had a baby...
 
