@@ -1,5 +1,6 @@
 import * as React from 'react';
 import serialize from 'serialize-javascript';
+import { isJS } from './utils';
 import { DocumentProps, AfterContext, DocumentgetInitialProps } from './types';
 
 export const __AfterContext = React.createContext({} as AfterContext);
@@ -77,7 +78,7 @@ export const AfterScripts: React.FC = () => {
   const { scripts, assets } = useAfterContext();
   return (
     <>
-      {scripts.map(path => (
+      {scripts.filter(isJS).map(path => (
         <script
           key={path}
           defer
