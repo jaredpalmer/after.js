@@ -64,3 +64,8 @@ export function getAllRoutes(
     ? routes
     : [...routes, { component: NotFoundComponent }];
 }
+
+/** @private Checks if given string ends with ".js" */
+export function isJS(str: string) {
+  return str.endsWith('.js');
+}
