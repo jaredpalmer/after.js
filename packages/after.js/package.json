@@ -1,7 +1,7 @@
 {
   "name": "@jaredpalmer/after",
   "private": false,
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
@@ -88,6 +88,6 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "babel-plugin-after": "^3.0.1"
+    "babel-plugin-after": "^3.0.2"
   }
 }
