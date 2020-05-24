@@ -36,6 +36,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
   - [Routing](#routing)
     - [Parameterized Routing](#parameterized-routing)
     - [Client Only Data and Routing](#client-only-data-and-routing)
+  - [Transition Behavior](#transition-behavior)
   - [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
     - [404 Page](#404-page)
     - [Dynamic 404](#dynamic-404)
@@ -244,6 +245,29 @@ In some parts of your application, you may not need server data fetching at all
 (e.g. settings). With After.js, you just use React Router 4 as you normally
 would in client land: You can fetch data (in componentDidMount) and do routing
 the same exact way.
+
+## Transition Behavior
+
+By default, `after.js` will wait for `getInitialProps` to get resolved or rejected, so when the `getInitialProps` job is complete, it will show the next page. We call this behavior `blocked`.
+
+You may want to show the next page with a skeleton or a spinner while `getInitialProps` is pending. We call this behavior `instant`.
+
+you can switch to `instant` behavior by passing a prop to `<After />`.
+
+```js
+// ./src/client.js
+
+// transitionBehavior = blocked | instant
+
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      <After data={data} routes={routes} transitionBehavior="instant" />
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
+);
+```
 
 ## Dynamic 404 and Redirects
 
