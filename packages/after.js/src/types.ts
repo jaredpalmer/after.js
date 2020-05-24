@@ -86,6 +86,9 @@ export interface RenderPageResult {
   helmet: HelmetData;
 }
 
+// TransitionBehavior
+export type TransitionBehavior = 'blocking' | 'instant';
+
 // Document.js
 export interface DocumentgetInitialProps<T = RenderPageResult> {
   req: Request;
