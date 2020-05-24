@@ -9,7 +9,12 @@ import {
 } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
-import { AsyncRouteProps, ServerAppState, InitialData } from './types';
+import {
+  AsyncRouteProps,
+  ServerAppState,
+  InitialData,
+  TransitionBehavior,
+} from './types';
 import { get404Component, getAllRoutes } from './utils';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
@@ -18,6 +23,7 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
   data: ServerAppState;
   routes: AsyncRouteProps[];
   match: Match<any>;
+  transitionBehavior: TransitionBehavior;
 }
 
 export interface AfterpartyState {
@@ -27,23 +33,20 @@ export interface AfterpartyState {
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
-  prefetcherCache: any;
+  state = {
+    data: this.props.data.initialData,
+    previousLocation: null,
+    currentLocation: this.props.location,
+  };
+
+  prefetcherCache: object = {};
   NotfoundComponent:
     | React.ComponentType<RouteComponentProps<any>>
-    | React.ComponentType<any>;
+    | React.ComponentType<any> = get404Component(this.props.routes);
 
-  constructor(props: AfterpartyProps) {
-    super(props);
-
-    this.state = {
-      data: props.data.initialData,
-      previousLocation: null,
-      currentLocation: props.location,
-    };
-
-    this.prefetcherCache = {};
-    this.NotfoundComponent = get404Component(props.routes);
-  }
+  static defaultProps = {
+    transitionBehavior: 'blocking' as TransitionBehavior,
+  };
 
   static getDerivedStateFromProps(
     props: AfterpartyProps,
@@ -123,10 +126,13 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
   render() {
     const { previousLocation, data } = this.state;
-    const { location: currentLocation } = this.props;
+    const { location: currentLocation, transitionBehavior } = this.props;
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
-    const location = previousLocation || currentLocation;
+    const location =
+      transitionBehavior === 'instant'
+        ? currentLocation
+        : previousLocation || currentLocation;
 
     return (
       <Switch location={location}>
