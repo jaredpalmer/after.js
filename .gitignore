@@ -3,5 +3,6 @@ node_modules
 *.log
 package-lock.json
 build
+.idea
 .vscode
 *.map
