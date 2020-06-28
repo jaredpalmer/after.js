@@ -7,7 +7,7 @@ export default [
     path: '/',
     exact: true,
     component: asyncComponent({
-      loader: () => import(/* webpackChunkName: Home */ './Home'), // required
+      loader: () => import(/* webpackChunkName: "Home" */ './Home'), // required
       Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
       chunkName: 'Home',
     }),
@@ -16,7 +16,7 @@ export default [
     path: '/about',
     exact: true,
     component: asyncComponent({
-      loader: () => import(/* webpackChunkName: About */ './About'), // required
+      loader: () => import(/* webpackChunkName: "About" */ './About'), // required
       Placeholder: () => <div>...LOADING...</div>, // this is optional, just returns null by default
       chunkName: 'About',
     }),
