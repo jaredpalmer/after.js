@@ -109,7 +109,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
       <StaticRouter location={req.url} context={context}>
-        {fn(After)({ routes, data })}
+        {fn(After)({ routes, data, transitionBehavior: 'blocking' })}
       </StaticRouter>
     );
 
