@@ -144,3 +144,9 @@ export interface Chunks {
   };
 }
 
+declare global {
+  interface Window {
+    __SERVER_APP_STATE__: ServerAppState;
+    webpackJsonp: string[][];
+  }
+}
