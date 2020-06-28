@@ -67,9 +67,9 @@ export const AfterStyles: React.FC = () => {
   const { assets, styles } = useAfterContext();
   return (
     <>
-      {assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
+      {assets.client.css && <link rel="stylesheet" href={assets.client.css} crossOrigin="anonymous" />}
       {styles.map(path => (
-        <link key={path} rel="stylesheet" href={path} />
+        <link key={path} rel="stylesheet" href={path} crossOrigin="anonymous" />
       ))}
     </>
   );
