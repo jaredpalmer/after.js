@@ -30,6 +30,7 @@ export interface AfterpartyState {
   data?: InitialData;
   previousLocation: Location | null;
   currentLocation: Location | null;
+  isLoading: boolean;
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
@@ -37,6 +38,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     data: this.props.data.initialData,
     previousLocation: null,
     currentLocation: this.props.location,
+    isLoading: false
   };
 
   prefetcherCache: object = {};
@@ -60,6 +62,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       return {
         previousLocation: state.previousLocation || previousLocation,
         currentLocation,
+        isLoading: true
       };
     }
 
@@ -102,7 +105,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           ) {
             window.scrollTo(0, 0);
           }
-          this.setState({ previousLocation: null, data });
+          this.setState({ previousLocation: null, data, isLoading: false });
         })
         .catch(e => {
           // @todo we should more cleverly handle errors???
@@ -125,7 +128,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   };
 
   render() {
-    const { previousLocation, data } = this.state;
+    const { previousLocation, data, isLoading } = this.state;
     const { location: currentLocation, transitionBehavior } = this.props;
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
@@ -162,6 +165,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
                 match: props.match,
                 prefetch: this.prefetch,
                 location,
+                isLoading,
               })
             }
           />
