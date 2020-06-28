@@ -139,5 +139,6 @@ export interface Chunks {
   [key: string]: {
     css: string[];
     js: string[];
+    chunks: string[];
   };
 }
