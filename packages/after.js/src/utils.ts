@@ -2,6 +2,7 @@ import {
   AsyncRouteableComponent,
   AsyncRouteComponentType,
   AsyncRouteProps,
+  TransitionBehavior,
 } from './types';
 import NotFoundComponent from './NotFoundComponent';
 
@@ -68,4 +69,9 @@ export function getAllRoutes(
 /** @private Checks if given string ends with ".js" */
 export function isJS(str: string) {
   return str.endsWith('.js');
+}
+
+/** @private Checks if given transition type is instant */
+export function isInstantTransition(transition: TransitionBehavior) {
+  return transition === "instant";
 }
