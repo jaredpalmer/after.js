@@ -166,6 +166,7 @@ ensureReady(routes).then(data =>
 - Whatever you have returned in `getInitialProps`
 - `prefetch: (pathname: string) => void` - Imperatively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
 - `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
+- `isLoading` - It shows that if the returned promise from `getInitialProps` is in the pending state or not
 
 ## Routing
 
