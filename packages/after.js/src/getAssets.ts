@@ -8,12 +8,13 @@ export const errorMeesage = `all async routes must have a chunkName property wit
 export function getAssets({ route, chunks }: GetAssetsParams) {
   let scripts: string[] = [];
   let styles: string[] = [];
+  let requiredChunks: string[] = [];
 
   // if route.component is not an asyncComponent
   // it's assets (JS and CSS files) will go into the
   // main bundle.js and bundle.css ...
   if (!route || !isLoadableComponent(route.component)) {
-    return { scripts, styles };
+    return { scripts, styles, requiredChunks };
   }
 
   const chunkName = route.component.getChunkName();
@@ -35,5 +36,7 @@ export function getAssets({ route, chunks }: GetAssetsParams) {
     styles = chunks[chunkName].css;
   }
 
-  return { scripts, styles };
+  requiredChunks = chunks[chunkName].chunks;
+
+  return { scripts, styles, requiredChunks };
 }
