@@ -15,7 +15,7 @@ import {
   InitialData,
   TransitionBehavior,
 } from './types';
-import { get404Component, getAllRoutes } from './utils';
+import { get404Component, getAllRoutes, isInstantTransition } from './utils';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -129,22 +129,25 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     const { location: currentLocation, transitionBehavior } = this.props;
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
+    const instantTransition = isInstantTransition(transitionBehavior)
+
+    // when we are in the instant mode we want to pass the right location prop
+    // to the <Route /> otherwise it will render previous matche component
     const location =
-      transitionBehavior === 'instant'
+      instantTransition
         ? currentLocation
         : previousLocation || currentLocation;
 
     return (
       <Switch location={location}>
-        {initialData &&
-          initialData.statusCode &&
-          initialData.statusCode === 404 && (
+        {initialData?.initialData?.statusCode === 404 &&
+          (
             <Route
               component={this.NotfoundComponent}
               path={location.pathname}
             />
           )}
-        {initialData && initialData.redirectTo && initialData.redirectTo && (
+        {initialData?.initialData?.redirectTo && (
           <Redirect to={initialData.redirectTo} />
         )}
         {getAllRoutes(this.props.routes).map((r, i) => (
