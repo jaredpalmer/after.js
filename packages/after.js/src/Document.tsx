@@ -27,6 +27,7 @@ export class Document extends React.Component<DocumentProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
+          <AfterHead />
           <AfterStyles />
         </head>
         <body {...bodyAttrs}>
@@ -98,3 +99,19 @@ export const AfterScripts: React.FC = () => {
     </>
   );
 };
+
+export const AfterHead: React.FC = () => {
+  const { scripts, assets, styles } = useAfterContext();
+
+  const isString = (item: string | undefined): item is string => typeof item === "string"
+
+  const js: string[] = [...scripts.filter(isJS), assets.client.js].reverse().filter(isString);
+  const css: string[] = [...styles, assets.client.css].reverse().filter(isString);
+
+  return (
+    <>
+      {css.map(path => <link key={path} rel="preload" as="style" href={path} crossOrigin="anonymous" />)}
+      {js.map(path => <link key={path} rel="preload" as="script" href={path} crossOrigin="anonymous" />)}
+    </>
+  )
+}
