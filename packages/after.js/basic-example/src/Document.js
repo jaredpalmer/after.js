@@ -1,5 +1,11 @@
 import React from 'react';
-import { AfterRoot, AfterData, AfterScripts, AfterStyles } from '../../';
+import {
+  AfterRoot,
+  AfterData,
+  AfterScripts,
+  AfterStyles,
+  AfterHead,
+} from '../../';
 
 class Document extends React.Component {
   static async getInitialProps({ renderPage }) {
@@ -23,6 +29,7 @@ class Document extends React.Component {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
+          <AfterHead />
           <AfterStyles />
         </head>
         <body {...bodyAttrs}>
