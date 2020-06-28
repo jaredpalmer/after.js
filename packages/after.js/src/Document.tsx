@@ -82,7 +82,7 @@ export const AfterScripts: React.FC = () => {
       {scripts.filter(isJS).map(path => (
         <script
           key={path}
-          defer
+          async
           type="text/javascript"
           src={path}
           crossOrigin="anonymous"
@@ -90,9 +90,9 @@ export const AfterScripts: React.FC = () => {
       ))}
       {assets.client.js && (
         <script
+          async
           type="text/javascript"
           src={assets.client.js}
-          defer
           crossOrigin="anonymous"
         />
       )}
