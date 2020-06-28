@@ -2,9 +2,7 @@
 
 # After.js
 
-[![Known Vulnerabilities](https://snyk.io/test/github/jaredpalmer/after.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jaredpalmer/after.js?targetFile=package.json)
-
-![](https://github.com/jaredpalmer/after.js/workflows/release/badge.svg)
+[![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@jaredpalmer/after)](https://bundlephobia.com/result?p=@jaredpalmer/after) [![npm](https://img.shields.io/npm/dm/@jaredpalmer/after)](https://www.npmjs.com/package/@jaredpalmer/after) [![Known Vulnerabilities](https://snyk.io/test/github/jaredpalmer/after.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jaredpalmer/after.js?targetFile=package.json) ![Github Actions](https://github.com/jaredpalmer/after.js/workflows/Release/badge.svg) [![GitHub version](https://badge.fury.io/gh/jaredpalmer%2Fafter.js.svg)](https://badge.fury.io/gh/jaredpalmer%2Fafter.js) ![After-status](https://david-dm.org/jaredpalmer/after.js.svg?path=packages/after.js) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
 If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.com/reacttraining/react-router) had a baby...
 
@@ -38,6 +36,7 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
   - [Routing](#routing)
     - [Parameterized Routing](#parameterized-routing)
     - [Client Only Data and Routing](#client-only-data-and-routing)
+  - [Transition Behavior](#transition-behavior)
   - [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
     - [404 Page](#404-page)
     - [Dynamic 404](#dynamic-404)
@@ -167,6 +166,7 @@ ensureReady(routes).then(data =>
 - Whatever you have returned in `getInitialProps`
 - `prefetch: (pathname: string) => void` - Imperatively prefetch _and cache_ data for a path. Under the hood this will map through your route tree, call the matching route's `getInitialProps`, store it, and then provide it to your page component. If the user ultimately navigates to that path, the data and component will be ready ahead of time. In the future, there may be more options to control cache behavior in the form of a function or time in milliseconds to keep that data around.
 - `refetch: (nextCtx?: any) => void` - Imperatively call `getInitialProps` again
+- `isLoading` - It shows that if the returned promise from `getInitialProps` is in the pending state or not
 
 ## Routing
 
@@ -246,6 +246,29 @@ In some parts of your application, you may not need server data fetching at all
 (e.g. settings). With After.js, you just use React Router 4 as you normally
 would in client land: You can fetch data (in componentDidMount) and do routing
 the same exact way.
+
+## Transition Behavior
+
+By default, `after.js` will wait for `getInitialProps` to get resolved or rejected, so when the `getInitialProps` job is complete, it will show the next page. We call this behavior `blocked`.
+
+You may want to show the next page with a skeleton or a spinner while `getInitialProps` is pending. We call this behavior `instant`.
+
+you can switch to `instant` behavior by passing a prop to `<After />`.
+
+```js
+// ./src/client.js
+
+// transitionBehavior = blocked | instant
+
+ensureReady(routes).then(data =>
+  hydrate(
+    <BrowserRouter>
+      <After data={data} routes={routes} transitionBehavior="instant" />
+    </BrowserRouter>,
+    document.getElementById('root')
+  )
+);
+```
 
 ## Dynamic 404 and Redirects
 

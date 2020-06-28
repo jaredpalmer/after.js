@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { matchPath, StaticRouter, RouteProps } from 'react-router-dom';
 import { Document as DefaultDoc, __AfterContext } from './Document';
 import { After } from './After';
@@ -13,7 +13,9 @@ import { StaticRouterContext } from 'react-router';
 import { getAssets } from './getAssets';
 
 const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
-  return (props: Props) => <Page {...props} />;
+  return function RenderAfteri(props: Props) {
+    return <Page {...props} />;
+  };
 };
 
 /*
@@ -53,35 +55,6 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const routes = utils.getAllRoutes(pureRoutes);
 
   const context: StaticRouterContext = {};
-  const renderPage = async (fn = modPageFn) => {
-    // By default, we keep ReactDOMServer synchronous renderToString function
-    const defaultRenderer = (element: React.ReactElement<T>) => ({
-      html: ReactDOMServer.renderToString(element),
-    });
-    const renderer = customRenderer || defaultRenderer;
-    const asyncOrSyncRender = renderer(
-      <StaticRouter location={req.url} context={context}>
-        {fn(After)({ routes, data })}
-      </StaticRouter>
-    );
-
-    const renderedContent = utils.isPromise(asyncOrSyncRender)
-      ? await asyncOrSyncRender
-      : asyncOrSyncRender;
-    const helmet = Helmet.renderStatic();
-
-    const { statusCode, url: redirectTo } = context;
-
-    if (redirectTo) {
-      res.redirect(statusCode || 302, redirectTo);
-    }
-
-    if (statusCode) {
-      res.status(statusCode);
-    }
-
-    return { helmet, ...renderedContent };
-  };
 
   const autoScrollRef = { current: scrollToTop };
   const { match, data: initialData } = await loadInitialProps(
@@ -128,6 +101,34 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     afterData,
   };
 
+  const renderPage = async (fn = modPageFn) => {
+    // By default, we keep ReactDOMServer synchronous renderToString function
+    const defaultRenderer = (element: React.ReactElement<T>) => ({
+      html: ReactDOMServer.renderToString(element),
+    });
+    const renderer = customRenderer || defaultRenderer;
+    const asyncOrSyncRender = renderer(
+      <StaticRouter location={req.url} context={context}>
+        {fn(After)({ routes, data, transitionBehavior: 'blocking' })}
+      </StaticRouter>
+    );
+
+    const renderedContent = await asyncOrSyncRender;
+    const helmet = Helmet.renderStatic();
+
+    const { statusCode, url: redirectTo } = context;
+
+    if (redirectTo) {
+      res.redirect(statusCode || 302, redirectTo);
+    }
+
+    if (statusCode) {
+      res.status(statusCode);
+    }
+
+    return { helmet, ...renderedContent };
+  };
+
   const { html, ...docProps } = await Doc.getInitialProps({
     req,
     res,
@@ -142,11 +143,20 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     ...rest,
   });
 
+  const props = {
+    assets,
+    data,
+    scripts,
+    styles,
+    match: reactRouterMatch,
+    ...rest,
+    ...docProps,
+    html,
+  };
+
   const doc = ReactDOMServer.renderToStaticMarkup(
-    <__AfterContext.Provider
-      value={{ assets, data, scripts, styles, ...rest, ...docProps, html }}
-    >
-      <Doc {...docProps} />
+    <__AfterContext.Provider value={props}>
+      <Doc {...props} />
     </__AfterContext.Provider>
   );
   return `<!doctype html>${doc}`;

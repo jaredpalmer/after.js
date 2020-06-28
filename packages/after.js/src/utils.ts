@@ -2,6 +2,7 @@ import {
   AsyncRouteableComponent,
   AsyncRouteComponentType,
   AsyncRouteProps,
+  TransitionBehavior,
 } from './types';
 import NotFoundComponent from './NotFoundComponent';
 
@@ -27,7 +28,7 @@ export function isAsyncComponent(
   Component: AsyncRouteableComponent
 ): Component is AsyncRouteComponentType<any> {
   return (
-    (<AsyncRouteComponentType<any>>Component).getInitialProps !== undefined
+    (Component as AsyncRouteComponentType<any>).getInitialProps !== undefined
   );
 }
 
@@ -35,15 +36,15 @@ export function isAsyncComponent(
 export function isLoadableComponent(
   Component: AsyncRouteableComponent
 ): Component is AsyncRouteComponentType<any> {
-  return (<AsyncRouteComponentType<any>>Component).load !== undefined;
+  return (Component as AsyncRouteComponentType<any>).load !== undefined;
 }
 
-/** @private is given routes have 404 page?  */
+/** @private is given routes array have a 404 page?  */
 export function is404ComponentAvailable(
   routes: AsyncRouteProps<any>[]
 ): AsyncRouteProps<any> | false {
   return (
-    routes.find(route => ['**', '*', , '', undefined].includes(route.path)) ||
+    routes.find(route => ['**', '*', '', undefined].includes(route.path)) ||
     false
   );
 }
@@ -63,4 +64,14 @@ export function getAllRoutes(
   return is404ComponentAvailable(routes)
     ? routes
     : [...routes, { component: NotFoundComponent }];
+}
+
+/** @private Checks if given string ends with ".js" */
+export function isJS(str: string) {
+  return str.endsWith('.js');
+}
+
+/** @private Checks if given transition type is instant */
+export function isInstantTransition(transition: TransitionBehavior) {
+  return transition === "instant";
 }

@@ -6,8 +6,10 @@
     "type": "git",
     "url": "git+https://github.com/jaredpalmer/after.js.git"
   },
-  "packages": ["packages/*"],
-  "version": "independent",
+  "packages": [
+    "packages/*"
+  ],
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "version": "3.0.3-canary.0"
 }

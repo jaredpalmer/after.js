@@ -3,7 +3,7 @@ import React from 'react';
 class Home extends React.Component {
   static displayName = 'Assessments';
 
-  static async getInitialProps({ req, res, match, history, location, ...ctx }) {
+  static async getInitialProps() {
     return { stuff: 'home stuffs' };
   }
 

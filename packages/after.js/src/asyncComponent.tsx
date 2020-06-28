@@ -34,7 +34,7 @@ export function asyncComponent<Props>({
      */
     static load() {
       return loader().then(ResolvedComponent => {
-        Component = ResolvedComponent!.default || ResolvedComponent;
+        Component = ResolvedComponent.default || ResolvedComponent;
       });
     }
 
@@ -59,7 +59,7 @@ export function asyncComponent<Props>({
       AsyncRouteComponent.load().then(this.updateState);
     }
 
-    updateState() {
+    updateState = () => {
       // Only update state if we don't already have a reference to the
       // component, this prevent unnecessary renders.
       if (this.state.Component !== Component) {
@@ -67,7 +67,7 @@ export function asyncComponent<Props>({
           Component,
         });
       }
-    }
+    };
 
     render() {
       const { Component: ComponentFromState } = this.state;

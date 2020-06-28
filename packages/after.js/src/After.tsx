@@ -9,8 +9,13 @@ import {
 } from 'react-router-dom';
 import { loadInitialProps } from './loadInitialProps';
 import { History, Location } from 'history';
-import { AsyncRouteProps, ServerAppState, InitialData } from './types';
-import { get404Component, getAllRoutes } from './utils';
+import {
+  AsyncRouteProps,
+  ServerAppState,
+  InitialData,
+  TransitionBehavior,
+} from './types';
+import { get404Component, getAllRoutes, isInstantTransition } from './utils';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -18,34 +23,33 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
   data: ServerAppState;
   routes: AsyncRouteProps[];
   match: Match<any>;
+  transitionBehavior: TransitionBehavior;
 }
 
 export interface AfterpartyState {
   data?: InitialData;
   previousLocation: Location | null;
   currentLocation: Location | null;
+  isLoading: boolean;
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
-  prefetcherCache: any;
+  state = {
+    data: this.props.data.initialData,
+    previousLocation: null,
+    currentLocation: this.props.location,
+    isLoading: false
+  };
+
+  prefetcherCache: object = {};
   NotfoundComponent:
     | React.ComponentType<RouteComponentProps<any>>
-    | React.ComponentType<any>;
+    | React.ComponentType<any> = get404Component(this.props.routes);
 
-  constructor(props: AfterpartyProps) {
-    super(props);
+  static defaultProps = {
+    transitionBehavior: 'blocking' as TransitionBehavior,
+  };
 
-    this.state = {
-      data: props.data.initialData,
-      previousLocation: null,
-      currentLocation: props.location,
-    };
-
-    this.prefetcherCache = {};
-    this.NotfoundComponent = get404Component(props.routes);
-  }
-
-  // i know it's little confusing but you will get used to it
   static getDerivedStateFromProps(
     props: AfterpartyProps,
     state: AfterpartyState
@@ -58,6 +62,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       return {
         previousLocation: state.previousLocation || previousLocation,
         currentLocation,
+        isLoading: true
       };
     }
 
@@ -72,6 +77,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         history,
         routes,
         data,
+        // we don't want to pass these
+        // to loadInitialProps()
         match,
         staticContext,
         children,
@@ -81,8 +88,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       const { scrollToTop } = data.afterData;
 
       loadInitialProps(routes, location.pathname, {
-        location: location,
-        history: history,
+        location,
+        history,
         scrollToTop,
         ...rest,
       })
@@ -98,7 +105,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           ) {
             window.scrollTo(0, 0);
           }
-          this.setState({ previousLocation: null, data });
+          this.setState({ previousLocation: null, data, isLoading: false });
         })
         .catch(e => {
           // @todo we should more cleverly handle errors???
@@ -121,23 +128,29 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   };
 
   render() {
-    const { previousLocation, data } = this.state;
-    const { location: currentLocation } = this.props;
+    const { previousLocation, data, isLoading } = this.state;
+    const { location: currentLocation, transitionBehavior } = this.props;
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
-    const location = previousLocation || currentLocation;
+    const instantTransition = isInstantTransition(transitionBehavior)
+
+    // when we are in the instant mode we want to pass the right location prop
+    // to the <Route /> otherwise it will render previous matche component
+    const location =
+      instantTransition
+        ? currentLocation
+        : previousLocation || currentLocation;
 
     return (
       <Switch location={location}>
-        {initialData &&
-          initialData.statusCode &&
-          initialData.statusCode === 404 && (
+        {initialData?.initialData?.statusCode === 404 &&
+          (
             <Route
               component={this.NotfoundComponent}
               path={location.pathname}
             />
           )}
-        {initialData && initialData.redirectTo && initialData.redirectTo && (
+        {initialData?.initialData?.redirectTo && (
           <Redirect to={initialData.redirectTo} />
         )}
         {getAllRoutes(this.props.routes).map((r, i) => (
@@ -152,6 +165,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
                 match: props.match,
                 prefetch: this.prefetch,
                 location,
+                isLoading,
               })
             }
           />

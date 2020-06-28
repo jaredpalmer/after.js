@@ -1,3 +1,36 @@
+# Migrating from v2 to v3
+
+Upgraded react-helmet from version 5 to 6
+
+## Update Dependencies
+
+```bash
+yarn upgrade @jaredpalmer/after react-helmet --latest
+```
+
+or
+
+```bash
+npm install @jaredpalmer/after@latest react-helmet@latest --save
+```
+
+## Breaking Changes
+
+there is no breaking change with after.js itself.
+but one of the dependencies (`react-helmet`) released a new version and they changed default export to a named export.
+
+from:
+
+```js
+import Helmet from 'react-helmet';
+```
+
+to:
+
+```js
+import { Helmet } from "react-helmet;
+```
+
 # Migrating from v1 to v2
 
 ## Preamble
@@ -33,128 +66,7 @@ npm install @jaredpalmer/after@latest razzle@latest --save
 
 ## Breaking Changes
 
-### `routes.js` config changed
-
-To send assets (CSS and JS files) from the initial server response, we need to change how we define our routes.
-
-From:
-
-```jsx
-// routes.js
-
-import Home from './Home';
-import { asyncComponent } from '@jaredpalmer/after';
-
-export default [
-  {
-    path: '/',
-    exact: true,
-    component: Home,
-  },
-  {
-    path: '/about',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import('./About'),
-    }),
-  },
-  {
-    path: '/contact-us',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import('./Contact'),
-    }),
-  },
-];
-```
-
-To:
-
-```jsx
-// routes.js
-
-import Home from './Home';
-import { asyncComponent } from '@jaredpalmer/after';
-
-export default [
-  {
-    path: '/',
-    exact: true,
-    component: Home,
-  },
-  {
-    path: '/about',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import(/* webpackChunkName: "whatever" */ './About'),
-      chunkName: 'whatever',
-    }),
-  },
-  {
-    path: '/contact-us',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import(/* webpackChunkName: "ContactUs" */ './Contact'),
-      chunkName: 'ContactUs',
-    }),
-  },
-];
-```
-
-we call this code block "`/* webpackChunkName: "" */`" a magic comment, with magic comments we have more control over webpack compilation process. as you may already know webpack job is to merge all of our JS files into one file so we can easily send that one file to our users (same thing applies for CSS files).
-
-with dynamic import syntax `import()` we can split our CSS and JS files into multiple files and load them whenever we need them, we call these files chunks.
-
-when we use `/* webpackChunkName: "HomePage" */` inside `import()` statement, we tell webpack to give that chunk a name (in this example the created chunk name is **HomePage.js**) and all of this happens in build time so we don't have access to chunkNames in runtime.
-after.js needs to know `chunkName` on every request. to access chunkName in run time you have to specify `chunkName` property inside `asyncComponent` with the exact value of `webpackChunkName` magic comment.
-
-there is one more thing that we have to take care about. if you use the same component in different routes, `webpackChunkName` and `chunkName` values must be the same in all of them.
-
-```jsx
-[
-  {
-    path: '/shop/:filter([A-Za-z-]+)', // 👈 different routes
-    exact: true,
-    component: asyncComponent({
-      loader: () => import(`pages/Shop`), // 👈 same components
-    }),
-  },
-  {
-    path: '/shop/:page([0-9]+)?', // 👈 different routes
-    exact: true,
-    component: asyncComponent({
-      loader: () => import(`pages/Shop`), // 👈 same components
-    }),
-  },
-];
-```
-
-✅ The right way to handle it:
-
-```jsx
-[
-  {
-    path: '/shop/:filter([A-Za-z-]+)',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import(/* webpackChunkName: "pages-Shop" */ `pages/Shop`),
-      chunkName: 'pages-Shop', // 👈  names are identical 👆
-    }),
-  },
-  {
-    path: '/shop/:page([0-9]+)?',
-    exact: true,
-    component: asyncComponent({
-      loader: () => import(/* webpackChunkName: "pages-Shop" */ `pages/Shop`),
-      chunkName: 'pages-Shop', // 👈  names are identical 👆 and they match with the previous route
-    }),
-  },
-];
-```
-
-This is too hard and complicated so we made a babel plugin to do this automatically because we care about Developer Experience. (using this plugin is optional)
-
-#### Use babel plugin
+### Add `babel-plugin-after` to your babel configuration
 
 Create a `.babelrc` file in the root of the project (next to the package.json)
 
@@ -168,70 +80,6 @@ Create a `.babelrc` file in the root of the project (next to the package.json)
 ```
 
 > Check [babel-plugin-after](https://github.com/jaredpalmer/after.js/packages/babel-plugin-after) repo for more options.
-
-**by using the Babel plugin THERE IS NO NEED TO CHANGE your routes, and your current `routes.js` file works fine.**
-
-#### Limitations of the Babel plugin
-
-There is a limitation with babel plugin, code below won't work with Babel plugin:
-
-```jsx
-import Home from './Home';
-import { asyncComponent } from '@jaredpalmer/after';
-
-const routes = [
-  {
-    path: '/',
-    exact: true,
-    component: Home,
-  },
-  {
-    path: '/about',
-    exact: true,
-    name: "About",
-    }),
-  },
-  {
-    path: '/contact-us',
-    exact: true,
-    name: "Contact",
-  }
-];
-
-// 📦 this function will add components to our routes
-function myTransformations(route) {
-  if (!route.name) return route
-  return {
-    ...route,
-    component: asyncComponent({
-      loader: () => import(`./pages/${route.name}`)
-    }),
-  }
-}
-
-export default routes.map(myTransformations)
-```
-
-The Babel plugin is not going to detect above pattern, to fix this just change `myTransformations` function implementaion to:
-
-```javascript
-function myTransformations(route) {
-  if (!route.name) return route;
-  return {
-    ...route,
-    component: asyncComponent({
-      loader: () =>
-        import(
-          /* webpackChunkName: "[request]" */ // 👈 add webpackChunkName: "[request]"
-          `./pages/${route.name}`
-        ),
-      chunkName: route.name, // 👈 add chunkName
-    }),
-  };
-}
-```
-
-> for more details visit [babel-plugin README](https://github.com/jaredpalmer/after.js/packages/babel-plugin-after#how-its-wokring)
 
 ### Update `server.js`
 
@@ -413,8 +261,208 @@ class Document extends React.Component {
   }
 }
 
-export default Document;
+export default Document;section
 ```
+
+### Top Level API Changes (Skip this  if you used `babel-plugin-after`)
+
+To send assets (CSS and JS files) from the initial server response, we need to change how we define our routes.
+
+From:
+
+```jsx
+// routes.js
+
+import Home from './Home';
+import { asyncComponent } from '@jaredpalmer/after';
+
+export default [
+  {
+    path: '/',
+    exact: true,
+    component: Home,
+  },
+  {
+    path: '/about',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import('./About'),
+    }),
+  },
+  {
+    path: '/contact-us',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import('./Contact'),
+    }),
+  },
+];
+```
+
+To:
+
+```jsx
+// routes.js
+
+import Home from './Home';
+import { asyncComponent } from '@jaredpalmer/after';
+
+export default [
+  {
+    path: '/',
+    exact: true,
+    component: Home,
+  },
+  {
+    path: '/about',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(/* webpackChunkName: "whatever" */ './About'),
+      chunkName: 'whatever',
+    }),
+  },
+  {
+    path: '/contact-us',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(/* webpackChunkName: "ContactUs" */ './Contact'),
+      chunkName: 'ContactUs',
+    }),
+  },
+];
+```
+
+we call this code block "`/* webpackChunkName: "" */`" a magic comment, with magic comments we have more control over webpack compilation process. as you may already know webpack job is to merge all of our JS files into one file so we can easily send that one file to our users (same thing applies for CSS files).
+
+with dynamic import syntax `import()` we can split our CSS and JS files into multiple files and load them whenever we need them, we call these files chunks.
+
+when we use `/* webpackChunkName: "HomePage" */` inside `import()` statement, we tell webpack to give that chunk a name (in this example the created chunk name is **HomePage.js**) and all of this happens in build time so we don't have access to chunkNames in runtime.
+after.js needs to know `chunkName` on every request. to access chunkName in run time you have to specify `chunkName` property inside `asyncComponent` with the exact value of `webpackChunkName` magic comment.
+
+there is one more thing that we have to take care about. if you use the same component in different routes, `webpackChunkName` and `chunkName` values must be the same in all of them.
+
+```jsx
+[
+  {
+    path: '/shop/:filter([A-Za-z-]+)', // 👈 different routes
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(`pages/Shop`), // 👈 same components
+    }),
+  },
+  {
+    path: '/shop/:page([0-9]+)?', // 👈 different routes
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(`pages/Shop`), // 👈 same components
+    }),
+  },
+];
+```
+
+✅ The right way to handle it:
+
+```jsx
+[
+  {
+    path: '/shop/:filter([A-Za-z-]+)',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(/* webpackChunkName: "pages-Shop" */ `pages/Shop`),
+      chunkName: 'pages-Shop', // 👈  names are identical 👆
+    }),
+  },
+  {
+    path: '/shop/:page([0-9]+)?',
+    exact: true,
+    component: asyncComponent({
+      loader: () => import(/* webpackChunkName: "pages-Shop" */ `pages/Shop`),
+      chunkName: 'pages-Shop', // 👈  names are identical 👆 and they match with the previous route
+    }),
+  },
+];
+```
+
+This is too hard and complicated so we made a babel plugin to do this automatically because we care about Developer Experience. (using this plugin is optional)
+
+### Install and Load babel plugin after
+
+Create a `.babelrc` file in the root of the project (next to the package.json)
+
+```js
+// .babelrc
+
+{
+  "presets": [ "razzle/babel" ],
+  "plugins": [ "after" ]
+}
+```
+
+> Check [babel-plugin-after](https://github.com/jaredpalmer/after.js/packages/babel-plugin-after) repo for more options.
+
+**by using the Babel plugin THERE IS NO NEED TO CHANGE your routes, and your current `routes.js` file works fine.**
+
+#### Limitations of the Babel plugin
+
+There is a limitation with babel plugin, code below won't work with Babel plugin:
+
+```jsx
+import Home from './Home';
+import { asyncComponent } from '@jaredpalmer/after';
+
+const routes = [
+  {
+    path: '/',
+    exact: true,
+    component: Home,
+  },
+  {
+    path: '/about',
+    exact: true,
+    name: "About",
+    }),
+  },
+  {
+    path: '/contact-us',
+    exact: true,
+    name: "Contact",
+  }
+];
+
+// 📦 this function will add components to our routes
+function myTransformations(route) {
+  if (!route.name) return route
+  return {
+    ...route,
+    component: asyncComponent({
+      loader: () => import(`./pages/${route.name}`)
+    }),
+  }
+}
+
+export default routes.map(myTransformations)
+```
+
+The Babel plugin is not going to detect above pattern, to fix this just change `myTransformations` function implementaion to:
+
+```javascript
+function myTransformations(route) {
+  if (!route.name) return route;
+  return {
+    ...route,
+    component: asyncComponent({
+      loader: () =>
+        import(
+          /* webpackChunkName: "[request]" */ // 👈 add webpackChunkName: "[request]"
+          `./pages/${route.name}`
+        ),
+      chunkName: route.name, // 👈 add chunkName
+    }),
+  };
+}
+```
+
+> for more details visit [babel-plugin README](https://github.com/jaredpalmer/after.js/packages/babel-plugin-after#how-its-wokring)
 
 ### Deprecated Features
 
