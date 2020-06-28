@@ -91,9 +91,10 @@ export async function render<T>(options: AfterRenderOptions<T>) {
 
   const reactRouterMatch = matchPath(req.url, match as RouteProps);
 
-  const { scripts, styles } = getAssets({ route: match, chunks });
+  const { scripts, styles, requiredChunks } = getAssets({ route: match, chunks });
   const afterData: AfterClientData = {
     scrollToTop: autoScrollRef,
+    requiredChunks
   };
 
   const data = {

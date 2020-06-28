@@ -72,6 +72,7 @@ export interface InitialProps {
 
 export interface AfterClientData {
   scrollToTop: ScrollToTop;
+  requiredChunks: string[];
 }
 
 // <AfterData /> will send this object
@@ -142,3 +143,4 @@ export interface Chunks {
     chunks: string[];
   };
 }
+
