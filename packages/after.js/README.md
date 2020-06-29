@@ -386,7 +386,7 @@ Dashboard.getInitialProps = async ({ match }) => {
     return { data };
   } catch (error) {
     if (error.response.status === 401)
-      return { statusCode: 401, redirectTo: '/login' };
+      return { redirectTo: '/login' };
     return { error };
   }
 };
