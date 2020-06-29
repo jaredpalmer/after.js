@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-after",
   "private": false,
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Babel plugin for After.js",
   "main": "lib/index.js",
   "repository": {
