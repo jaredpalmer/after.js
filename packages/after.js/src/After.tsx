@@ -77,6 +77,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         history,
         routes,
         data,
+        transitionBehavior,
         // we don't want to pass these
         // to loadInitialProps()
         match,
@@ -86,6 +87,19 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       } = this.props;
 
       const { scrollToTop } = data.afterData;
+
+      const instantMode = isInstantTransition(transitionBehavior)
+
+      // Only for page changes, prevent scroll up for anchor links
+      if (
+        (prevState.currentLocation &&
+          prevState.currentLocation.pathname) !== location.pathname &&
+        // Only Scroll if scrollToTop is not false
+        scrollToTop.current === true &&
+        instantMode === true
+      ) {
+        window.scrollTo(0, 0);
+      }
 
       loadInitialProps(routes, location.pathname, {
         location,
@@ -101,10 +115,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
             (prevState.currentLocation &&
               prevState.currentLocation.pathname) !== location.pathname &&
             // Only Scroll if scrollToTop is not false
-            scrollToTop.current
+            scrollToTop.current === true &&
+            instantMode === false
           ) {
             window.scrollTo(0, 0);
           }
+
           this.setState({ previousLocation: null, data, isLoading: false });
         })
         .catch(e => {
@@ -132,12 +148,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     const { location: currentLocation, transitionBehavior } = this.props;
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
-    const instantTransition = isInstantTransition(transitionBehavior)
+    const instantMode = isInstantTransition(transitionBehavior)
 
     // when we are in the instant mode we want to pass the right location prop
     // to the <Route /> otherwise it will render previous matche component
     const location =
-      instantTransition
+      instantMode
         ? currentLocation
         : previousLocation || currentLocation;
 
