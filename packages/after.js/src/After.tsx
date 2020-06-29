@@ -132,12 +132,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     const { location: currentLocation, transitionBehavior } = this.props;
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
-    const instantTransition = isInstantTransition(transitionBehavior)
+    const instantMode = isInstantTransition(transitionBehavior)
 
     // when we are in the instant mode we want to pass the right location prop
     // to the <Route /> otherwise it will render previous matche component
     const location =
-      instantTransition
+      instantMode
         ? currentLocation
         : previousLocation || currentLocation;
 
