@@ -159,14 +159,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
     return (
       <Switch location={location}>
-        {initialData?.initialData?.statusCode === 404 &&
+        {initialData?.statusCode === 404 &&
           (
             <Route
               component={this.NotfoundComponent}
               path={location.pathname}
             />
           )}
-        {initialData?.initialData?.redirectTo && (
+        {initialData?.redirectTo && (
           <Redirect to={initialData.redirectTo} />
         )}
         {getAllRoutes(this.props.routes).map((r, i) => (
