@@ -112,8 +112,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
 
           // Only for page changes, prevent scroll up for anchor links
           if (
-            (prevState.currentLocation &&
-              prevState.currentLocation.pathname) !== location.pathname &&
+            prevState.currentLocation &&
+            prevState.currentLocation.pathname !== location.pathname &&
             // Only Scroll if scrollToTop is not false
             scrollToTop.current === true &&
             instantMode === false
