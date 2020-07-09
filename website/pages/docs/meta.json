@@ -1,0 +1,11 @@
+{
+  "routing": "Routing",
+  "code-splitting": "Code Splitting",
+  "data-fetching": "Data Fetching",
+  "document-head": "Document Head",
+  "dynamic-404-and-redirects": "Dynamic 404 And Redirects",
+  "transition-behavior": "Transition Behavior",
+  "auto-scroll": "Automatically Scroll To Top",
+  "custom-document": "Custom <Document />",
+  "customasync-rendering": "Custom Async Rendering"
+}
