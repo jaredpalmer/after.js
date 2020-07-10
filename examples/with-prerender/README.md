@@ -5,7 +5,7 @@
 Download the example [or clone the whole project](https://github.com/jaredpalmer/after.js.git):
 
 ```bash
-curl https://codeload.github.com/jaredpalmer/after.js/tar.gz/master | tar -xz --strip=2 razzle-master/examples/with-prerender
+curl https://codeload.github.com/jaredpalmer/after.js/tar.gz/master | tar -xz --strip=2 after.js-master/examples/with-prerender
 cd with-prerender
 ```
 
