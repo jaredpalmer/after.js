@@ -17,6 +17,7 @@ import {
   CtxBase,
 } from './types';
 import { get404Component, getAllRoutes, isInstantTransition } from './utils';
+import { loadStaticProps } from './loadStaticProps';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -87,7 +88,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       } = this.props;
 
-      const { scrollToTop } = data.afterData;
+      const { scrollToTop, ssg } = data.afterData;
       const isInstantMode: boolean = isInstantTransition(transitionBehavior);
       const isBloackedMode = !isInstantMode;
 
@@ -111,7 +112,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         window.scrollTo(0, 0);
       }
 
-      loadInitialProps(routes, location.pathname, ctx)
+      // in ssg mode we don't call component.getInitialProps
+      // instead we fetch the page-data.json file
+      const loadData = ssg ? loadStaticProps : loadInitialProps;
+
+      loadData(routes, location.pathname, ctx)
         .then(res => res.data)
         .then((data: InitialData) => {
           // if user moved to a new page at the time we were fetching data
