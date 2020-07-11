@@ -72,6 +72,7 @@ export interface InitialProps {
 
 export interface AfterClientData {
   scrollToTop: ScrollToTop;
+  ssg: boolean;
 }
 
 // <AfterData /> will send this object
