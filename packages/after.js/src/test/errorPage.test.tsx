@@ -25,10 +25,11 @@ describe('ErrorPage', () => {
       redirect: jest.fn(),
     };
   });
-
-  it('should not change response statusCode code', async () => {
+  it('should set statusCode to 200', async () => {
     await render({ url: '/', res, routes, assets, chunks });
-    expect(res.status).not.toBeCalled();
+    expect(res.status).toBeCalled();
+    expect(res.status).toBeCalledWith(200);
+    expect(res.status).toBeCalledTimes(1);
   });
 
   it('should set response header to 404', async () => {
@@ -55,7 +56,7 @@ describe('ErrorPage', () => {
       chunks,
     });
     expect(res.redirect).toBeCalledWith(302, '/new-location');
-    expect(html).toBeUndefined();
+    expect(html).toEqual('');
   });
 
   it("should redirect to '/new-location' after react render", async () => {
@@ -68,7 +69,7 @@ describe('ErrorPage', () => {
       chunks,
     });
     expect(res.redirect).toBeCalledWith(302, '/new-location');
-    expect(html).toContain(NonAsyncRedirect.data);
+    expect(html).toContain('');
   });
 
   // user can define 404 Component in three ways
