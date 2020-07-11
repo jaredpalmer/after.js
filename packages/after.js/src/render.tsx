@@ -12,7 +12,6 @@ export const render = async <T extends any>(
 
   if (redirect) {
     res.redirect(statusCode, redirect);
-    return;
   }
 
   res.status(statusCode);
