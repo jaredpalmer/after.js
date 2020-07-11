@@ -14,6 +14,7 @@ import {
   ServerAppState,
   InitialData,
   TransitionBehavior,
+  CtxBase,
 } from './types';
 import { get404Component, getAllRoutes, isInstantTransition } from './utils';
 
@@ -38,7 +39,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     data: this.props.data.initialData,
     previousLocation: null,
     currentLocation: this.props.location,
-    isLoading: false
+    isLoading: false,
   };
 
   prefetcherCache: object = {};
@@ -62,7 +63,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       return {
         previousLocation: state.previousLocation || previousLocation,
         currentLocation,
-        isLoading: true
+        isLoading: true,
       };
     }
 
@@ -87,43 +88,44 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       } = this.props;
 
       const { scrollToTop } = data.afterData;
+      const isInstantMode: boolean = isInstantTransition(transitionBehavior);
+      const isBloackedMode = !isInstantMode;
 
-      const instantMode = isInstantTransition(transitionBehavior)
-
-      // Only for page changes, prevent scroll up for anchor links
-      if (
-        prevState.currentLocation &&
-        prevState.currentLocation.pathname !== location.pathname &&
-        // Only Scroll if scrollToTop is not false
-        scrollToTop.current === true &&
-        instantMode === true
-      ) {
-        window.scrollTo(0, 0);
-      }
-
-      loadInitialProps(routes, location.pathname, {
+      const ctx: CtxBase = {
         location,
         history,
         scrollToTop,
         ...rest,
-      })
-        .then(({ data }) => {
+      };
+
+      // Only for page changes, prevent scroll up for anchor links
+      const isPageChanged: boolean =
+        !!prevState.currentLocation &&
+        prevState.currentLocation.pathname !== location.pathname;
+
+      const isAllowedToScroll: boolean =
+        isPageChanged && scrollToTop.current === true;
+
+      // in instant mode, first we scroll to top then we fetch the data
+      if (isInstantMode && isAllowedToScroll) {
+        window.scrollTo(0, 0);
+      }
+
+      loadInitialProps(routes, location.pathname, ctx)
+        .then(res => res.data)
+        .then((data: InitialData) => {
+          // if user moved to a new page at the time we were fetching data
+          // for the previous page, we ignore data of the previous page
           if (this.state.currentLocation !== location) return;
 
-          // Only for page changes, prevent scroll up for anchor links
-          if (
-            prevState.currentLocation &&
-            prevState.currentLocation.pathname !== location.pathname &&
-            // Only Scroll if scrollToTop is not false
-            scrollToTop.current === true &&
-            instantMode === false
-          ) {
+          // in blocked mode, first we fetch the data and then we scroll to top
+          if (isBloackedMode && isAllowedToScroll) {
             window.scrollTo(0, 0);
           }
 
           this.setState({ previousLocation: null, data, isLoading: false });
         })
-        .catch(e => {
+        .catch((e: Error) => {
           // @todo we should more cleverly handle errors???
           console.log(e);
         });
@@ -148,27 +150,20 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     const { location: currentLocation, transitionBehavior } = this.props;
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
-    const instantMode = isInstantTransition(transitionBehavior)
+    const instantMode = isInstantTransition(transitionBehavior);
 
     // when we are in the instant mode we want to pass the right location prop
     // to the <Route /> otherwise it will render previous matche component
-    const location =
-      instantMode
-        ? currentLocation
-        : previousLocation || currentLocation;
+    const location = instantMode
+      ? currentLocation
+      : previousLocation || currentLocation;
 
     return (
       <Switch location={location}>
-        {initialData?.statusCode === 404 &&
-          (
-            <Route
-              component={this.NotfoundComponent}
-              path={location.pathname}
-            />
-          )}
-        {initialData?.redirectTo && (
-          <Redirect to={initialData.redirectTo} />
+        {initialData?.statusCode === 404 && (
+          <Route component={this.NotfoundComponent} path={location.pathname} />
         )}
+        {initialData?.redirectTo && <Redirect to={initialData.redirectTo} />}
         {getAllRoutes(this.props.routes).map((r, i) => (
           <Route
             key={`route--${i}`}
