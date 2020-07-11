@@ -111,6 +111,9 @@ export interface AfterRenderAppOptions<T> {
   ) => { html: string } | Promise<{ html: string }>;
 }
 
+// render()
+export type AfterRenderOptions<T> = Omit<AfterRenderAppOptions<T>, 'ssg'>;
+
 // renderStatic()
 export type AfterRenderStaticOptions<T> = Omit<AfterRenderAppOptions<T>, 'ssg'>;
 
