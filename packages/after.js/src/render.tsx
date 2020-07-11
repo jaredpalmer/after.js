@@ -33,6 +33,7 @@ export interface AfterRenderOptions<T> {
   document?: typeof DefaultDoc;
   chunks: Chunks;
   scrollToTop?: boolean;
+  ssg?: boolean;
   customRenderer?: (
     element: React.ReactElement<T>
   ) => { html: string } | Promise<{ html: string }>;
@@ -48,6 +49,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     customRenderer,
     chunks,
     scrollToTop = true,
+    ssg = false,
     ...rest
   } = options;
   const Doc = Document || DefaultDoc;
@@ -94,6 +96,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const { scripts, styles } = getAssets({ route: match, chunks });
   const afterData: AfterClientData = {
     scrollToTop: autoScrollRef,
+    ssg,
   };
 
   const data = {
