@@ -110,6 +110,10 @@ export interface AfterRenderAppOptions<T> {
     element: React.ReactElement<T>
   ) => { html: string } | Promise<{ html: string }>;
 }
+
+// renderStatic()
+export type AfterRenderStaticOptions<T> = Omit<AfterRenderAppOptions<T>, 'ssg'>;
+
 // Result of Document
 export interface RenderPageResult {
   html: string;
