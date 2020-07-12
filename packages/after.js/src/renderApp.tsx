@@ -66,8 +66,8 @@ export async function renderApp<T>(
   // finds related component for the current path (request url)
   //  and calls component.getInitialProps({ match,...ctx })
   const { match, data: initialData } = await loadInitialProps(
-    routes,
     pathname,
+    routes,
     ctx
   );
 

@@ -3,8 +3,8 @@ import { AsyncRouteProps, InitialProps, CtxBase } from './types';
 import { isAsyncComponent } from './utils';
 
 export async function loadInitialProps(
-  routes: AsyncRouteProps[],
   pathname: string,
+  routes: AsyncRouteProps[],
   ctx: CtxBase
 ): Promise<InitialProps> {
   const promises: Promise<any>[] = [];

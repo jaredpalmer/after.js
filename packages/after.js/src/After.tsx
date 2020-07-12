@@ -116,7 +116,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       // instead we fetch the page-data.json file
       const loadData = ssg ? loadStaticProps : loadInitialProps;
 
-      loadData(routes, location.pathname, ctx)
+      loadData(location.pathname, routes, ctx)
         .then(res => res.data)
         .then((data: InitialData) => {
           // if user moved to a new page at the time we were fetching data
