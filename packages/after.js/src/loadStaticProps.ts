@@ -17,7 +17,11 @@ export async function loadStaticProps(
   // in ssg mode there is always a file called page-data.json next to the
   // page path that we have in our app this page-data.json file includes inital data that we need
   // to inject to our components before we render the component
-  const PAGE_DATA_FILE_PATH = `${pathname}/${PAGE_DATA_FILE_NAME}`;
+  // if pathname equals "/" we are going to fetch data for https://page-data.json path
+  // which is WRONG so we fallback to empty string for index page /page-data.json
+  const PAGE_DATA_FILE_PATH = `${
+    pathname === '/' ? '' : pathname
+  }/${PAGE_DATA_FILE_NAME}`;
   return fetch(PAGE_DATA_FILE_PATH)
     .then(res => res.json())
     .then(res => {
