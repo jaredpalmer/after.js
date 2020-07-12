@@ -1,14 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function About({ a }) {
-  return <div>{a}</div>;
+function About({ data }) {
+  return (
+    <div>
+      <h1>{data}</h1>
+      <Link to="/">Home</Link>
+    </div>
+  );
 }
 
-About.getInitialProps = async () => {
-  const a = await new Promise(resolve =>
-    setTimeout(() => resolve('Salamm'), 10000)
+About.getInitialProps = async ({
+  req,
+  res,
+  match,
+  history,
+  location,
+  ...ctx
+}) => {
+  const data = await new Promise(resolve =>
+    setTimeout(() => resolve('About'), 10000)
   );
-  return { a };
+  return { data };
 };
 
 export default About;
