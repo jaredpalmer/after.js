@@ -14,9 +14,9 @@ export const render = async (req, res) => {
       assets,
       chunks,
     });
-    return { html, data };
+    res.json({ html, data });
   } catch (error) {
-    return { error: error.message };
+    res.json({ error: error.message });
   }
 };
 
