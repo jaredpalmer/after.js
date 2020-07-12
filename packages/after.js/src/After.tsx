@@ -138,7 +138,13 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   prefetch = (pathname: string) => {
-    loadInitialProps(this.props.routes, pathname, {
+    const { ssg } = this.props.data.afterData;
+
+    // in ssg mode we don't call component.getInitialProps
+    // instead we fetch the page-data.json file
+    const loadData = ssg ? loadStaticProps : loadInitialProps;
+
+    loadData(pathname, this.props.routes, {
       history: this.props.history,
     })
       .then(({ data }) => {
