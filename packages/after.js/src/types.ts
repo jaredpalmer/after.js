@@ -57,13 +57,8 @@ export interface AsyncRouteProps<Props = any> extends RouteProps {
 
 export type ScrollToTop = React.RefObject<boolean>;
 
-// result of getInitalProps
+// result of getInitialProps
 export type InitialData = Promise<unknown>[];
-
-export interface ServerAppState {
-  afterData: AfterClientData;
-  initialData: InitialData;
-}
 
 export interface InitialProps {
   match?: AsyncRouteProps;
