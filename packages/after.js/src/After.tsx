@@ -23,7 +23,7 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
   data: ServerAppState;
   routes: AsyncRouteProps[];
   match: Match<any>;
-  transitionBehavior: TransitionBehavior;
+  transitionBehavior?: TransitionBehavior;
 }
 
 export interface AfterpartyState {
