@@ -12,7 +12,12 @@ export class Document extends React.Component<DocumentProps> {
   };
 
   render() {
-    const { helmet } = this.props;
+    const {
+      helmet,
+      data: {
+        afterData: { ssg: ssg },
+      },
+    } = this.props;
     // get attributes from React Helmet
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -31,7 +36,7 @@ export class Document extends React.Component<DocumentProps> {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
-          { ssg ? <!-- after_static_js --> : ''}
+          {ssg && <div id="after_static_js" />}
           <AfterData />
           <AfterScripts />
         </body>
