@@ -115,8 +115,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       // in ssg mode we don't call component.getInitialProps
       // instead we fetch the page-data.json file
       const useStaticProps = ssg
-        ? (window.AFTER_STATIC_ROUTES ? window.AFTER_STATIC_ROUTES.includes(
-              location.pathname == '' ? '/' : location.pathname) : true) : false;
+        ? (window as any).AFTER_STATIC_ROUTES
+          ? (window as any).AFTER_STATIC_ROUTES.includes(
+              location.pathname == '' ? '/' : location.pathname
+            )
+          : true
+        : false;
 
       const loadData = useStaticProps ? loadStaticProps : loadInitialProps;
 
