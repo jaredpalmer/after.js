@@ -34,7 +34,7 @@ In `static_export.js` you should export a function called render that basicly is
 // ./src/sstatic_export.js
 
 import { render as afterRender, renderStatic } from '@jaredpalmer/after';
-import routes as afterRoutes from './routes';
+import { default as afterRoutes } from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);

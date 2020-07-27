@@ -1,5 +1,5 @@
 import { render as afterRender, renderStatic } from '@jaredpalmer/after';
-import routes from './routes';
+import { default as afterRoutes } from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
