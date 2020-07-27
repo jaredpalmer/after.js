@@ -1,5 +1,5 @@
-import { render as afterRender, renderStatic } from '@jaredpalmer/after';
-import { default as afterRoutes } from './routes';
+import { renderStatic } from '@jaredpalmer/after';
+import afterRoutes from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
@@ -9,7 +9,7 @@ export const render = async (req, res) => {
     const { html, data } = await renderStatic({
       req,
       res,
-      routes,
+      routes: afterRoutes,
       assets,
       chunks,
     });
@@ -20,5 +20,5 @@ export const render = async (req, res) => {
 };
 
 export const routes = () => {
-  return ['/', '/about'];
+  return ['/', 'about/'];
 };

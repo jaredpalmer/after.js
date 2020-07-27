@@ -31,10 +31,10 @@ This is example shows how you can enable experimental SSG with after.js and razz
 In `static_export.js` you should export a function called render that basicly is a express.js handler that calls After.js render function and export a function called routes that return a list of routes or a promise that resolves to a list of routes.
 
 ```js
-// ./src/sstatic_export.js
+// ./src/static_export.js
 
-import { render as afterRender, renderStatic } from '@jaredpalmer/after';
-import { default as afterRoutes } from './routes';
+import { renderStatic } from '@jaredpalmer/after';
+import afterRoutes from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
@@ -44,7 +44,7 @@ export const render = async (req, res) => {
     const { html, data } = await renderStatic({
       req,
       res,
-      afterRoutes,
+      routes: afterRoutes,
       assets,
       chunks,
     });
@@ -55,7 +55,7 @@ export const render = async (req, res) => {
 };
 
 export const routes = () => {
-  return ['/', '/about'];
+  return ['/', 'about/'];
 };
 ```
 
