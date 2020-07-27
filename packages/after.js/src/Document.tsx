@@ -31,6 +31,7 @@ export class Document extends React.Component<DocumentProps> {
         </head>
         <body {...bodyAttrs}>
           <AfterRoot />
+          { ssg ? <!-- after_static_js --> : ''}
           <AfterData />
           <AfterScripts />
         </body>

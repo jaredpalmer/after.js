@@ -28,49 +28,51 @@ yarn start
 
 This is example shows how you can enable experimental SSG with after.js and razzle.
 
-you should define your app routes inside the routes.json in root of your project:
+In `static_export.js` you should export a function called render that basicly is a express.js handler that calls After.js render function and export a function called routes that return a list of routes or a promise that resolves to a list of routes.
 
 ```js
-// ./routes.js
+// ./src/sstatic_export.js
 
-['/', '/about'];
-```
-
-and in `server.js` you should export a function called render that basicly is a express.js hanlder that calls After.js render function.
-
-```js
-// ./src/server.js
-
-import express from 'express';
-import { render as afterRender } from '@jaredpalmer/after';
-import routes from './routes';
+import { render as afterRender, renderStatic } from '@jaredpalmer/after';
+import routes as afterRoutes from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
 
 export const render = async (req, res) => {
   try {
-    const html = await afterRender({
+    const { html, data } = await renderStatic({
       req,
       res,
-      routes,
+      afterRoutes,
       assets,
       chunks,
     });
-    res.send(html);
+    res.json({ html, data });
   } catch (error) {
-    console.error(error);
-    res.json({ message: error.message, stack: error.stack });
+    res.json({ error: error.message });
   }
 };
 
-const server = express();
-server
-  .disable('x-powered-by')
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .get('/*', render);
+export const routes = () => {
+  return ['/', '/about'];
+};
+```
 
-export default server;
+configure razzle to work with after.js
+
+```js
+// razzle.config.js
+'use strict';
+
+module.exports = {
+  experimental: {
+    static_export: {
+      script_replacement: '<!-- after_static_js -->',
+      window_variable: 'AFTER_STATIC_ROUTES'
+    },
+  },
+};
 ```
 
 build your app by running the `build` command:
@@ -79,8 +81,8 @@ build your app by running the `build` command:
 yarn build
 ```
 
-and for SSG run the `prerender` command:
+and for SSG run the `export` command:
 
 ```bash
-yarn prerender
+yarn export
 ```
