@@ -117,10 +117,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       const useStaticProps = ssg
         ? (window as any).AFTER_STATIC_ROUTES
           ? (window as any).AFTER_STATIC_ROUTES.includes(
-              location.pathname == '' ? '/' : location.pathname
+              location.pathname.replace(/^\/|\/$/g, '')
             )
           : true
         : false;
+        console.log(useStaticProps, location.pathname);
 
       const loadData = useStaticProps ? loadStaticProps : loadInitialProps;
 
