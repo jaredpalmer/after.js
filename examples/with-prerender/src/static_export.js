@@ -14,8 +14,6 @@ export const render = async (req, res) => {
       chunks,
     });
 
-    console.log(data);
-    
     res.json({ html, data });
   } catch (error) {
     res.json({ error: error.message });
