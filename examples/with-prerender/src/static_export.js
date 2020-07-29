@@ -21,5 +21,5 @@ export const render = async (req, res) => {
 };
 
 export const routes = () => {
-  return ['/', 'about/'];
+  return ['/', '/about']; // always add starting slash
 };

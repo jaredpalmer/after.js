@@ -32,7 +32,6 @@ In `static_export.js` you should export a function called render that basicly is
 
 ```js
 // ./src/static_export.js
-
 import { renderStatic } from '@jaredpalmer/after';
 import afterRoutes from './routes';
 
@@ -48,6 +47,7 @@ export const render = async (req, res) => {
       assets,
       chunks,
     });
+
     res.json({ html, data });
   } catch (error) {
     res.json({ error: error.message });
@@ -55,7 +55,7 @@ export const render = async (req, res) => {
 };
 
 export const routes = () => {
-  return ['/', 'about/'];
+  return ['/', '/about']; // always add starting slash
 };
 ```
 
