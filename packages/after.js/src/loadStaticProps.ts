@@ -19,6 +19,17 @@ export async function loadStaticProps(
   // to inject to our components before we render the component
   // if pathname equals "/" we are going to fetch data for https://page-data.json path
   // which is WRONG so we fallback to empty string for index page /page-data.json
+
+
+  const usePageData = (window as any).AFTER_STATIC_DATA_ROUTES
+    && (window as any).AFTER_STATIC_DATA_ROUTES.includes(
+        location.pathname.replace(/^\/|\/$/g, '')
+      );
+
+  if (!usePageData) {
+    return Promise.resolve({data: <InitialData>{}});
+  }
+
   const PAGE_DATA_FILE_PATH = `${
     pathname === '/' ? '' : pathname
   }/${PAGE_DATA_FILE_NAME}`;

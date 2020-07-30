@@ -115,38 +115,35 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       // in ssg mode we don't call component.getInitialProps
       // instead we fetch the page-data.json file
       const useStaticProps = ssg
-        ? (window as any).AFTER_STATIC_DATA_ROUTES
-          ? (window as any).AFTER_STATIC_DATA_ROUTES.includes(
+        ? (window as any).AFTER_STATIC_ROUTES
+          ? (window as any).AFTER_STATIC_ROUTES.includes(
               location.pathname.replace(/^\/|\/$/g, '')
             )
           : true
         : false;
 
-      const loadData = ssg && typeof window !== 'undefined' ? (useStaticProps ? loadStaticProps : undefined ) : loadInitialProps;
+      const loadData = useStaticProps ? loadStaticProps : loadInitialProps;
 
-      if (loadData) {
-        loadData(location.pathname, routes, ctx)
-          .then(res => res.data)
-          .then((data: InitialData) => {
-            // if user moved to a new page at the time we were fetching data
-            // for the previous page, we ignore data of the previous page
-            if (this.state.currentLocation !== location) return;
+      loadData(location.pathname, routes, ctx)
+        .then(res => res.data)
+        .then((data: InitialData) => {
+          // if user moved to a new page at the time we were fetching data
+          // for the previous page, we ignore data of the previous page
+          if (this.state.currentLocation !== location) return;
 
-            // in blocked mode, first we fetch the data and then we scroll to top
-            if (isBloackedMode && isAllowedToScroll) {
-              window.scrollTo(0, 0);
-            }
+          // in blocked mode, first we fetch the data and then we scroll to top
+          if (isBloackedMode && isAllowedToScroll) {
+            window.scrollTo(0, 0);
+          }
 
-            this.setState({ previousLocation: null, data, isLoading: false });
-          })
-          .catch((e: Error) => {
-            // @todo we should more cleverly handle errors???
-            console.log(e);
-          });
-        } else {
-          this.setState({ previousLocation: null, isLoading: false });
-        }
-    }
+          this.setState({ previousLocation: null, data, isLoading: false });
+        })
+        .catch((e: Error) => {
+          // @todo we should more cleverly handle errors???
+          console.log(e);
+        });
+      } 
+
   }
 
   prefetch = (pathname: string) => {
@@ -155,27 +152,26 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     // in ssg mode we don't call component.getInitialProps
     // instead we fetch the page-data.json file
     const useStaticProps = ssg
-      ? (window as any).AFTER_STATIC_DATA_ROUTES
-        ? (window as any).AFTER_STATIC_DATA_ROUTES.includes(
+      ? (window as any).AFTER_STATIC_ROUTES
+        ? (window as any).AFTER_STATIC_ROUTES.includes(
             location.pathname.replace(/^\/|\/$/g, '')
           )
         : true
       : false;
 
-    const loadData = ssg && typeof window !== 'undefined' ? (useStaticProps ? loadStaticProps : undefined ) : loadInitialProps;
+    const loadData = useStaticProps ? loadStaticProps : loadInitialProps;
 
-    if (loadData) {
-      loadData(pathname, this.props.routes, {
-        history: this.props.history,
-      })
-      .then(({ data }) => {
-        this.prefetcherCache = {
-          ...this.prefetcherCache,
-          [pathname]: data,
-        };
-      })
-      .catch(e => console.log(e));
-    }
+    loadData(pathname, this.props.routes, {
+      history: this.props.history,
+    })
+    .then(({ data }) => {
+      this.prefetcherCache = {
+        ...this.prefetcherCache,
+        [pathname]: data,
+      };
+    })
+    .catch(e => console.log(e));
+
   };
 
   render() {
