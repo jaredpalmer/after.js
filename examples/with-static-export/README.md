@@ -32,7 +32,7 @@ In `static_export.js` you should export a function called render that basicly is
 
 ```js
 // ./src/static_export.js
-import { renderStatic } from '@jaredpalmer/after';
+import { render } from '@jaredpalmer/after';
 import afterRoutes from './routes';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
@@ -44,6 +44,7 @@ export const render = async (req, res) => {
       req,
       res,
       routes: afterRoutes,
+      ssg: true,
       assets,
       chunks,
     });
@@ -68,10 +69,9 @@ configure razzle to work with after.js
 
 module.exports = {
   experimental: {
-    static_export: {
-      script_replacement: '<script id="after_static_js"></script>',
-      window_routes_variable: 'AFTER_STATIC_ROUTES',
-      window_routes_data_variable: 'AFTER_STATIC_DATA_ROUTES',
+    staticExport: {
+      windowRoutesVariable: 'AFTER_STATIC_ROUTES',
+      windowRoutesDataVariable: 'AFTER_STATIC_DATA_ROUTES',
     },
   },
 };
