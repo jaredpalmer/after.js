@@ -2,19 +2,31 @@ import { renderApp } from './renderApp';
 import { AfterRenderOptions } from './types';
 
 export const render = async <T extends any>(
-  params: Omit<AfterRenderOptions<T>, 'ssg'>
+  params: AfterRenderOptions<T>
 ) => {
-  const { res } = params;
-  const { redirect, statusCode, html } = await renderApp({
+  const { res, ssg = false } = params;
+
+  const { redirect, statusCode, html, data } = await renderApp({
     ...params,
-    ssg: false,
+    ssg,
   });
 
-  if (redirect) {
-    res.redirect(statusCode, redirect);
+  if (ssg) {
+    if (redirect) {
+      const { url } = params.req;
+      throw new Error(
+        `You are not allowed to use redirect in ssg mode, URL: ${url}`
+      );
+    }
+
+    return { html, data };
+  } else {
+    if (redirect) {
+      res.redirect(statusCode, redirect);
+    }
+
+    res.status(statusCode);
+
+    return html;
   }
-
-  res.status(statusCode);
-
-  return html;
 };

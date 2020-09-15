@@ -96,8 +96,8 @@ export interface RedirectWithStatuCode {
   redirectTo?: string;
 }
 
-// renderApp()
-export interface AfterRenderAppOptions<T> {
+// render()
+export interface AfterRenderOptions<T> {
   req: Request;
   res: Response;
   assets: Assets;
@@ -110,12 +110,6 @@ export interface AfterRenderAppOptions<T> {
     element: React.ReactElement<T>
   ) => { html: string } | Promise<{ html: string }>;
 }
-
-// render()
-export type AfterRenderOptions<T> = Omit<AfterRenderAppOptions<T>, 'ssg'>;
-
-// renderStatic()
-export type AfterRenderStaticOptions<T> = Omit<AfterRenderAppOptions<T>, 'ssg'>;
 
 // Result of Document
 export interface RenderPageResult {

@@ -8,7 +8,7 @@ import { loadInitialProps } from './loadInitialProps';
 import * as utils from './utils';
 import * as url from 'url';
 import {
-  AfterRenderAppOptions,
+  AfterRenderOptions,
   AfterClientData,
   CtxBase,
   AsyncRouteProps,
@@ -35,7 +35,7 @@ const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
  * Other props will be also pass to the Document component
  */
 export async function renderApp<T>(
-  options: AfterRenderAppOptions<T>
+  options: AfterRenderOptions<T>
 ): Promise<RenderResult> {
   const {
     req,

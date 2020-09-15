@@ -8,4 +8,3 @@ export * from './types';
 export * from './getAssets';
 export * from './renderApp';
 export * from './render';
-export * from './renderStatic';
