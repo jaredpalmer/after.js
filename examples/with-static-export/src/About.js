@@ -19,7 +19,7 @@ About.getInitialProps = async ({
   ...ctx
 }) => {
   const data = await new Promise(resolve =>
-    setTimeout(() => resolve('About'), 10000)
+    setTimeout(() => resolve('About'), 100)
   );
   return { data };
 };
