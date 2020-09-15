@@ -1,5 +1,5 @@
 {
-  "name": "after-examples-with-static-exporrt",
+  "name": "after-examples-with-static-export",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
@@ -14,8 +14,9 @@
     "@jaredpalmer/after": "latest",
     "express": "^4.16.2",
     "razzle": "canary",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
     "react-router-dom": "^5.1.2",
     "serve": "^11.3.0"
