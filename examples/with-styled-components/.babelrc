@@ -1,0 +1,6 @@
+{
+  "presets": ["razzle/babel"],
+  "plugins": ["after", [
+    "styled-components", { "ssr": true }
+  ]]
+}
