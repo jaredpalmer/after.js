@@ -261,7 +261,7 @@ class Document extends React.Component {
   }
 }
 
-export default Document;section
+export default Document;
 ```
 
 ### Top Level API Changes (Skip this  if you used `babel-plugin-after`)
