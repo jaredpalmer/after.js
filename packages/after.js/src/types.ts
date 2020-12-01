@@ -95,6 +95,7 @@ export interface DocumentgetInitialProps<T = RenderPageResult> {
   res: Response;
   helmet: HelmetData;
   assets: Assets;
+  chunks: Chunks;
   data: ServerAppState;
   renderPage: () => Promise<T>;
   match: Match | null;

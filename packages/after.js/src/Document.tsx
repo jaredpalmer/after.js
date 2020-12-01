@@ -63,11 +63,10 @@ export const AfterData: React.FC<{ data?: object }> = ({ data }) => {
 };
 
 export const AfterStyles: React.FC = () => {
-  const { assets, styles } = useAfterContext();
+  const { chunks, styles } = useAfterContext();
   return (
     <>
-      {assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
-      {styles.map(path => (
+      {chunks.client.css.concat(styles).map(path => (
         <link key={path} rel="stylesheet" href={path} />
       ))}
     </>
@@ -75,26 +74,21 @@ export const AfterStyles: React.FC = () => {
 };
 
 export const AfterScripts: React.FC = () => {
-  const { scripts, assets } = useAfterContext();
+  const { scripts, chunks } = useAfterContext();
   return (
     <>
-      {scripts.filter(isJS).map(path => (
-        <script
-          key={path}
-          defer
-          type="text/javascript"
-          src={path}
-          crossOrigin="anonymous"
-        />
-      ))}
-      {assets.client.js && (
-        <script
-          type="text/javascript"
-          src={assets.client.js}
-          defer
-          crossOrigin="anonymous"
-        />
-      )}
+      {scripts
+        .concat(chunks.client.js)
+        .filter(isJS)
+        .map(path => (
+          <script
+            key={path}
+            defer
+            type="text/javascript"
+            src={path}
+            crossOrigin="anonymous"
+          />
+        ))}
     </>
   );
 };
