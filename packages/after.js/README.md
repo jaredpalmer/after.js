@@ -385,8 +385,7 @@ Dashboard.getInitialProps = async ({ match }) => {
     const { data } = await fetchProfile();
     return { data };
   } catch (error) {
-    if (error.response.status === 401)
-      return { redirectTo: '/login' };
+    if (error.response.status === 401) return { redirectTo: '/login' };
     return { error };
   }
 };
@@ -542,9 +541,7 @@ export default class Document extends React.Component {
     return (
       <html {...htmlAttrs}>
         <head>
-          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet="utf-8" />
-          <title>Welcome to the Afterparty</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
