@@ -5,7 +5,7 @@ import { ensureReady, After } from '../../';
 import './client.css';
 import routes from './routes';
 
-ensureReady(routes).then(data =>
+ensureReady({ routes }).then(data =>
   hydrate(
     <BrowserRouter>
       <After data={data} routes={routes} />

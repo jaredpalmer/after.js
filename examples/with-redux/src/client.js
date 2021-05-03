@@ -11,7 +11,7 @@ const preloadedState = getSerializedData('preloaded_state');
 const store = configureStore(preloadedState);
 
 function renderApp() {
-  ensureReady(routes).then(data =>
+  ensureReady({ routes }).then(data =>
     hydrate(
       <BrowserRouter>
         <Provider store={store}>

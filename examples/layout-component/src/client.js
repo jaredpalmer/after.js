@@ -6,7 +6,7 @@ import './client.css';
 import routes from './routes';
 import Layout from './Layout';
 
-ensureReady(routes).then(data =>
+ensureReady({ routes }).then(data =>
   hydrate(
     <BrowserRouter>
       <Layout>
