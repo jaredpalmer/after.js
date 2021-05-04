@@ -77,8 +77,8 @@ export function isInstantTransition(transition: TransitionBehavior) {
 }
 
 /** @private Strips basename from the given URL so that matchPath can use it normally outside the router context */
-export function stripBasename(location?: string, basename?: string): any {
-  if (!basename || !location) return location;
+export function stripBasename(location?: string, basename?: string): string {
+  if (!basename || !location) return location || '';
 
   if (location.indexOf(basename) !== 0) return location;
 

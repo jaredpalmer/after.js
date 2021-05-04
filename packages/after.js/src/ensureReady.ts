@@ -1,5 +1,5 @@
 import { matchPath } from 'react-router-dom';
-import { AsyncRouteProps } from './types';
+import { AsyncRouteProps, EnsureReadyParams } from './types';
 import { isLoadableComponent, stripBasename } from './utils';
 
 /**
@@ -9,11 +9,7 @@ export async function ensureReady({
   routes,
   pathname,
   basename,
-}: {
-  routes: AsyncRouteProps[];
-  pathname?: string;
-  basename?: string;
-}) {
+}: EnsureReadyParams) {
   await Promise.all(
     routes.map(route => {
       const pathnameToUseToMatch = stripBasename(
