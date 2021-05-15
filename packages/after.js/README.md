@@ -2,7 +2,7 @@
 
 # After.js
 
-[![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@jaredpalmer/after)](https://bundlephobia.com/result?p=@jaredpalmer/after) [![npm](https://img.shields.io/npm/dm/@jaredpalmer/after)](https://www.npmjs.com/package/@jaredpalmer/after) [![Known Vulnerabilities](https://snyk.io/test/github/jaredpalmer/after.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jaredpalmer/after.js?targetFile=package.json) ![Github Actions](https://github.com/jaredpalmer/after.js/workflows/Release/badge.svg) [![GitHub version](https://badge.fury.io/gh/jaredpalmer%2Fafter.js.svg)](https://badge.fury.io/gh/jaredpalmer%2Fafter.js) ![After-status](https://david-dm.org/jaredpalmer/after.js.svg?path=packages/after.js) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
+[![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@jaredpalmer/after)](https://bundlephobia.com/result?p=@jaredpalmer/after) [![npm](https://img.shields.io/npm/dm/@jaredpalmer/after)](https://www.npmjs.com/package/@jaredpalmer/after) [![Known Vulnerabilities](https://snyk.io/test/github/jaredpalmer/after.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/jaredpalmer/after.js?targetFile=package.json) ![Github Actions](https://github.com/jaredpalmer/after.js/workflows/Release/badge.svg) [![GitHub version](https://badge.fury.io/gh/jaredpalmer%2Fafter.js.svg)](https://badge.fury.io/gh/jaredpalmer%2Fafter.js) ![After-status](https://david-dm.org/jaredpalmer/after.js.svg?path=packages/after.js) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE) [![Discord](https://img.shields.io/discord/769256827007139912?label=%F0%9F%92%AC%20%20join%20us%20on%20discord&style=plastic)](https://discord.com/invite/RevdZTYMzr)
 
 If [Next.js](https://github.com/zeit/next.js) and [React Router](https://github.com/reacttraining/react-router) had a baby...
 
@@ -385,8 +385,7 @@ Dashboard.getInitialProps = async ({ match }) => {
     const { data } = await fetchProfile();
     return { data };
   } catch (error) {
-    if (error.response.status === 401)
-      return { redirectTo: '/login' };
+    if (error.response.status === 401) return { redirectTo: '/login' };
     return { error };
   }
 };
@@ -542,9 +541,7 @@ export default class Document extends React.Component {
     return (
       <html {...htmlAttrs}>
         <head>
-          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet="utf-8" />
-          <title>Welcome to the Afterparty</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
