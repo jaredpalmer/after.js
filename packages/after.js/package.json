@@ -1,9 +1,9 @@
 {
-  "name": "@deviousm/after",
+  "name": "@jaredpalmer/after",
   "private": false,
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Build isomorphic Javascript applications with ease.",
-  "repository": "deviousm/after.js",
+  "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
   "license": "MIT",
   "sideEffects": false,

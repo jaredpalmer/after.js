@@ -10,8 +10,8 @@ import {
 let asyncComponentImportNames = [];
 
 const validImportSources = [
-  '@deviousm/after',
-  '@deviousm/after/asyncComponent',
+  '@jaredpalmer/after',
+  '@jaredpalmer/after/asyncComponent',
 ];
 
 export default function({ types: t }) {
