@@ -1,5 +1,5 @@
 import { matchPath } from 'react-router-dom';
-import { AsyncRouteProps, EnsureReadyParams } from './types';
+import { EnsureReadyParams } from './types';
 import { isLoadableComponent, stripBasename } from './utils';
 
 /**
