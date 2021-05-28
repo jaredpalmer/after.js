@@ -32,6 +32,7 @@ export interface AfterRenderOptions<T> {
   routes: AsyncRouteProps[];
   document?: typeof DefaultDoc;
   chunks: Chunks;
+  basename?: string;
   scrollToTop?: boolean;
   customRenderer?: (
     element: React.ReactElement<T>
@@ -47,6 +48,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     document: Document,
     customRenderer,
     chunks,
+    basename,
     scrollToTop = true,
     ...rest
   } = options;
@@ -59,7 +61,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
   const autoScrollRef = { current: scrollToTop };
   const { match, data: initialData } = await loadInitialProps(
     routes,
-    url.parse(req.url).pathname as string,
+    utils.stripBasename(url.parse(req.url).pathname as string, basename),
     {
       req,
       res,
@@ -108,7 +110,7 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
-      <StaticRouter location={req.url} context={context}>
+      <StaticRouter location={req.url} context={context} basename={basename}>
         {fn(After)({ routes, data, transitionBehavior: 'blocking' })}
       </StaticRouter>
     );

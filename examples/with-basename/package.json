@@ -1,5 +1,5 @@
 {
-  "name": "after-dev-example",
+  "name": "after-examples-with-basename",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
@@ -15,6 +15,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.1.2"
   }
 }

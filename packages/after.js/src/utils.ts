@@ -73,5 +73,14 @@ export function isJS(str: string) {
 
 /** @private Checks if given transition type is instant */
 export function isInstantTransition(transition: TransitionBehavior) {
-  return transition === "instant";
+  return transition === 'instant';
+}
+
+/** @private Strips basename from the given URL so that matchPath can use it normally outside the router context */
+export function stripBasename(location?: string, basename?: string): string {
+  if (!basename || !location) return location || '';
+
+  if (location.indexOf(basename) !== 0) return location;
+
+  return location.substr(basename.length) || '/';
 }

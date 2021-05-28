@@ -116,6 +116,12 @@ export interface GetAssetsParams {
   route?: AsyncRouteProps<any>;
 }
 
+export interface EnsureReadyParams {
+  routes: AsyncRouteProps[];
+  pathname?: string;
+  basename?: string;
+}
+
 // ES Module type
 export type Module<P> =
   | {

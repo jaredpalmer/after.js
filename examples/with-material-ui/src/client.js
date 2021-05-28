@@ -23,7 +23,7 @@ function Main({ data }) {
   );
 }
 
-ensureReady(routes).then(data =>
+ensureReady({ routes }).then(data =>
   hydrate(<Main data={data} />, document.getElementById('root'))
 );
 

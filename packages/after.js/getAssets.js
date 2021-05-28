@@ -1,1 +1,1 @@
-module.exports = require('./build/getAssets').getAssets;
+module.exports = require('./build/cjs/getAssets').getAssets;
