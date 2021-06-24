@@ -5,8 +5,8 @@
 Download the example [or clone the whole project](https://github.com/jaredpalmer/after.js.git):
 
 ```bash
-curl https://codeload.github.com/jaredpalmer/after.js/tar.gz/master | tar -xz --strip=2 razzle-master/examples/basic
-cd basic
+curl https://codeload.github.com/jaredpalmer/after.js/tar.gz/master | tar -xz --strip=2 razzle-master/examples/with-webpack-bundle-analyzer
+cd with-webpack-bundle-analyzer
 ```
 
 Install it and run:
@@ -16,6 +16,10 @@ yarn install
 yarn start
 ```
 
+BundleAnalyzerPlugin should open two pages
+On port 8888 - web bundle
+On port 8889 - server bundle
+
 ## Idea behind the example
 
-This is a basic, bare-bones example of how to use After.js and Razzle.
+This is a basic, bare-bones example of how to use After.js and Razzle extended by adding bundle analyzer to webpack.
