@@ -20,12 +20,17 @@
   "devDependencies": {
     "babel-preset-razzle": "^4.0.5",
     "html-webpack-plugin": "^5.3.2",
-    "mini-css-extract-plugin": "^0.9.0",
+    "mini-css-extract-plugin": "^2.2.0",
     "postcss": "^8.3.6",
     "razzle": "^4.0.5",
     "razzle-dev-utils": "^4.0.5",
+    "razzle-plugin-react": "^4.0.5",
+    "razzle-plugin-typescript": "^4.0.5",
     "typescript": "^4.3.5",
-    "webpack": "5.45.0",
+    "webpack": "^5.48.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "resolutions": {
+    "webpack": "^5.48.0"
   }
 }
