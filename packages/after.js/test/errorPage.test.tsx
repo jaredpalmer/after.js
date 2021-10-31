@@ -1,4 +1,4 @@
-import { render as renderPage } from '../render';
+import { render as renderPage } from '../src';
 import { Helmet } from 'react-helmet';
 
 import Home from './components/Home';
@@ -6,7 +6,7 @@ import NonAsyncRedirect from './components/NonAsyncRedirectComponent';
 import AsyncRedirectComponent from './components/AsyncRedirectComponent';
 import UserDefined404Component from './components/UserDefined404Component';
 import AsyncNotFound from './components/AsyncNotFoundComponent';
-import DefaultNotFoundComponent from '../NotFoundComponent';
+import DefaultNotFoundComponent from '../src/NotFoundComponent';
 
 function render({ url, ...params }) {
   return renderPage({ req: { url }, ...params });

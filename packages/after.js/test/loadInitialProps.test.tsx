@@ -1,4 +1,4 @@
-import { loadInitialProps } from '../loadInitialProps';
+import { loadInitialProps } from '../src';
 import routes from './routes';
 import { createMemoryHistory } from 'history';
 import { History } from 'history';
