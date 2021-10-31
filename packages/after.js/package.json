@@ -38,12 +38,12 @@
   "sideEffects": false,
   "size-limit": [
     {
-      "path": "dist/after.js.cjs.production.min.js",
-      "limit": "10 KB"
+      "path": "dist/after.cjs.production.min.js",
+      "limit": "20 KB"
     },
     {
-      "path": "dist/after.js.esm.js",
-      "limit": "10 KB"
+      "path": "dist/esm/*.esm.js",
+      "limit": "20 KB"
     }
   ],
   "jest": {
