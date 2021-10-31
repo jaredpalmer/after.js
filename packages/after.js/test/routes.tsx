@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { asyncComponent } from '../asyncComponent';
+import { asyncComponent } from '../src/';
 import NonDymamicImport from './components/NonDynamicExport';
 import { NoGetInitialProps } from './components/NoGetInitialProps';
-import NotFoundComponent from '../NotFoundComponent';
+import NotFoundComponent from '../src/NotFoundComponent';
 
 const Placeholder = () => <div>...LOADING...</div>;
 

@@ -10,7 +10,7 @@ export async function loadInitialProps(
   const promises: Promise<any>[] = [];
 
   const matchedComponent = routes.find((route: RouteProps) => {
-    // matchPath dont't accept undifined path property
+    // matchPath dont't accept undefined path property
     // in <Switch> componet all Child <Route> components
     // have a path prop with value of "/", { path: "/" }
     // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/Router.js#L12

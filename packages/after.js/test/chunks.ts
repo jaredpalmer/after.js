@@ -1,4 +1,4 @@
-import { Chunks } from '../types';
+import { Chunks } from '../src';
 // sample chunks array for test
 
 const chunks: Chunks = {

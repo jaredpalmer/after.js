@@ -1,9 +1,12 @@
-import { getAssets as getRouteChunks, errorMeesage } from '../getAssets';
+import {
+  getAssets as getRouteChunks,
+  errorMeesage,
+  AsyncRouteProps,
+  asyncComponent,
+} from '../src';
 import chunks from './chunks';
 import routes from './routes';
 import { matchPath } from 'react-router-dom';
-import { AsyncRouteProps } from '../types';
-import { asyncComponent } from '../asyncComponent';
 
 // @ts-ignore
 import logger from 'razzle-dev-utils/logger';
