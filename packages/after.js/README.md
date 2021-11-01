@@ -20,34 +20,31 @@ Next.js is awesome. However, its routing system isn't for me. IMHO React Router 
 <!-- prettier-ignore-start -->
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [After.js](#afterjs)
-  - [Project Goals / Philosophy / Requirements](#project-goals--philosophy--requirements)
-  - [Getting Started with After.js](#getting-started-with-afterjs)
-    - [Quickstart](#quickstart)
-  - [Data Fetching](#data-fetching)
-    - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
-    - [Add Params to `getInitialProps: (ctx) => Data`](#add-params-to-getinitialprops-ctx--data)
-    - [Injected Page Props](#injected-page-props)
-  - [Routing](#routing)
-    - [Parameterized Routing](#parameterized-routing)
-    - [Client Only Data and Routing](#client-only-data-and-routing)
-  - [Transition Behavior](#transition-behavior)
-  - [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
-    - [404 Page](#404-page)
-    - [Dynamic 404](#dynamic-404)
-    - [Redirect](#redirect)
-  - [Code Splitting](#code-splitting)
-  - [Disable Auto-Scroll Globally](#disable-auto-scroll-globally)
-  - [Disable Auto-Scroll for a Specific Page](#disable-auto-scroll-for-a-specific-page)
-  - [Custom `<Document>`](#custom-document)
-  - [Custom/Async Rendering](#customasync-rendering)
-  - [Author](#author)
-  - [Inspiration](#inspiration)
+- [Getting Started with After.js](#getting-started-with-afterjs)
+  - [Quickstart](#quickstart)
+- [Data Fetching](#data-fetching)
+  - [`getInitialProps: (ctx) => Data`](#getinitialprops-ctx--data)
+  - [Add Params to `getInitialProps: (ctx) => Data`](#add-params-to-getinitialprops-ctx--data)
+  - [Injected Page Props](#injected-page-props)
+- [Routing](#routing)
+  - [Parameterized Routing](#parameterized-routing)
+  - [Client Only Data and Routing](#client-only-data-and-routing)
+- [Transition Behavior](#transition-behavior)
+- [Dynamic 404 and Redirects](#dynamic-404-and-redirects)
+  - [404 Page](#404-page)
+  - [Dynamic 404](#dynamic-404)
+  - [Redirect](#redirect)
+- [Code Splitting](#code-splitting)
+- [Static Site Generation (SSG)](#static-site-generation-ssg)
+- [Disable Auto-Scroll Globally](#disable-auto-scroll-globally)
+- [Disable Auto-Scroll for a Specific Page](#disable-auto-scroll-for-a-specific-page)
+- [Custom `<Document>`](#custom-document)
+- [Custom/Async Rendering](#customasync-rendering)
+- [Author](#author)
+- [Inspiration](#inspiration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -422,6 +419,51 @@ export default [
   },
 ];
 ```
+
+## Static Site Generation (SSG)
+
+After.js has first class support for SSG and allows you to create super fast static webapps and serve them over CDN.
+
+`renderStatic` will return the data from `getInitialProps` and this data will get saved by razzle into a file called `page-data.json`. After.js won't call `getInitialProps` at runtime, instead it will read the `page-data.json` and pass it as a prop to your component.
+
+from `./src/static_export.js` you should export render and routes function.
+
+- `async render(req, res)` should render your app into html and at the end it should return html and data.
+- `async routes()` should return path for pages you want to statically genereate.
+
+```js
+// ./src/static_export.js
+
+import { renderStatic } from '@jaredpalmer/after';
+import appRoutes from './routes';
+
+const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const chunks = require(process.env.RAZZLE_CHUNKS_MANIFEST);
+
+export const render = async (req, res) => {
+  const { html, data } = await renderStatic({
+    req,
+    res,
+    routes: appRoutes,
+    assets,
+    chunks,
+  });
+  res.json({ html, data });
+};
+
+export const routes = async () => {
+  return ['/', '/about'];
+};
+```
+
+after setting up this file you can build your app and run export script to generate your static site:
+
+```bash
+yarn build
+yarn export
+```
+
+> for full documantion and advanced configurtaion visit: https://razzlejs.org/docs/static-export
 
 ## Disable Auto-Scroll Globally
 
