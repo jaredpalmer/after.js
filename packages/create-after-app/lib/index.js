@@ -51,8 +51,14 @@ function installWithMessageFactory(opts, isExample = false) {
       projectName: projectName,
       projectPath: projectPath,
       packages: isExample
-        ? ['after']
-        : ['react', 'react-dom', 'react-router-dom', 'after', 'express'],
+        ? ['@jaredpalmer/after']
+        : [
+            'react',
+            'react-dom',
+            'react-router-dom',
+            '@jaredpalmer/after',
+            'express',
+          ],
     })
       .then(function() {
         console.log(messages.start(projectName));
