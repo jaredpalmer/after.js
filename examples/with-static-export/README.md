@@ -72,3 +72,5 @@ and for static export run the `export` command:
 ```bash
 yarn export
 ```
+
+you can see the result of this process at `build/public` directory.
