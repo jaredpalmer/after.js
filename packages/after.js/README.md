@@ -463,7 +463,7 @@ yarn build
 yarn export
 ```
 
-> for full documantion and advanced configurtaion visit: https://razzlejs.org/docs/static-export
+> for full documentation and advanced configuration visit: https://razzlejs.org/docs/static-export
 
 ## Disable Auto-Scroll Globally
 

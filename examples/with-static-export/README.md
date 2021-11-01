@@ -1,4 +1,4 @@
-# Razzle x After.js x SSG (Experimental)
+# Razzle x After.js x SSG
 
 ## How to use
 
@@ -34,7 +34,7 @@ render is an async function and it will return the html you want to save in html
 
 routes is an async function and should return all the pages that you want to statically generate them.
 
-> for full documantion and advanced configurtaion visit: https://razzlejs.org/docs/static-export
+> for full documentation and advanced configuration visit: https://razzlejs.org/docs/static-export
 
 ```js
 // ./src/static_export.js
