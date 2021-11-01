@@ -2,11 +2,11 @@ logs
 *.log
 npm-debug.log*
 .DS_Store
-cache
 
 coverage
 node_modules
 build
+cache
 .env.local
 .env.development.local
 .env.test.local

@@ -6,6 +6,5 @@ npm-debug.log*
 coverage
 node_modules
 build
-public/static
 .env.*.local
 cache
