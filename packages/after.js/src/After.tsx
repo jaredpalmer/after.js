@@ -14,8 +14,10 @@ import {
   ServerAppState,
   InitialData,
   TransitionBehavior,
+  CtxBase,
 } from './types';
 import { get404Component, getAllRoutes, isInstantTransition } from './utils';
+import { loadStaticProps } from './loadStaticProps';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -86,44 +88,49 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       } = this.props;
 
-      const { scrollToTop } = data.afterData;
+      const { scrollToTop, ssg } = data.afterData;
+      const isInstantMode: boolean = isInstantTransition(transitionBehavior);
+      const isBloackedMode = !isInstantMode;
 
-      const instantMode = isInstantTransition(transitionBehavior);
-
-      // Only for page changes, prevent scroll up for anchor links
-      if (
-        prevState.currentLocation &&
-        prevState.currentLocation.pathname !== location.pathname &&
-        // Only Scroll if scrollToTop is not false
-        scrollToTop.current === true &&
-        instantMode === true
-      ) {
-        window.scrollTo(0, 0);
-      }
-
-      loadInitialProps(routes, location.pathname, {
+      const ctx: CtxBase = {
         location,
         history,
         scrollToTop,
         ...rest,
-      })
-        .then(({ data }) => {
+      };
+
+      // Only for page changes, prevent scroll up for anchor links
+      const isPageChanged: boolean =
+        !!prevState.currentLocation &&
+        prevState.currentLocation.pathname !== location.pathname;
+
+      const isAllowedToScroll: boolean =
+        isPageChanged && scrollToTop.current === true;
+
+      // in instant mode, first we scroll to top then we fetch the data
+      if (isInstantMode && isAllowedToScroll) {
+        window.scrollTo(0, 0);
+      }
+
+      // in ssg mode we don't call component.getInitialProps
+      // instead we fetch the page-data.json file
+      const loadData = ssg ? loadStaticProps : loadInitialProps;
+
+      loadData(location.pathname, routes, ctx)
+        .then(res => res.data)
+        .then((data: InitialData) => {
+          // if user moved to a new page at the time we were fetching data
+          // for the previous page, we ignore data of the previous page
           if (this.state.currentLocation !== location) return;
 
-          // Only for page changes, prevent scroll up for anchor links
-          if (
-            prevState.currentLocation &&
-            prevState.currentLocation.pathname !== location.pathname &&
-            // Only Scroll if scrollToTop is not false
-            scrollToTop.current === true &&
-            instantMode === false
-          ) {
+          // in blocked mode, first we fetch the data and then we scroll to top
+          if (isBloackedMode && isAllowedToScroll) {
             window.scrollTo(0, 0);
           }
 
           this.setState({ previousLocation: null, data, isLoading: false });
         })
-        .catch(e => {
+        .catch((e: Error) => {
           // @todo we should more cleverly handle errors???
           console.log(e);
         });
@@ -131,7 +138,13 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   }
 
   prefetch = (pathname: string) => {
-    loadInitialProps(this.props.routes, pathname, {
+    const { ssg } = this.props.data.afterData;
+
+    // in ssg mode we don't call component.getInitialProps
+    // instead we fetch the page-data.json file
+    const loadData = ssg ? loadStaticProps : loadInitialProps;
+
+    loadData(pathname, this.props.routes, {
       history: this.props.history,
     })
       .then(({ data }) => {

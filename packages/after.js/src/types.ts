@@ -6,6 +6,7 @@ import {
 import { HelmetData } from 'react-helmet';
 import { Request, Response } from 'express';
 import { History, Location } from 'history';
+import { Document as DefaultDoc } from './Document';
 
 export interface CtxBase {
   req?: Request;
@@ -72,6 +73,7 @@ export interface InitialProps {
 
 export interface AfterClientData {
   scrollToTop: ScrollToTop;
+  ssg?: boolean;
 }
 
 // <AfterData /> will send this object
@@ -79,6 +81,41 @@ export interface ServerAppState {
   afterData: AfterClientData;
   initialData: InitialData;
 }
+
+// result of the render()
+export interface RenderResult {
+  html: string;
+  redirect: string;
+  statusCode: number;
+  data: InitialData;
+}
+
+// special result of getInitialProps
+export interface RedirectWithStatuCode {
+  statusCode?: number;
+  redirectTo?: string;
+}
+
+// renderApp()
+export interface AfterRenderAppOptions<T> {
+  req: Request;
+  res: Response;
+  assets: Assets;
+  routes: AsyncRouteProps[];
+  document?: typeof DefaultDoc;
+  chunks: Chunks;
+  scrollToTop?: boolean;
+  ssg?: boolean;
+  customRenderer?: (
+    element: React.ReactElement<T>
+  ) => { html: string } | Promise<{ html: string }>;
+}
+
+// render()
+export type AfterRenderOptions<T> = Omit<AfterRenderAppOptions<T>, 'ssg'>;
+
+// renderStatic()
+export type AfterRenderStaticOptions<T> = Omit<AfterRenderAppOptions<T>, 'ssg'>;
 
 // Result of Document
 export interface RenderPageResult {

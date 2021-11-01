@@ -13,7 +13,7 @@ describe('loadInitialProps', () => {
   it('should find matched component and call getInitialProps', async () => {
     const url = '/';
 
-    const matched = await loadInitialProps(routes, url, { history });
+    const matched = await loadInitialProps(url, routes, { history });
 
     const expected = routes.find(r => r.path === url);
 
@@ -25,7 +25,7 @@ describe('loadInitialProps', () => {
   it('should retrieve initial props from async call', async () => {
     const url = '/async-get-initial-props';
 
-    const matched = await loadInitialProps(routes, url, { history });
+    const matched = await loadInitialProps(url, routes, { history });
 
     expect(matched.match.path).toBe(url);
 
@@ -35,7 +35,7 @@ describe('loadInitialProps', () => {
   it('should call getInitialProps for non dynamic import component', async () => {
     const url = '/non-dynamic-import';
 
-    const matched = await loadInitialProps(routes, url, { history });
+    const matched = await loadInitialProps(url, routes, { history });
 
     expect(matched.match.path).toBe(url);
 
@@ -45,7 +45,7 @@ describe('loadInitialProps', () => {
   it('should call getInitialProps for non default export component', async () => {
     const url = '/non-default-export';
 
-    const matched = await loadInitialProps(routes, url, { history });
+    const matched = await loadInitialProps(url, routes, { history });
 
     expect(matched.match.path).toBe(url);
 
@@ -55,7 +55,7 @@ describe('loadInitialProps', () => {
   it('should load component with no getInitialProps', async () => {
     const url = '/no-get-initial-props';
 
-    const matched = await loadInitialProps(routes, url, { history });
+    const matched = await loadInitialProps(url, routes, { history });
 
     expect(matched.match.path).toBe(url);
 
