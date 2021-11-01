@@ -429,7 +429,7 @@ After.js has first class support for SSG and allows you to create super fast sta
 from `./src/static_export.js` you should export render and routes function.
 
 - `async render(req, res)` should render your app into html and at the end it should return html and data.
-- `async routes()` should return path for pages you want to statically genereate.
+- `async routes()` should return path for pages you want to statically generate.
 
 ```js
 // ./src/static_export.js
