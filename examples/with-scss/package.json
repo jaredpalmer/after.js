@@ -11,13 +11,21 @@
   "dependencies": {
     "@jaredpalmer/after": "latest",
     "express": "^4.17.1",
-    "razzle": "^3.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-helmet": "^6.0.0",
-    "react-router-dom": "^5.1.2"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^5.3.0"
   },
   "devDependencies": {
-    "razzle-plugin-scss": "^3.0.0"
+    "babel-preset-razzle": "^4.2.6",
+    "html-webpack-plugin": "5.2.0",
+    "mini-css-extract-plugin": "0.9.0",
+    "postcss": "8.2.4",
+    "razzle": "^4.2.6",
+    "razzle-dev-utils": "^4.2.6",
+    "razzle-plugin-manifest": "^4.2.6",
+    "razzle-plugin-scss": "^4.2.6",
+    "webpack": "5.24.0",
+    "webpack-dev-server": "3.11.0"
   }
 }

@@ -5,3 +5,4 @@ package-lock.json
 build
 .vscode
 *.map
+cache
