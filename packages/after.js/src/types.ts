@@ -20,8 +20,13 @@ export interface Ctx<P> extends CtxBase {
   match: Match<P>;
 }
 
+export interface CtxStatic<D = Record<string, any>, P = any> extends Ctx<P> {
+  data: D | null;
+}
+
 export interface AsyncComponent {
   getInitialProps: (props: Ctx<any>) => any;
+  getStaticInitialProps: (props: CtxStatic) => any;
   load?: () => Promise<React.ReactNode>;
   getChunkName: () => string | undefined;
 }
@@ -50,7 +55,6 @@ export interface AsyncRouteComponentState {
 }
 
 export interface AsyncRouteProps<Props = any> extends RouteProps {
-  path?: string;
   Placeholder?: React.ComponentType<any>;
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
@@ -150,7 +154,7 @@ export type AfterContext = DocumentProps;
 // getAssets utility function
 export interface GetAssetsParams {
   chunks: Chunks;
-  route?: AsyncRouteProps<any>;
+  route?: AsyncRouteProps;
 }
 
 // ES Module type

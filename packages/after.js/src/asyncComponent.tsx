@@ -4,6 +4,7 @@ import {
   AsyncRouteComponentState,
   AsyncRouteComponentType,
   Ctx,
+  CtxStatic,
 } from './types';
 
 /**
@@ -48,6 +49,15 @@ export function asyncComponent<Props>({
         return Component.getInitialProps
           ? Component.getInitialProps(ctx)
           : Promise.resolve(null);
+      }
+    }
+
+    static getStaticInitialProps(ctx: CtxStatic) {
+      // Need to call the wrapped components getStaticInitialProps if it exists
+      if (Component !== null) {
+        return Component.getStaticInitialProps
+          ? Component.getStaticInitialProps(ctx)
+          : Promise.resolve(ctx.data);
       }
     }
 

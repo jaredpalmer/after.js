@@ -422,9 +422,18 @@ export default [
 
 ## Static Site Generation (SSG)
 
-After.js has first class support for SSG and allows you to create super fast static webapps and serve them over CDN.
+After.js has first class support for SSG and allows you to create super-fast static webapps and serve them over CDN.
 
 `renderStatic` will return the data from `getInitialProps` and this data will get saved by razzle into a file called `page-data.json`. After.js won't call `getInitialProps` at runtime, instead it will read the `page-data.json` and pass it as a prop to your component.
+If you want to manage this data before pass to component, you can add `getStaticInitialProps` to component, it works like `getInitialProps` but for SSG. Example:
+
+```typescript
+// this is how it works by default
+Component.getStaticInitialProps = staticCtx => {
+  // data - it is data from getInitialProps
+  return staticCtx.data;
+};
+```
 
 from `./src/static_export.js` you should export render and routes function.
 

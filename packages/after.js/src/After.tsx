@@ -17,7 +17,6 @@ import {
   CtxBase,
 } from './types';
 import { get404Component, getAllRoutes, isInstantTransition } from './utils';
-import { loadStaticProps } from './loadStaticProps';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -112,11 +111,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         window.scrollTo(0, 0);
       }
 
-      // in ssg mode we don't call component.getInitialProps
-      // instead we fetch the page-data.json file
-      const loadData = ssg ? loadStaticProps : loadInitialProps;
-
-      loadData(location.pathname, routes, ctx)
+      loadInitialProps(location.pathname, routes, ctx, ssg)
         .then(res => res.data)
         .then((data: InitialData) => {
           // if user moved to a new page at the time we were fetching data
@@ -140,13 +135,14 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   prefetch = (pathname: string) => {
     const { ssg } = this.props.data.afterData;
 
-    // in ssg mode we don't call component.getInitialProps
-    // instead we fetch the page-data.json file
-    const loadData = ssg ? loadStaticProps : loadInitialProps;
-
-    loadData(pathname, this.props.routes, {
-      history: this.props.history,
-    })
+    loadInitialProps(
+      pathname,
+      this.props.routes,
+      {
+        history: this.props.history,
+      },
+      ssg
+    )
       .then(({ data }) => {
         this.prefetcherCache = {
           ...this.prefetcherCache,
