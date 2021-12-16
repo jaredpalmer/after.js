@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { WithRouterStatics, Omit, WithRouterProps } from 'react-router';
 import {
   Switch,
   Route,
   withRouter,
   Redirect,
-  match as Match,
   RouteComponentProps,
 } from 'react-router-dom';
+import { Location } from 'history';
 import { loadInitialProps } from './loadInitialProps';
-import { History, Location } from 'history';
 import {
   AsyncRouteProps,
   ServerAppState,
@@ -20,11 +20,8 @@ import { get404Component, getAllRoutes, isInstantTransition } from './utils';
 import { loadStaticProps } from './loadStaticProps';
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
-  history: History;
-  location: Location;
   data: ServerAppState;
   routes: AsyncRouteProps[];
-  match: Match<any>;
   transitionBehavior: TransitionBehavior;
 }
 
@@ -196,4 +193,12 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     );
   }
 }
-export const After = withRouter(Afterparty);
+
+type TAfterparty = React.ComponentClass<AfterpartyProps>;
+type TAfter = React.ComponentClass<
+  Omit<AfterpartyProps, keyof RouteComponentProps<any>> &
+    WithRouterProps<TAfterparty>
+> &
+  WithRouterStatics<TAfterparty>;
+
+export const After = withRouter(Afterparty) as TAfter;

@@ -1,9 +1,9 @@
 import { renderApp } from './renderApp';
 import { AfterRenderOptions } from './types';
 
-export const render = async <T extends any>(
-  params: Omit<AfterRenderOptions<T>, 'ssg'>
-) => {
+type TRender = <T>(params: AfterRenderOptions<T>) => Promise<string>;
+
+export const render: TRender = async params => {
   const { res } = params;
   const { redirect, statusCode, html } = await renderApp({
     ...params,

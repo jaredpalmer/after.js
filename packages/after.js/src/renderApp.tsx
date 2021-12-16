@@ -12,7 +12,7 @@ import {
   AfterClientData,
   CtxBase,
   AsyncRouteProps,
-  RedirectWithStatuCode,
+  RedirectWithStatusCode,
   ServerAppState,
   RenderResult,
   DocumentProps,
@@ -80,7 +80,7 @@ export async function renderApp<T>(
   // and see if it contains redirectTo or statusCode properties
   // we will mutate context if we got redirectTo or statusCode in initialData
   if (initialData) {
-    const { redirectTo, statusCode } = initialData as RedirectWithStatuCode;
+    const { redirectTo, statusCode } = initialData as RedirectWithStatusCode;
 
     if (statusCode) {
       context.statusCode = statusCode;

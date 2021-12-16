@@ -50,7 +50,6 @@ export interface AsyncRouteComponentState {
 }
 
 export interface AsyncRouteProps<Props = any> extends RouteProps {
-  path?: string;
   Placeholder?: React.ComponentType<any>;
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
@@ -58,8 +57,8 @@ export interface AsyncRouteProps<Props = any> extends RouteProps {
 
 export type ScrollToTop = React.RefObject<boolean>;
 
-// result of getInitalProps
-export type InitialData = Promise<unknown>[];
+// result of getInitialProps
+export interface InitialData {}
 
 export interface ServerAppState {
   afterData: AfterClientData;
@@ -91,7 +90,7 @@ export interface RenderResult {
 }
 
 // special result of getInitialProps
-export interface RedirectWithStatuCode {
+export interface RedirectWithStatusCode {
   statusCode?: number;
   redirectTo?: string;
 }
@@ -150,7 +149,7 @@ export type AfterContext = DocumentProps;
 // getAssets utility function
 export interface GetAssetsParams {
   chunks: Chunks;
-  route?: AsyncRouteProps<any>;
+  route?: AsyncRouteProps;
 }
 
 // ES Module type

@@ -1,9 +1,11 @@
 import { renderApp } from './renderApp';
-import { AfterRenderStaticOptions } from './types';
+import { AfterRenderStaticOptions, RenderResult } from './types';
 
-export const renderStatic = async <T extends any>(
+type TRenderStatic = <T extends any>(
   params: AfterRenderStaticOptions<T>
-) => {
+) => Promise<Pick<RenderResult, 'html' | 'data'>>;
+
+export const renderStatic: TRenderStatic = async params => {
   const { redirect, html, data } = await renderApp({ ...params, ssg: true });
 
   if (redirect) {
