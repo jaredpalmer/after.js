@@ -7,7 +7,7 @@
     "husky": "^8.0.1",
     "lerna": "^5.1.6",
     "lint-staged": "^13.0.3",
-    "prettier": "^1.19.1",
+    "prettier": "^2.7.1",
     "release": "^6.1.0"
   },
   "workspaces": [
