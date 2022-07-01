@@ -261,10 +261,11 @@ class Document extends React.Component {
   }
 }
 
-export default Document;section
+export default Document;
+section;
 ```
 
-### Top Level API Changes (Skip this  if you used `babel-plugin-after`)
+### Top Level API Changes (Skip this if you used `babel-plugin-after`)
 
 To send assets (CSS and JS files) from the initial server response, we need to change how we define our routes.
 

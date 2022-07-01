@@ -42,7 +42,7 @@ export default [
       loader: () =>
         import(
           /* webpackChunkName: 'components-NoNDefaultExport' */ './components/NoNDefaultExport'
-        ).then(module => module.NonDefaultExport),
+        ).then((module) => module.NonDefaultExport),
       Placeholder,
       chunkName: 'components-NoNDefaultExport',
     }),

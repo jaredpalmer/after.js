@@ -8,7 +8,7 @@ const program = {
   name: 'create-after-app',
 };
 
-exports.help = function() {
+exports.help = function () {
   return `
     Only ${chalk.green('<project-directory>')} is required.
     If you have any problems, do not hesitate to file an issue:
@@ -16,13 +16,13 @@ exports.help = function() {
   `;
 };
 
-exports.exampleHelp = function() {
+exports.exampleHelp = function () {
   return `Example from https://github.com/jaredpalmer/after.js/tree/master/examples/ ${output.param(
     'example-path'
   )}`;
 };
 
-exports.missingProjectName = function() {
+exports.missingProjectName = function () {
   return `
 Please specify the project directory:
   ${chalk.cyan(program.name)} ${chalk.green('<project-directory>')}
@@ -35,16 +35,16 @@ Run ${chalk.cyan(`${program.name} --help`)} to see all options.
 `;
 };
 
-exports.alreadyExists = function(projectName) {
+exports.alreadyExists = function (projectName) {
   return `
 Uh oh! Looks like there's already a directory called ${chalk.red(
     projectName
   )}. Please try a different name or delete that folder.`;
 };
 
-exports.installing = function(packages) {
+exports.installing = function (packages) {
   const pkgText = packages
-    .map(function(pkg) {
+    .map(function (pkg) {
       return `    ${chalk.cyan(chalk.bold(pkg))}`;
     })
     .join('\n');
@@ -55,9 +55,9 @@ ${pkgText}
 `;
 };
 
-exports.installError = function(packages) {
+exports.installError = function (packages) {
   const pkgText = packages
-    .map(function(pkg) {
+    .map(function (pkg) {
       return `${chalk.cyan(chalk.bold(pkg))}`;
     })
     .join(', ');
@@ -65,13 +65,13 @@ exports.installError = function(packages) {
   output.error(`Failed to install ${pkgText}, try again.`);
 };
 
-exports.copying = function(projectName) {
+exports.copying = function (projectName) {
   return `
 Creating ${chalk.bold(chalk.green(projectName))}...
 `;
 };
 
-exports.start = function(projectName) {
+exports.start = function (projectName) {
   const cmd = getInstallCmd();
 
   const commands = {

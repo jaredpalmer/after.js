@@ -36,7 +36,7 @@ module.exports = function createAfterApp(opts) {
       projectName: projectName,
     })
       .then(installWithMessageFactory(opts))
-      .catch(function(err) {
+      .catch(function (err) {
         throw err;
       });
   }
@@ -60,10 +60,10 @@ function installWithMessageFactory(opts, isExample = false) {
             'express',
           ],
     })
-      .then(function() {
+      .then(function () {
         console.log(messages.start(projectName));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         throw err;
       });
   };

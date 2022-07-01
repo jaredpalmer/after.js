@@ -22,20 +22,20 @@ module.exports = function install(opts) {
   console.log(messages.installing(packages));
   process.chdir(projectPath);
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     const stopInstallSpinner = output.wait('Installing modules');
 
     execa(installCmd, installArgs)
-      .then(function() {
+      .then(function () {
         // Confirm that all dependencies were installed
         return execa(installCmd, ['install']);
       })
-      .then(function() {
+      .then(function () {
         stopInstallSpinner();
         output.success(`Installed dependencies for ${projectName}`);
         resolve();
       })
-      .catch(function() {
+      .catch(function () {
         stopInstallSpinner();
         console.log(messages.installError(packages));
         return reject(new Error(`${installCmd} installation failed`));

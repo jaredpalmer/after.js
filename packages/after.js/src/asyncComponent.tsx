@@ -33,7 +33,7 @@ export function asyncComponent<Props>({
      * normal render path.
      */
     static load() {
-      return loader().then(ResolvedComponent => {
+      return loader().then((ResolvedComponent) => {
         Component = ResolvedComponent.default || ResolvedComponent;
       });
     }

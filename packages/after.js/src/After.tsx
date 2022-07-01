@@ -117,7 +117,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       const loadData = ssg ? loadStaticProps : loadInitialProps;
 
       loadData(location.pathname, routes, ctx)
-        .then(res => res.data)
+        .then((res) => res.data)
         .then((data: InitialData) => {
           // if user moved to a new page at the time we were fetching data
           // for the previous page, we ignore data of the previous page
@@ -153,7 +153,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           [pathname]: data,
         };
       })
-      .catch(e => console.log(e));
+      .catch((e) => console.log(e));
   };
 
   render() {
@@ -180,7 +180,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
             key={`route--${i}`}
             path={r.path}
             exact={r.exact}
-            render={props =>
+            render={(props) =>
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,

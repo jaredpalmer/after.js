@@ -54,9 +54,9 @@ export function getMagicWebpackComments(importArgNode) {
   const { leadingComments } = importArgNode;
   const results = [];
   if (leadingComments && leadingComments.length) {
-    leadingComments.forEach(comment => {
+    leadingComments.forEach((comment) => {
       try {
-        const validMagicString = validMagicStrings.filter(str =>
+        const validMagicString = validMagicStrings.filter((str) =>
           new RegExp(`${str}\\w*:`).test(comment.value)
         );
         // keep this comment if we found a match
@@ -76,13 +76,13 @@ export function addChunkNameToNode(argPath, chunkName) {
 
   delete argPath.node.leadingComments;
   argPath.addComment('leading', ` webpackChunkName: '${chunkName}' `);
-  otherValidMagicComments.forEach(validLeadingComment =>
+  otherValidMagicComments.forEach((validLeadingComment) =>
     argPath.addComment('leading', validLeadingComment.value)
   );
 }
 
 export function getAsyncComponentParamter(loaderArguments, name, t) {
-  const index = loaderArguments.findIndex(property =>
+  const index = loaderArguments.findIndex((property) =>
     t.isIdentifier(property.node.key, { name })
   );
   return [index, index === -1 ? null : loaderArguments[index].node.value.value];

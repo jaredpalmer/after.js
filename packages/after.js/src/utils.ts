@@ -44,7 +44,7 @@ export function is404ComponentAvailable(
   routes: AsyncRouteProps<any>[]
 ): AsyncRouteProps<any> | false {
   return (
-    routes.find(route => ['**', '*', '', undefined].includes(route.path)) ||
+    routes.find((route) => ['**', '*', '', undefined].includes(route.path)) ||
     false
   );
 }
@@ -73,5 +73,5 @@ export function isJS(str: string) {
 
 /** @private Checks if given transition type is instant */
 export function isInstantTransition(transition: TransitionBehavior) {
-  return transition === "instant";
+  return transition === 'instant';
 }

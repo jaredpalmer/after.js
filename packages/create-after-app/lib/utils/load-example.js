@@ -15,11 +15,11 @@ module.exports = function loadExample(opts) {
   const stopExampleSpinner = output.wait(
     `Downloading files for ${output.cmd(example)} example`
   );
-  const cmdPromises = cmds.map(function(cmd) {
+  const cmdPromises = cmds.map(function (cmd) {
     return exec(cmd, { shell: true });
   });
 
-  return Promise.all(cmdPromises).then(function() {
+  return Promise.all(cmdPromises).then(function () {
     stopExampleSpinner();
     output.success(
       `Downloaded ${output.cmd(example)} files for ${output.cmd(projectName)}`

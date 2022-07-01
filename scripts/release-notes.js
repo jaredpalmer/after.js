@@ -16,15 +16,17 @@ async function main() {
       body: body
         .replace(/\r\n/g, '\n')
         .split('\n')
-        .map(e => e.trim()),
+        .map((e) => e.trim()),
     }))
     .sort((a, b) => a.created_at.localeCompare(b.created_at));
 
   const targetVersion = /v(.*?-)/
-    .exec(allReleases.filter(e => /v.*?-/.exec(e.tag_name)).pop().tag_name)
+    .exec(allReleases.filter((e) => /v.*?-/.exec(e.tag_name)).pop().tag_name)
     .pop();
 
-  const releases = allReleases.filter(v => v.tag_name.includes(targetVersion));
+  const releases = allReleases.filter((v) =>
+    v.tag_name.includes(targetVersion)
+  );
 
   const lineItems = {
     '### Minor Changes': [],
@@ -32,14 +34,14 @@ async function main() {
     '### Credits': [],
   };
 
-  Object.keys(lineItems).forEach(header => {
-    releases.forEach(release => {
+  Object.keys(lineItems).forEach((header) => {
+    releases.forEach((release) => {
       const headerIndex = release.body.indexOf(header);
       if (!~headerIndex) return;
 
       let headerLastIndex = release.body
         .slice(headerIndex + 1)
-        .findIndex(v => v.startsWith('###'));
+        .findIndex((v) => v.startsWith('###'));
 
       if (~headerLastIndex) {
         headerLastIndex = headerLastIndex + headerIndex;
@@ -48,7 +50,7 @@ async function main() {
       }
 
       if (header === '### Credits') {
-        release.body.slice(headerIndex, headerLastIndex + 1).forEach(e => {
+        release.body.slice(headerIndex, headerLastIndex + 1).forEach((e) => {
           const re = /@[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}/gi;
           let m;
           do {
@@ -59,7 +61,7 @@ async function main() {
           } while (m);
         });
       } else {
-        release.body.slice(headerIndex, headerLastIndex + 1).forEach(e => {
+        release.body.slice(headerIndex, headerLastIndex + 1).forEach((e) => {
           if (!e.startsWith('-')) {
             return;
           }
@@ -71,7 +73,7 @@ async function main() {
   });
 
   let finalMessage = [];
-  Object.keys(lineItems).forEach(header => {
+  Object.keys(lineItems).forEach((header) => {
     let items = lineItems[header];
     if (!items.length) {
       return;
@@ -93,7 +95,7 @@ async function main() {
 
       finalMessage.push(creditsMessage);
     } else {
-      items.forEach(e => finalMessage.push(e));
+      items.forEach((e) => finalMessage.push(e));
     }
 
     finalMessage.push('');
@@ -116,4 +118,4 @@ async function main() {
 }
 Promise.resolve()
   .then(main)
-  .then(notes => console.log(String(notes.content)));
+  .then((notes) => console.log(String(notes.content)));

@@ -15,7 +15,7 @@ describe('loadInitialProps', () => {
 
     const matched = await loadInitialProps(url, routes, { history });
 
-    const expected = routes.find(r => r.path === url);
+    const expected = routes.find((r) => r.path === url);
 
     expect(matched.match).toEqual(expected);
 

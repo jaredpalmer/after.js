@@ -3,7 +3,7 @@ import { AfterRoot, AfterData, AfterScripts, AfterStyles } from '../../';
 
 class Document extends React.Component {
   static async getInitialProps({ renderPage }) {
-    const page = await renderPage(App => props => <App {...props} />);
+    const page = await renderPage((App) => (props) => <App {...props} />);
     return { ...page };
   }
 
