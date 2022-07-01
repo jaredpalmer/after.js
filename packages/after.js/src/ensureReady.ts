@@ -10,7 +10,7 @@ export async function ensureReady(
   pathname?: string
 ) {
   await Promise.all(
-    routes.map(route => {
+    routes.map((route) => {
       const match = matchPath(pathname || window.location.pathname, route);
       if (
         match &&

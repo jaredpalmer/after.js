@@ -5,11 +5,11 @@ const chalk = require('chalk');
 const ora = require('ora');
 const ms = require('ms');
 
-exports.info = function(msg) {
+exports.info = function (msg) {
   console.log(`${chalk.gray('>')} ${msg}`);
 };
 
-exports.error = function(msg) {
+exports.error = function (msg) {
   if (msg instanceof Error) {
     msg = msg.message;
   }
@@ -17,34 +17,34 @@ exports.error = function(msg) {
   console.error(`${chalk.red('> Error!')} ${msg}`);
 };
 
-exports.success = function(msg) {
+exports.success = function (msg) {
   console.log(`${chalk.green('> Success!')} ${msg}`);
 };
 
-exports.time = function() {
+exports.time = function () {
   const start = new Date();
   return chalk.gray(`[${ms(new Date() - start)}]`);
 };
 
-exports.wait = function(msg) {
+exports.wait = function (msg) {
   const spinner = ora(chalk.green(msg));
   spinner.color = 'blue';
   spinner.start();
 
-  return function() {
+  return function () {
     spinner.stop();
     process.stdout.write(eraseLine);
   };
 };
 
-exports.prompt = function(opts) {
-  return new Promise(function(resolve, reject) {
-    opts.forEach(function(val, i) {
+exports.prompt = function (opts) {
+  return new Promise(function (resolve, reject) {
+    opts.forEach(function (val, i) {
       const text = val[1];
       console.log(`${chalk.gray('>')} [${chalk.bold(i + 1)}] ${text}`);
     });
 
-    const ondata = v => {
+    const ondata = (v) => {
       const s = v.toString();
 
       function cleanup() {
@@ -71,14 +71,14 @@ exports.prompt = function(opts) {
   });
 };
 
-exports.cmd = function(cmd) {
+exports.cmd = function (cmd) {
   return chalk.bold(chalk.cyan(cmd));
 };
 
-exports.code = function(cmd) {
+exports.code = function (cmd) {
   return `${chalk.gray('`')}${chalk.bold(cmd)}${chalk.gray('`')}`;
 };
 
-exports.param = function(param) {
+exports.param = function (param) {
   return chalk.bold(`${chalk.gray('{')}${chalk.bold(param)}${chalk.gray('}')}`);
 };

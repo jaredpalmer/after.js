@@ -257,7 +257,7 @@ you can switch to `instant` behavior by passing a prop to `<After />`.
 
 // transitionBehavior = blocked | instant
 
-ensureReady(routes).then(data =>
+ensureReady(routes).then((data) =>
   hydrate(
     <BrowserRouter>
       <After data={data} routes={routes} transitionBehavior="instant" />
@@ -567,8 +567,8 @@ import { AfterRoot, AfterData, AfterScripts } from '@jaredpalmer/after';
 export default class Document extends React.Component {
   static async getInitialProps({ renderPage }) {
     const sheet = new ServerStyleSheet();
-    const page = await renderPage(App => props =>
-      sheet.collectStyles(<App {...props} />)
+    const page = await renderPage(
+      (App) => (props) => sheet.collectStyles(<App {...props} />)
     );
     const styleTags = sheet.getStyleElement();
     return { ...page, styleTags };
@@ -671,7 +671,7 @@ server
   .get('/*', async (req, res) => {
     const client = createApolloClient({ ssrMode: true });
 
-    const customRenderer = node => {
+    const customRenderer = (node) => {
       const App = <ApolloProvider client={client}>{node}</ApolloProvider>;
       return getDataFromTree(App).then(() => {
         const initialApolloState = client.extract();

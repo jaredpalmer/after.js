@@ -21,7 +21,7 @@ import {
 import { StaticRouterContext } from 'react-router';
 import { getAssets } from './getAssets';
 
-const modPageFn = function<Props>(Page: React.ComponentType<Props>) {
+const modPageFn = function <Props>(Page: React.ComponentType<Props>) {
   return function RenderAfter(props: Props) {
     return <Page {...props} />;
   };

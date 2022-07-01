@@ -14,7 +14,7 @@ const validImportSources = [
   '@jaredpalmer/after/asyncComponent',
 ];
 
-export default function({ types: t }) {
+export default function ({ types: t }) {
   return {
     name: 'after',
     inherits: syntaxDynamicImport,
@@ -26,12 +26,12 @@ export default function({ types: t }) {
         ) {
           const { specifiers } = path.node;
           const asyncComponentImport = specifiers.filter(
-            specifier =>
+            (specifier) =>
               t.isImportDefaultSpecifier(specifier) ||
               (t.isImportSpecifier(specifier) &&
                 specifier.imported.name === 'asyncComponent')
           );
-          asyncComponentImport.forEach(asyncComponentImport => {
+          asyncComponentImport.forEach((asyncComponentImport) => {
             asyncComponentImportNames.push(asyncComponentImport.local.name);
           });
         }
@@ -42,7 +42,7 @@ export default function({ types: t }) {
 
         // check for "component" in object properties and function call in value { component: hello() }
         const component = path.node.properties.find(
-          property =>
+          (property) =>
             t.isIdentifier(property.key, { name: 'component' }) &&
             t.isCallExpression(property.value)
         );
@@ -90,10 +90,8 @@ const importVisitor = {
       .get('arguments')[0]
       .get('properties');
 
-    const [
-      chunkNameNodeIndex,
-      existingChunkNameFromParams,
-    ] = getAsyncComponentParamter(loaderArguments, 'chunkName', t);
+    const [chunkNameNodeIndex, existingChunkNameFromParams] =
+      getAsyncComponentParamter(loaderArguments, 'chunkName', t);
 
     const chunkName = convertChunkName(
       existingChunkNameFromParams || existingChunkName || generatedChunkName,

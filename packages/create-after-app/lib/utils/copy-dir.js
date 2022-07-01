@@ -13,17 +13,17 @@ module.exports = function copyDir(opts) {
 
   console.log(messages.copying(projectName));
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     const stopCopySpinner = output.wait('Copying files');
 
     fs.copy(templatePath, projectPath)
-      .then(function() {
+      .then(function () {
         return fs.move(
           path.resolve(projectPath, './gitignore'),
           path.resolve(projectPath, './.gitignore')
         );
       })
-      .then(function() {
+      .then(function () {
         stopCopySpinner();
         output.success(
           `Created files for "${output.cmd(projectName)}" after.js app`
@@ -31,7 +31,7 @@ module.exports = function copyDir(opts) {
         return this;
       })
       .then(resolve)
-      .catch(function(err) {
+      .catch(function (err) {
         console.error(err);
         stopCopySpinner();
         output.error('Copy command failed, try again.');

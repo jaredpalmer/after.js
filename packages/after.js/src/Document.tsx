@@ -66,7 +66,7 @@ export const AfterStyles: React.FC = () => {
   return (
     <>
       {assets.client.css && <link rel="stylesheet" href={assets.client.css} />}
-      {styles.map(path => (
+      {styles.map((path) => (
         <link key={path} rel="stylesheet" href={path} />
       ))}
     </>
@@ -77,7 +77,7 @@ export const AfterScripts: React.FC = () => {
   const { scripts, assets } = useAfterContext();
   return (
     <>
-      {scripts.filter(isJS).map(path => (
+      {scripts.filter(isJS).map((path) => (
         <script
           key={path}
           defer

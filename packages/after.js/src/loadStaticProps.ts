@@ -23,8 +23,8 @@ export async function loadStaticProps(
     pathname === '/' ? '' : pathname
   }/${PAGE_DATA_FILE_NAME}`;
   return fetch(PAGE_DATA_FILE_PATH)
-    .then(res => res.json())
-    .then(res => {
+    .then((res) => res.json())
+    .then((res) => {
       return { data: res };
     });
 }
