@@ -29,7 +29,7 @@
       "pre-commit": "tsdx lint"
     }
   },
-  "name": "@jaredpalmer/after",
+  "name": "@wi-flix/after",
   "private": false,
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "jaredpalmer/after.js",
