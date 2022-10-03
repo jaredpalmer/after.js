@@ -1,5 +1,5 @@
 {
-  "name": "after.js",
+  "name": "@wi-flix/after.js",
   "version": "3.2.1",
   "devDependencies": {
     "got": "^11.0.2",
