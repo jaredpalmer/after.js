@@ -16,7 +16,8 @@ export interface CtxBase {
   scrollToTop?: ScrollToTop;
 }
 
-export interface Ctx<P> extends CtxBase {
+export interface Ctx<P extends { [K in keyof P]?: string | undefined }>
+  extends CtxBase {
   match: Match<P>;
 }
 
@@ -37,7 +38,9 @@ export type AsyncRouteComponentType<Props> = React.ComponentType<Props> &
  *   component: ReactComponent <- AsyncRouteableComponent
  * }
  */
-export type AsyncRouteableComponent<Props = any> =
+export type AsyncRouteableComponent<
+  Props extends { [K in keyof Props]?: string | undefined } = any
+> =
   // re-exported from react-router (RouteComponentProps)
   | React.ComponentType<RouteComponentProps<Props>>
   | React.ComponentType<Props>
@@ -49,7 +52,9 @@ export interface AsyncRouteComponentState {
   Component: AsyncRouteableComponent | null;
 }
 
-export interface AsyncRouteProps<Props = any> extends RouteProps {
+export interface AsyncRouteProps<
+  Props extends { [K in keyof Props]?: string | undefined } = any
+> extends RouteProps {
   path?: string;
   Placeholder?: React.ComponentType<any>;
   component: AsyncRouteableComponent<Props>;
