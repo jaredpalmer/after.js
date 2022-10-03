@@ -2,7 +2,7 @@ const got = require('got');
 
 async function main() {
   const res = await got(
-    'https://api.github.com/repos/jaredpalmer/after.js/releases',
+    'https://api.github.com/repos/Wi-flx/after.js/releases',
     {
       responseType: 'json',
     }

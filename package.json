@@ -1,7 +1,7 @@
 {
-  "name": "root",
+  "name": "after.js",
   "private": true,
-  "version": "independent",
+  "version": "3.2.1",
   "devDependencies": {
     "got": "^11.0.2",
     "husky": "^4.2.3",
