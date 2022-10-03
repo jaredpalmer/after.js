@@ -139,7 +139,7 @@ export interface DocumentgetInitialProps<T = RenderPageResult> {
   assets: Assets;
   data: ServerAppState;
   renderPage: () => Promise<T>;
-  match?: Match<any>;
+  match: Match<any> | null;
   scripts: string[];
   styles: string[];
   scrollToTop: ScrollToTop;
