@@ -1,6 +1,7 @@
 {
-  "name": "@wi-flix/after.js",
-  "version": "3.2.1",
+  "name": "root",
+  "version": "independent",
+  "private": true,
   "devDependencies": {
     "got": "^11.0.2",
     "husky": "^4.2.3",
