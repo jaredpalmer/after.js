@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 import { render as renderPage } from '../src';
 import { Helmet } from 'react-helmet';
 
@@ -21,8 +23,8 @@ describe('ErrorPage', () => {
 
   beforeEach(() => {
     res = {
-      status: jest.fn(),
-      redirect: jest.fn(),
+      status: vi.fn(),
+      redirect: vi.fn(),
     };
   });
   it('should set statusCode to 200', async () => {

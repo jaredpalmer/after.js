@@ -4,6 +4,9 @@
     "build": {
       "outputs": ["lib/**", "dist/**", "build/**"]
     },
-    "lint": {}
+    "lint": {},
+    "test:watch": {
+      "cache": false
+    }
   }
 }
