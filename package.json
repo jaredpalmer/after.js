@@ -3,21 +3,15 @@
   "private": true,
   "version": "independent",
   "devDependencies": {
-    "got": "^11.0.2",
     "husky": "^4.2.3",
-    "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
-    "prettier": "^1.19.1",
-    "release": "^6.1.0"
+    "prettier": "^1.19.1"
   },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "test:ci": "lerna run test:ci --stream",
-    "format": "prettier --trailing-comma es5 --single-quote --semi --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
-    "publish-canary": "lerna version prerelease --preid canary --force-publish && release --pre",
-    "publish-stable": "lerna version --force-publish && release && node ./scripts/release-notes.js"
+    "format": "prettier --trailing-comma es5 --single-quote --semi --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\""
   },
   "husky": {
     "hooks": {
@@ -34,5 +28,8 @@
     "trailingComma": "es5",
     "singleQuote": true,
     "semi": true
+  },
+  "dependencies": {
+    "turbo": "^1.9.3"
   }
 }
