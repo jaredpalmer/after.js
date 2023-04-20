@@ -11,7 +11,8 @@
     "packages/*"
   ],
   "scripts": {
-    "format": "prettier --trailing-comma es5 --single-quote --semi --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\""
+    "format": "prettier --trailing-comma es5 --single-quote --semi --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
+    "publish-packages": "turbo run build lint test && changeset version && changeset publish"
   },
   "husky": {
     "hooks": {
@@ -30,6 +31,7 @@
     "semi": true
   },
   "dependencies": {
+    "@changesets/cli": "^2.26.1",
     "turbo": "^1.9.3"
   }
 }
