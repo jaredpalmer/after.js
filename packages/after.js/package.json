@@ -4,19 +4,19 @@
   "description": "Build isomorphic Javascript applications with ease.",
   "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
-  "module": "dist/esm/index.esm.js",
   "sideEffects": false,
   "version": "3.2.0",
   "license": "MIT",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "tsup src/index.tsx --format cjs,esm --dts --legacy-output --clean",
+    "dev": "npm run build -- --watch",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
@@ -56,10 +56,8 @@
     "react-router-dom": "^5.1.2",
     "serialize-javascript": "^3.0.0",
     "size-limit": "^6.0.4",
-    "ts-jest": "^25.4.0",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.4"
+    "tsup": "^6.7.0",
+    "typescript": "^4.4.4",
   },
   "dependencies": {
     "babel-plugin-after": "^3.2.0"
