@@ -1,4 +1,11 @@
 {
+  "name": "@jaredpalmer/after",
+  "private": false,
+  "description": "Build isomorphic Javascript applications with ease.",
+  "repository": "jaredpalmer/after.js",
+  "author": "Jared Palmer <jared@palmer.net>",
+  "module": "dist/esm/index.esm.js",
+  "sideEffects": false,
   "version": "3.2.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -23,35 +30,6 @@
     "react-helmet": ">=6.0.0",
     "react-router-dom": ">=5.0.0",
     "serialize-javascript": ">=3.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "name": "@jaredpalmer/after",
-  "private": false,
-  "description": "Build isomorphic Javascript applications with ease.",
-  "repository": "jaredpalmer/after.js",
-  "author": "Jared Palmer <jared@palmer.net>",
-  "module": "dist/esm/index.esm.js",
-  "sideEffects": false,
-  "size-limit": [
-    {
-      "path": "dist/after.cjs.production.min.js",
-      "limit": "20 KB"
-    },
-    {
-      "path": "dist/esm/*.esm.js",
-      "limit": "20 KB"
-    }
-  ],
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": false
-      }
-    }
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^6.0.4",
@@ -85,5 +63,27 @@
   },
   "dependencies": {
     "babel-plugin-after": "^3.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "size-limit": [
+    {
+      "path": "dist/after.cjs.production.min.js",
+      "limit": "20 KB"
+    },
+    {
+      "path": "dist/esm/*.esm.js",
+      "limit": "20 KB"
+    }
+  ],
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
   }
 }
