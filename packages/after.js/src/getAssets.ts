@@ -1,9 +1,8 @@
 import { GetAssetsParams } from './types';
 import { isLoadableComponent } from './utils';
-// @ts-ignore
-import logger from 'razzle-dev-utils/logger';
+import { logger } from './utils/logger';
 
-export const errorMeesage = `all async routes must have a chunkName property with value of /* webpackChunkName: "MyChunkName" */ check your routes config or use babel-plugin-after`;
+export const errorMessage = `all async routes must have a chunkName property with value of /* webpackChunkName: "MyChunkName" */ check your routes config or use babel-plugin-after`;
 
 export function getAssets({ route, chunks }: GetAssetsParams) {
   let scripts: string[] = [];
@@ -22,7 +21,7 @@ export function getAssets({ route, chunks }: GetAssetsParams) {
   // print an error message to console so Developer can fix it
   // todo add link to documentation or show more useful error message
   if (chunkName === undefined) {
-    logger.error(errorMeesage);
+    logger.error(errorMessage);
     throw new Error();
   }
 
