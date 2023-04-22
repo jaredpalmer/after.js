@@ -159,6 +159,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   render() {
     const { previousLocation, data, isLoading } = this.state;
     const { location: currentLocation, transitionBehavior } = this.props;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const initialData = this.prefetcherCache[currentLocation.pathname] || data;
 
     const instantMode = isInstantTransition(transitionBehavior);

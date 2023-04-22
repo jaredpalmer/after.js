@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 import {
   getAssets as getRouteChunks,
   errorMeesage,
@@ -26,7 +28,7 @@ function getAssets(url, route = getRoute(url)) {
   return getRouteChunks({ route, chunks });
 }
 
-jest.mock('razzle-dev-utils/logger');
+vi.mock('razzle-dev-utils/logger');
 
 describe('getAssets', () => {
   test('for non-dynamic-import route should return empty array', () => {
@@ -45,7 +47,7 @@ describe('getAssets', () => {
   });
 
   test('should log and then throw error when chunkName is undefined and component is async', () => {
-    const errorLoger = jest.fn();
+    const errorLoger = vi.fn();
     logger.error.mockImplementation(errorLoger);
 
     const requestUrl = '/bad-route-config';

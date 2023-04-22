@@ -3,36 +3,31 @@
   "private": true,
   "version": "independent",
   "devDependencies": {
-    "got": "^11.0.2",
-    "husky": "^4.2.3",
-    "lerna": "^3.20.2",
-    "lint-staged": "^10.0.8",
-    "prettier": "^1.19.1",
-    "release": "^6.1.0"
+    "lint-staged": "^13.2.1",
+    "prettier": "^2.8.7",
+    "husky": "^8.0.0"
   },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "test:ci": "lerna run test:ci --stream",
     "format": "prettier --trailing-comma es5 --single-quote --semi --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)\"",
-    "publish-canary": "lerna version prerelease --preid canary --force-publish && release --pre",
-    "publish-stable": "lerna version --force-publish && release && node ./scripts/release-notes.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)": [
-      "prettier --trailing-comma es5 --single-quote --semi --write",
-      "git add"
-    ]
+    "publish-packages": "turbo run build lint test && changeset version && changeset publish",
+    "prepare": "husky install"
   },
   "prettier": {
     "trailingComma": "es5",
     "singleQuote": true,
     "semi": true
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.26.1",
+    "turbo": "^1.9.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "turbo lint",
+      "prettier --write"
+    ]
   }
 }
