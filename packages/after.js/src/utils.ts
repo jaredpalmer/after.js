@@ -1,10 +1,10 @@
+import NotFoundComponent from './NotFoundComponent';
 import {
   AsyncRouteableComponent,
   AsyncRouteComponentType,
   AsyncRouteProps,
   TransitionBehavior,
 } from './types';
-import NotFoundComponent from './NotFoundComponent';
 
 /** @private is the given object a Function? */
 export const isFunction = (obj: any) => 'function' === typeof obj;
@@ -73,5 +73,5 @@ export function isJS(str: string) {
 
 /** @private Checks if given transition type is instant */
 export function isInstantTransition(transition: TransitionBehavior) {
-  return transition === "instant";
+  return transition === 'instant';
 }
